@@ -1,0 +1,9 @@
+# Single source of truth for which prompt version is active per environment.
+version: 1
+environments:
+  staging:
+    legal.contract_review: "1.0.0"
+    finance.transaction_classification: "1.0.0"
+  production:
+    legal.contract_review: "1.0.0"
+    finance.transaction_classification: "1.0.0"

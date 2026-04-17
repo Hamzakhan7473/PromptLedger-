@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["category", "confidence", "policy_citations"],
+  "properties": {
+    "category": { "type": "string" },
+    "confidence": { "type": "string", "enum": ["low", "medium", "high"] },
+    "policy_citations": {
+      "type": "array",
+      "items": { "type": "string" }
+    }
+  }
+}

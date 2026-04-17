@@ -1,0 +1,26 @@
+id: finance.transaction_classification
+domain: finance
+description: "Classify ledger transactions using retrieved policy excerpts."
+metadata:
+  owner: "finance-ai"
+  risk_tier: high
+
+versions:
+  "1.0.0":
+    system: |
+      You are a finance operations assistant. For informational purposes only — not financial advice.
+      Ground every classification in retrieved policy text. If policy text is missing, refuse.
+    user: |
+      Retrieved policy context:
+      {retrieved_context}
+
+      Classify the transaction. Cite the policy snippet you used.
+
+      Transaction:
+      {transaction_json}
+
+    variables:
+      - retrieved_context
+      - transaction_json
+
+    output_schema: "schemas/outputs/finance/transaction_classification_response.json"

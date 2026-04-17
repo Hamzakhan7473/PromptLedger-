@@ -1,0 +1,10 @@
+id: finance_tx_classify_happy_path
+prompt_id: finance.transaction_classification
+version: "1.0.0"
+variables:
+  transaction_json: '{"merchant":"Cafe","amount_usd":45,"attendees":2}'
+fixture: "tests/fixtures/rag/finance_policy_chunks.json"
+expect:
+  rendered_contains_after_substitution:
+    - "Meals with clients"
+    - "[p1]"

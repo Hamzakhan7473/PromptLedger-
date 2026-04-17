@@ -1,0 +1,12 @@
+id: legal_contract_review_happy_path
+prompt_id: legal.contract_review
+version: "1.0.0"
+variables:
+  clause_text: "If payment is late, interest applies after a grace period."
+fixture: "tests/fixtures/rag/legal_policy_chunks.json"
+expect:
+  rendered_contains:
+    - "[1]"
+    - "SOFR"
+  rendered_must_not_contain:
+    - "guaranteed outcome"

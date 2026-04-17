@@ -1,0 +1,32 @@
+# Global governance applied to every prompt pack unless overridden per-pack.
+version: 1
+
+banned_phrases:
+  - "guaranteed outcome"
+  - "100% accurate"
+  - "cannot be wrong"
+
+required_markers:
+  # Encourage professional hedging for legal/finance-facing outputs.
+  - pattern: "(?i)\\b(not legal advice|not financial advice|for informational purposes)\\b"
+    message: "Include an explicit not-advice / informational disclaimer."
+
+rag:
+  # Correctness-first RAG: model must ground on retrieved material.
+  context_placeholder: "{retrieved_context}"
+  require_placeholder_in_user: true
+  citation_instruction:
+    required: true
+    must_contain_any:
+      - "cite"
+      - "citation"
+      - "source"
+      - "retrieved"
+  refuse_without_context:
+    enabled: true
+    must_contain_any:
+      - "insufficient"
+      - "not provided"
+      - "cannot answer"
+      - "do not have"
+      - "refuse"

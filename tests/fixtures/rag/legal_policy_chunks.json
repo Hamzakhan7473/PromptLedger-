@@ -1,0 +1,12 @@
+{
+  "chunks": [
+    {
+      "id": "1",
+      "text": "Late payment interest accrues at SOFR + 2% after a 10-day grace period."
+    },
+    {
+      "id": "2",
+      "text": "Either party may terminate for material breach if uncured after 30 days written notice."
+    }
+  ]
+}

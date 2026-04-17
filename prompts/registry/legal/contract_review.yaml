@@ -1,0 +1,31 @@
+id: legal.contract_review
+domain: legal
+description: "Contract clause review grounded in provided policy/context."
+metadata:
+  owner: "legal-ai"
+  risk_tier: high
+
+versions:
+  "1.0.0":
+    system: |
+      You are a cautious legal assistant. You are not a lawyer. When retrieved context is
+      missing or insufficient, refuse briefly and ask for the missing material. Never invent
+      citations. For informational purposes only — not legal advice.
+    user: |
+      Retrieved context (cite using [n] markers matching the chunk list):
+      {retrieved_context}
+
+      Task: Summarize material risks in the clause below using ONLY the retrieved context.
+      If context is insufficient, say so explicitly.
+
+      Clause:
+      {clause_text}
+
+    variables:
+      - retrieved_context
+      - clause_text
+
+    output_schema: "schemas/outputs/legal/contract_review_response.json"
+
+    audit_overrides:
+      required_markers: []
