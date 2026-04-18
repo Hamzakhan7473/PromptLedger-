@@ -25,3 +25,9 @@ prompt-ledger promote --environment production
 - `tests/scenarios/` — executable scenarios (render + schema + grounding checks).
 - `graphrag/` — Go implementation of a GraphRAG-style index + global query pipeline ([details](graphrag/README.md)).
 - `.github/workflows/` — audit, test, and promote pipeline.
+
+## Strategy and delivery
+
+- [POSITIONING.md](POSITIONING.md) — ICP, wedge, non-goals.
+- [PACKAGING.md](PACKAGING.md) — PyPI/GitHub naming before publish.
+- [ROADMAP.md](ROADMAP.md) — prioritized backlog (control plane, semantic eval, packs).
