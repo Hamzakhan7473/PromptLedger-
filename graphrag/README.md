@@ -4,22 +4,43 @@ This module implements a **local → global** retrieval workflow aligned with Mi
 
 **Note on arXiv:** [arXiv:2407.01219](https://arxiv.org/abs/2407.01219) is a different paper (“Searching for Best Practices in Retrieval-Augmented Generation”). If you want the GraphRAG manuscript PDF, use the Microsoft page above or the official GraphRAG project materials.
 
-## Run
+## CLI
 
 ```bash
 cd graphrag
 go test ./...
-go run ./cmd/graphrag
-go run ./cmd/graphrag -index-text ./sample.txt -question "What are the main themes?"
+
+# Offline demo (always stub LLM)
+go run ./cmd/graphrag demo -question "What are the main themes in this corpus?"
+
+# Build a persisted index from a text file
+go run ./cmd/graphrag index -text ./your.txt -o /tmp/index.json
+
+# Query a saved index (uses OPENAI_API_KEY if set; otherwise stub)
+go run ./cmd/graphrag query -index /tmp/index.json -question "What are the main themes?"
 ```
 
-The default `llm.StubCompleter` is deterministic and requires no API keys. Swap in your own `llm.Completer` for production (OpenAI-compatible HTTP, Azure OpenAI, etc.).
+Force the deterministic stub (CI / no network):
+
+```bash
+go run ./cmd/graphrag index -text ./your.txt -o /tmp/index.json -stub
+go run ./cmd/graphrag query -index /tmp/index.json -question "..." -stub
+```
+
+## OpenAI-compatible LLM
+
+If `OPENAI_API_KEY` is set, indexing and query use the Chat Completions API (`OPENAI_BASE_URL`, default `https://api.openai.com/v1`; `OPENAI_MODEL`, default `gpt-4o-mini`). Entity extraction uses `response_format: json_object` when supported.
 
 ## Pipeline
 
-1. **Chunk** documents.
-2. **Extract** entities/relationships (JSON contract) via the `Completer`.
+1. **Chunk** documents (`-chunk-runes` on `index`, default 800).
+2. **Extract** entities/relationships (JSON contract) via the `Completer`; markdown code fences around JSON are stripped automatically.
 3. **Graph**: link entities that co-occur in the same chunk.
 4. **Communities**: connected components (swap for Leiden/Louvain later).
 5. **Summarize** each community into a cached summary.
-6. **Query (global)**: partial answers from relevant communities → final consolidated answer.
+6. **Query (global)**: score communities by keyword overlap with the question (plus member entity names), take the top matches, partial answers → consolidated answer.
+
+## Library
+
+- `internal/persist` — save/load `IndexArtifacts` as JSON.
+- `internal/llm` — `StubCompleter`, `OpenAIChat`, `CompleterFromEnv`.

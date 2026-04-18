@@ -11,8 +11,9 @@ import (
 type StubCompleter struct{}
 
 func (StubCompleter) Complete(_ context.Context, system, user string) (string, error) {
-	// Entity extraction contract: return JSON for index pipeline.
-	if strings.Contains(strings.ToLower(system), "extract") && strings.Contains(strings.ToLower(system), "json") {
+	ls := strings.ToLower(system)
+	// Entity extraction contract: return JSON for index pipeline (matches indexer prompt).
+	if strings.Contains(ls, "entities") && strings.Contains(ls, "relationships") {
 		words := strings.Fields(user)
 		var names []string
 		seen := map[string]struct{}{}
@@ -59,7 +60,6 @@ func (StubCompleter) Complete(_ context.Context, system, user string) (string, e
 	}
 
 	// Summaries / partial answers / final answers: echo mode.
-	ls := strings.ToLower(system)
 	if strings.Contains(ls, "summarize") {
 		return "Community summary: key entities include " + shorten(user, 200), nil
 	}

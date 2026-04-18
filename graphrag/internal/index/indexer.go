@@ -14,7 +14,8 @@ import (
 
 // Indexer builds GraphRAG artifacts: chunks → entities/edges → communities → summaries.
 type Indexer struct {
-	Completer llm.Completer
+	Completer  llm.Completer
+	ChunkRunes int // 0 means default (800)
 }
 
 func chunkDocument(doc model.Document, maxRunes int) []model.Chunk {
@@ -59,12 +60,16 @@ type extractPayload struct {
 }
 
 func (ix Indexer) extract(ctx context.Context, ch model.Chunk) (*extractPayload, error) {
-	system := "You extract structured JSON only. Return keys entities and relationships."
+	system := `Return only a JSON object with keys "entities" and "relationships".
+entities: [{"name":string,"type":string},...]
+relationships: [{"source":string,"target":string,"kind":string},...]
+Use empty arrays if none. No markdown or commentary.`
 	user := "Text:\n" + ch.Text
 	raw, err := ix.Completer.Complete(ctx, system, user)
 	if err != nil {
 		return nil, err
 	}
+	raw = llm.TrimJSONFences(raw)
 	var p extractPayload
 	if err := json.Unmarshal([]byte(raw), &p); err != nil {
 		return nil, fmt.Errorf("chunk %s: decode extract JSON: %w", ch.ID, err)
@@ -77,9 +82,13 @@ func (ix Indexer) Build(ctx context.Context, docs []model.Document) (*model.Inde
 	if ix.Completer == nil {
 		return nil, fmt.Errorf("completer is required")
 	}
+	cr := ix.ChunkRunes
+	if cr <= 0 {
+		cr = 800
+	}
 	var chunks []model.Chunk
 	for _, d := range docs {
-		chunks = append(chunks, chunkDocument(d, 800)...)
+		chunks = append(chunks, chunkDocument(d, cr)...)
 	}
 
 	entityByName := map[string]string{}

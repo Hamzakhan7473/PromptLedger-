@@ -2,8 +2,11 @@ package query
 
 import (
 	"context"
+	"fmt"
+	"sort"
 	"strconv"
 	"strings"
+	"unicode"
 
 	"promptledger/graphrag/internal/llm"
 	"promptledger/graphrag/internal/model"
@@ -23,13 +26,17 @@ type Engine struct {
 
 func (e Engine) Global(ctx context.Context, q string, idx *model.IndexArtifacts) (*GlobalAnswer, error) {
 	if e.Completer == nil {
-		return nil, nil
+		return nil, fmt.Errorf("query engine: completer is nil")
 	}
+	if idx == nil {
+		return nil, fmt.Errorf("query engine: index is nil")
+	}
+
+	lookup := entityNames(idx)
+	selected := selectCommunities(q, idx, lookup)
+
 	var partials []string
-	for _, c := range idx.Communities {
-		if !relevant(q, c) {
-			continue
-		}
+	for _, c := range selected {
 		sys := "Answer the user question using ONLY the community summary. If insufficient, say so."
 		user := "Question: " + q + "\nCommunity summary:\n" + c.Summary
 		p, err := e.Completer.Complete(ctx, sys, user)
@@ -37,18 +44,6 @@ func (e Engine) Global(ctx context.Context, q string, idx *model.IndexArtifacts)
 			return nil, err
 		}
 		partials = append(partials, strings.TrimSpace(p))
-	}
-	if len(partials) == 0 {
-		partials = []string{"No community matched this query in the stub heuristic; using all summaries."}
-		for _, c := range idx.Communities {
-			sys := "Produce a partial answer from this summary only."
-			user := "Q: " + q + "\nSummary:\n" + c.Summary
-			p, err := e.Completer.Complete(ctx, sys, user)
-			if err != nil {
-				return nil, err
-			}
-			partials = append(partials, strings.TrimSpace(p))
-		}
 	}
 
 	var b strings.Builder
@@ -72,11 +67,110 @@ func (e Engine) Global(ctx context.Context, q string, idx *model.IndexArtifacts)
 	}, nil
 }
 
-func relevant(question string, _ model.Community) bool {
-	q := strings.ToLower(question)
-	// Heuristic for global questions; narrows partial generation. Broad matchers → multi-community.
-	return strings.Contains(q, "all") ||
-		strings.Contains(q, "theme") ||
-		strings.Contains(q, "overview") ||
-		strings.Contains(q, "main")
+func entityNames(idx *model.IndexArtifacts) map[string]string {
+	m := make(map[string]string, len(idx.Entities))
+	for _, e := range idx.Entities {
+		m[e.ID] = e.Name
+	}
+	return m
+}
+
+type scoredCommunity struct {
+	c model.Community
+	s int
+}
+
+func selectCommunities(q string, idx *model.IndexArtifacts, names map[string]string) []model.Community {
+	if len(idx.Communities) == 0 {
+		return nil
+	}
+	var scored []scoredCommunity
+	for _, c := range idx.Communities {
+		scored = append(scored, scoredCommunity{c: c, s: relevanceScore(q, c, names)})
+	}
+	sort.Slice(scored, func(i, j int) bool {
+		if scored[i].s != scored[j].s {
+			return scored[i].s > scored[j].s
+		}
+		return scored[i].c.ID < scored[j].c.ID
+	})
+
+	maxS := scored[0].s
+	if maxS == 0 {
+		return idx.Communities
+	}
+
+	thresh := max(1, (maxS+1)/2)
+	var out []model.Community
+	for _, sc := range scored {
+		if sc.s >= thresh {
+			out = append(out, sc.c)
+		}
+		if len(out) >= 10 {
+			break
+		}
+	}
+	if len(out) == 0 {
+		return idx.Communities
+	}
+	return out
+}
+
+func relevanceScore(q string, c model.Community, names map[string]string) int {
+	qTerms := tokenize(q)
+	if len(qTerms) == 0 {
+		return 0
+	}
+	text := strings.ToLower(c.Summary)
+	for _, id := range c.MemberIDs {
+		text += " " + strings.ToLower(names[id])
+	}
+	set := map[string]struct{}{}
+	for _, t := range tokenize(text) {
+		set[t] = struct{}{}
+	}
+	score := 0
+	for _, t := range qTerms {
+		if _, ok := set[t]; ok {
+			score++
+		}
+	}
+	return score
+}
+
+var stopwords = map[string]struct{}{
+	"the": {}, "and": {}, "for": {}, "are": {}, "but": {}, "not": {}, "you": {}, "all": {},
+	"can": {}, "her": {}, "was": {}, "one": {}, "our": {}, "out": {}, "has": {}, "have": {},
+	"this": {}, "that": {}, "with": {}, "from": {}, "they": {}, "will": {}, "what": {},
+	"when": {}, "who": {}, "how": {}, "why": {}, "does": {}, "did": {}, "into": {},
+}
+
+func tokenize(s string) []string {
+	s = strings.ToLower(s)
+	var b strings.Builder
+	for _, r := range s {
+		if unicode.IsLetter(r) || unicode.IsNumber(r) {
+			b.WriteRune(r)
+		} else {
+			b.WriteRune(' ')
+		}
+	}
+	var out []string
+	for _, w := range strings.Fields(b.String()) {
+		if len(w) < 3 {
+			continue
+		}
+		if _, ok := stopwords[w]; ok {
+			continue
+		}
+		out = append(out, w)
+	}
+	return out
+}
+
+func max(a, b int) int {
+	if a > b {
+		return a
+	}
+	return b
 }

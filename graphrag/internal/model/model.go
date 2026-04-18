@@ -5,49 +5,49 @@ import "time"
 
 // Document is a source unit (file, page range, etc.).
 type Document struct {
-	ID        string
-	Title     string
-	Text      string
-	CreatedAt time.Time
+	ID        string    `json:"id"`
+	Title     string    `json:"title,omitempty"`
+	Text      string    `json:"text"`
+	CreatedAt time.Time `json:"created_at"`
 }
 
 // Chunk is a text slice used for local extraction and attribution.
 type Chunk struct {
-	ID         string
-	DocumentID string
-	Index      int
-	Text       string
+	ID         string `json:"id"`
+	DocumentID string `json:"document_id"`
+	Index      int    `json:"index"`
+	Text       string `json:"text"`
 }
 
 // Entity is a node in the knowledge graph.
 type Entity struct {
-	ID   string
-	Name string
-	Type string
+	ID   string `json:"id"`
+	Name string `json:"name"`
+	Type string `json:"type"`
 }
 
 // Relationship is a directed typed edge between entities.
 type Relationship struct {
-	ID         string
-	SourceID   string
-	TargetID   string
-	Kind       string
-	Evidence   string // short provenance string (e.g. chunk id)
-	Confidence float64
+	ID         string  `json:"id"`
+	SourceID   string  `json:"source_id"`
+	TargetID   string  `json:"target_id"`
+	Kind       string  `json:"kind"`
+	Evidence   string  `json:"evidence,omitempty"`
+	Confidence float64 `json:"confidence"`
 }
 
 // Community groups tightly related entities (cluster in the MS pipeline).
 type Community struct {
-	ID        string
-	Level     int // 0 = base community; higher = hierarchical (optional extension)
-	MemberIDs []string
-	Summary   string // pregenerated community summary
+	ID        string   `json:"id"`
+	Level     int      `json:"level"` // 0 = base community; higher = hierarchical (optional extension)
+	MemberIDs []string `json:"member_ids"`
+	Summary   string   `json:"summary"` // pregenerated community summary
 }
 
 // IndexArtifacts is the serialized graph index used at query time.
 type IndexArtifacts struct {
-	Chunks        []Chunk
-	Entities      []Entity
-	Relationships []Relationship
-	Communities   []Community
+	Chunks        []Chunk        `json:"chunks"`
+	Entities      []Entity       `json:"entities"`
+	Relationships []Relationship `json:"relationships"`
+	Communities   []Community    `json:"communities"`
 }
