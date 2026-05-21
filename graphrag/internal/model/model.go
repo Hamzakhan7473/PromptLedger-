@@ -44,8 +44,20 @@ type Community struct {
 	Summary   string   `json:"summary"` // pregenerated community summary
 }
 
+// IndexMeta describes how the index was built.
+type IndexMeta struct {
+	Version            string    `json:"version"`
+	CreatedAt          time.Time `json:"created_at"`
+	CommunityAlgorithm string    `json:"community_algorithm"`
+	DocumentCount      int       `json:"document_count"`
+	ChunkCount         int       `json:"chunk_count"`
+	EntityCount        int       `json:"entity_count"`
+	CommunityCount     int       `json:"community_count"`
+}
+
 // IndexArtifacts is the serialized graph index used at query time.
 type IndexArtifacts struct {
+	Meta          IndexMeta      `json:"meta"`
 	Chunks        []Chunk        `json:"chunks"`
 	Entities      []Entity       `json:"entities"`
 	Relationships []Relationship `json:"relationships"`

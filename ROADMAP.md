@@ -29,5 +29,13 @@ Use this list to open GitHub issues; order is suggested priority for a **regulat
 ## Ongoing
 
 - [ ] **Rename / packaging** alignment per `PACKAGING.md` before first PyPI publish.
-- [x] **GraphRAG bridge:** `graphrag_index` in scenarios + `prompt-ledger render --graphrag-index`.
-- [x] **CLI extensions:** `validate-manifest`, `render`, `promote --dry-run --set --require-approval`, `--json` on audit/test.
+
+## GraphRAG (Go) — completed
+
+- [x] Label-propagation + weighted entity graph
+- [x] Hierarchical meta-communities (`-algo hierarchical`)
+- [x] `batch`, `context`, `validate`, `serve` (REST), `query --json`
+- [x] Public API `pkg/graphrag` + `pkg/contextfmt` for PromptLedger
+- [x] Index metadata (`meta.community_algorithm`, counts)
+- [x] **GraphRAG bridge:** `graphrag_index` in scenarios + `prompt-ledger render --graphrag-index`
+- [x] **CLI extensions:** `validate-manifest`, `render`, `promote --dry-run --set --require-approval`, `--json` on audit/test

@@ -36,7 +36,7 @@ prompt-ledger eval run tests/scenarios/legal_contract_review.yaml
 - `governance/` — global rules (banned phrases, RAG/citation requirements).
 - `prompts/registry/` — versioned prompt packs per domain.
 - `tests/scenarios/` — executable scenarios (render + schema + grounding checks).
-- `graphrag/` — Go implementation of a GraphRAG-style index + global query pipeline ([details](graphrag/README.md)).
+- `graphrag/` — Go GraphRAG: label-prop communities, hierarchical summaries, REST API, PromptLedger context export ([details](graphrag/README.md)).
 - `.github/workflows/` — audit, test, and promote pipeline.
 
 ## Strategy and delivery

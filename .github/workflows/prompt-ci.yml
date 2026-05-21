@@ -21,6 +21,13 @@ jobs:
       - name: Go test (graphrag)
         run: cd graphrag && go test ./...
 
+      - name: GraphRAG stub index and validate
+        run: |
+          cd graphrag
+          go run ./cmd/graphrag index -text ../README.md -o /tmp/graphrag-index.json -stub -algo hierarchical
+          go run ./cmd/graphrag validate -index /tmp/graphrag-index.json
+          go run ./cmd/graphrag context -index /tmp/graphrag-index.json -question "prompt governance" | head -c 500
+
   validate:
     runs-on: ubuntu-latest
     steps:

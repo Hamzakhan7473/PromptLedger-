@@ -6,16 +6,17 @@ import (
 	"fmt"
 	"sort"
 	"strings"
+	"time"
 
-	"promptledger/graphrag/internal/graphx"
 	"promptledger/graphrag/internal/llm"
 	"promptledger/graphrag/internal/model"
 )
 
 // Indexer builds GraphRAG artifacts: chunks → entities/edges → communities → summaries.
 type Indexer struct {
-	Completer  llm.Completer
-	ChunkRunes int // 0 means default (800)
+	Completer     llm.Completer
+	ChunkRunes    int    // 0 means default (800)
+	CommunityAlgo string // components | labelprop | hierarchical (default labelprop)
 }
 
 func chunkDocument(doc model.Document, maxRunes int) []model.Chunk {
@@ -136,40 +137,26 @@ func (ix Indexer) Build(ctx context.Context, docs []model.Document) (*model.Inde
 		}
 	}
 
-	g := graphx.CooccurrenceGraph(entityIDsByChunk)
-	comps := g.ConnectedComponents()
-
-	var communities []model.Community
-	for i, comp := range comps {
-		// Collect chunk text touching these entities
-		set := map[string]struct{}{}
-		for _, id := range comp {
-			set[id] = struct{}{}
-		}
-		var buf strings.Builder
-		for _, ch := range chunks {
-			ids := entityIDsByChunk[ch.ID]
-			if !intersects(set, ids) {
-				continue
-			}
-			buf.WriteString(ch.Text)
-			buf.WriteString("\n")
-		}
-		sys := "Summarize the following text for a community of related entities. Be concise."
-		sum, err := ix.Completer.Complete(ctx, sys, buf.String())
-		if err != nil {
-			return nil, err
-		}
-		communities = append(communities, model.Community{
-			ID:        fmt.Sprintf("c%d", i),
-			Level:     0,
-			MemberIDs: append([]string(nil), comp...),
-			Summary:   strings.TrimSpace(sum),
-		})
+	var relPairs [][2]string
+	for _, r := range rels {
+		relPairs = append(relPairs, [2]string{r.SourceID, r.TargetID})
+	}
+	communities, algoUsed, err := buildCommunities(ctx, ix, chunks, entityIDsByChunk, relPairs)
+	if err != nil {
+		return nil, err
 	}
 
 	sort.Slice(entities, func(i, j int) bool { return entities[i].ID < entities[j].ID })
 	return &model.IndexArtifacts{
+		Meta: model.IndexMeta{
+			Version:            "1",
+			CreatedAt:          time.Now().UTC(),
+			CommunityAlgorithm: algoUsed,
+			DocumentCount:      len(docs),
+			ChunkCount:         len(chunks),
+			EntityCount:        len(entities),
+			CommunityCount:     len(communities),
+		},
 		Chunks:        chunks,
 		Entities:      entities,
 		Relationships: rels,
