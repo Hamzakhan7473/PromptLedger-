@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from prompt_ledger.load import read_yaml
+from prompt_ledger.manifest import get_pin, load_manifest
 from prompt_ledger.paths import repo_root
 from prompt_ledger.registry import discover_registry, get_version
 from prompt_ledger.render import (
@@ -30,14 +31,30 @@ def _load_fixture(path: Path) -> list[dict[str, Any]]:
     return chunks
 
 
+def resolve_version(raw: dict[str, Any], prompt_id: str) -> str:
+    if raw.get("version"):
+        return str(raw["version"])
+    env = str(raw.get("environment", "staging"))
+    manifest = load_manifest()
+    ver = get_pin(manifest, env, prompt_id)
+    if not ver:
+        raise ValueError(f"no manifest pin for {prompt_id!r} in {env!r}")
+    return ver
+
+
 def run_scenario_file(scenario_path: Path) -> ScenarioResult:
     raw = read_yaml(scenario_path)
     sid = raw["id"]
     prompt_id = raw["prompt_id"]
-    version = str(raw["version"])
+    try:
+        version = resolve_version(raw, prompt_id)
+    except ValueError as e:
+        return ScenarioResult(sid, False, [str(e)])
+
     variables: dict[str, Any] = dict(raw.get("variables", {}))
     fixture_rel = raw.get("fixture")
     expect = raw.get("expect") or {}
+    require_golden = bool(raw.get("require_golden", expect.get("require_golden")))
 
     root = repo_root()
     registry = discover_registry(root / "prompts" / "registry")
@@ -50,14 +67,28 @@ def run_scenario_file(scenario_path: Path) -> ScenarioResult:
         return ScenarioResult(sid, False, [str(e)])
 
     retrieved: str | None = None
-    if fixture_rel:
-        fx = (root / fixture_rel).resolve()
+    if raw.get("empty_context"):
+        retrieved = ""
+    elif raw.get("graphrag_index"):
+        from prompt_ledger.graphrag_bridge import context_from_index
+
+        gpath = (root / raw["graphrag_index"]).resolve()
         try:
-            fx.relative_to(root.resolve())
+            gpath.relative_to(root.resolve())
         except ValueError:
-            return ScenarioResult(sid, False, [f"Illegal fixture path: {fixture_rel}"])
-        chunks = _load_fixture(fx)
-        retrieved = format_retrieved_context(chunks)
+            return ScenarioResult(sid, False, [f"Illegal graphrag_index path: {raw['graphrag_index']}"])
+        retrieved = context_from_index(gpath, question=raw.get("question"))
+    elif fixture_rel is not None:
+        if fixture_rel == "":
+            retrieved = ""
+        else:
+            fx = (root / fixture_rel).resolve()
+            try:
+                fx.relative_to(root.resolve())
+            except ValueError:
+                return ScenarioResult(sid, False, [f"Illegal fixture path: {fixture_rel}"])
+            chunks = _load_fixture(fx)
+            retrieved = format_retrieved_context(chunks)
 
     errors: list[str] = []
     try:
@@ -80,14 +111,29 @@ def run_scenario_file(scenario_path: Path) -> ScenarioResult:
         if needle in combined:
             errors.append(f"Expected rendered text NOT to contain {needle!r}")
 
-    golden = expect.get("golden_response")
+    if raw.get("empty_context") or expect.get("must_refuse_without_context"):
+        refuse_any = expect.get("refuse_markers") or [
+            "insufficient",
+            "not provided",
+            "cannot answer",
+            "do not have",
+            "refuse",
+        ]
+        if not any(m.lower() in combined.lower() for m in refuse_any):
+            errors.append("Expected refusal language when context is empty")
+
+    golden = expect.get("golden_response") or raw.get("golden_response")
+    if require_golden and not golden:
+        errors.append("require_golden is set but no golden_response path provided")
     if golden:
         gpath = (root / golden).resolve()
         try:
             gpath.relative_to(root.resolve())
         except ValueError:
             return ScenarioResult(sid, False, [f"Illegal golden path: {golden}"])
-        if gpath.exists():
+        if not gpath.exists():
+            errors.append(f"Golden response file not found: {golden}")
+        else:
             payload = json.loads(gpath.read_text(encoding="utf-8"))
             schema_rel = pv.output_schema
             if schema_rel:

@@ -81,6 +81,33 @@ def _schema_exists(repo: Path, relative_schema: str) -> bool:
     return path.is_file()
 
 
+def audit_pack_metadata(pack: PromptPack) -> list[AuditFinding]:
+    findings: list[AuditFinding] = []
+    owner = pack.metadata.get("owner")
+    risk = pack.metadata.get("risk_tier")
+    if not owner:
+        findings.append(
+            AuditFinding(
+                "warning",
+                pack.prompt_id,
+                "*",
+                "missing_owner",
+                "metadata.owner should be set for accountability",
+            ),
+        )
+    if risk not in ("low", "medium", "high"):
+        findings.append(
+            AuditFinding(
+                "error",
+                pack.prompt_id,
+                "*",
+                "invalid_risk_tier",
+                f"metadata.risk_tier must be low|medium|high, got {risk!r}",
+            ),
+        )
+    return findings
+
+
 def audit_version(
     pack: PromptPack,
     version: str,
@@ -129,13 +156,31 @@ def audit_version(
     return findings
 
 
-def run_audit(registry_root: Path | None = None) -> list[AuditFinding]:
+def run_audit(
+    registry_root: Path | None = None,
+    *,
+    include_manifest: bool = True,
+) -> list[AuditFinding]:
     root = repo_root()
     reg = registry_root or (root / "prompts" / "registry")
     gov = read_yaml(governance_path())
     packs = discover_registry(reg)
     all_findings: list[AuditFinding] = []
     for pack in packs.values():
+        all_findings.extend(audit_pack_metadata(pack))
         for ver, pv in pack.versions.items():
             all_findings.extend(audit_version(pack, ver, pv, gov))
+    if include_manifest:
+        from prompt_ledger.manifest import validate_manifest
+
+        for issue in validate_manifest():
+            all_findings.append(
+                AuditFinding(
+                    issue.severity,
+                    issue.prompt_id or "*",
+                    "*",
+                    issue.code,
+                    issue.message,
+                ),
+            )
     return all_findings

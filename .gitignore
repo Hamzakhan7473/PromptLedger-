@@ -1,3 +1,5 @@
+.promptledger/
+tests/_eval_tmp_*.yaml
 .venv/
 __pycache__/
 *.py[cod]

@@ -1,0 +1,8 @@
+id: legal_contract_review_empty_context
+prompt_id: legal.contract_review
+version: "1.0.0"
+empty_context: true
+variables:
+  clause_text: "If payment is late, interest applies."
+expect:
+  must_refuse_without_context: true

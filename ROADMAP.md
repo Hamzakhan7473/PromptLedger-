@@ -4,16 +4,16 @@ Use this list to open GitHub issues; order is suggested priority for a **regulat
 
 ## P0 — Product wrapper (control plane)
 
-- [ ] **Promotion requests:** open/approve/decline flow tied to PR or manifest diff (even if MVP is GitHub-only + labels).
-- [ ] **Diff views:** prompt text + manifest pin changes in one review surface (can start as CI comment or static HTML export).
-- [ ] **Evidence export:** single artifact (JSON/PDF bundle) listing commit, ruleset hash, audit result, scenario list, promoter identity—for internal or external review.
-- [ ] **Ownership metadata:** enforce `owner` / `risk_tier` in registry with CODEOWNERS-style routing (docs + optional validator).
+- [x] **Promotion requests:** `prompt-ledger approval request|approve|decline|status` (`.promptledger/approval.yaml`).
+- [x] **Diff views:** `prompt-ledger diff` (manifest + prompt text).
+- [x] **Evidence export:** `prompt-ledger evidence -o …` (JSON bundle; CI artifact).
+- [x] **Ownership metadata:** audit checks `owner` / `risk_tier` on registry packs.
 
 ## P1 — Semantic evaluation (on top of static checks)
 
-- [ ] **Dataset-driven runs:** optional LLM/API calls in CI or nightly, gated by secrets, with regression baselines.
-- [ ] **Pairwise or score-based comparison** between prompt versions on the same scenarios.
-- [ ] **Human review queue** hook (export to ticketing or webhook) for high-risk tiers.
+- [x] **Dataset-driven runs:** `prompt-ledger eval run` (OPENAI_API_KEY; optional in CI).
+- [x] **Pairwise or score-based comparison:** `prompt-ledger eval compare`.
+- [x] **Human review queue** hook: `PROMPT_LEDGER_REVIEW_WEBHOOK_URL` on `evidence --notify-review`.
 
 ## P2 — Enterprise-shaped capabilities
 
@@ -23,10 +23,11 @@ Use this list to open GitHub issues; order is suggested priority for a **regulat
 
 ## P3 — Moat: policy packs
 
-- [ ] **Pack format:** versioned bundle of governance YAML + scenarios + schemas (e.g. finance-assistant, legal-drafting, high-risk logging).
-- [ ] **Pack verifier:** CLI that checks a repo against a pack and emits a signed summary for auditors.
+- [x] **Pack format:** `packs/finance-assistant/` (governance + scenarios + schemas).
+- [x] **Pack verifier:** `prompt-ledger pack verify <dir>`.
 
 ## Ongoing
 
 - [ ] **Rename / packaging** alignment per `PACKAGING.md` before first PyPI publish.
-- [ ] **GraphRAG module:** optional integration story (index artifacts + citation in prompts)—separate from core governance CLI.
+- [x] **GraphRAG bridge:** `graphrag_index` in scenarios + `prompt-ledger render --graphrag-index`.
+- [x] **CLI extensions:** `validate-manifest`, `render`, `promote --dry-run --set --require-approval`, `--json` on audit/test.

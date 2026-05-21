@@ -43,6 +43,27 @@ jobs:
           PROMPT_LEDGER_ROOT: ${{ github.workspace }}
         run: prompt-ledger audit
 
+      - name: Validate manifest
+        env:
+          PROMPT_LEDGER_ROOT: ${{ github.workspace }}
+        run: prompt-ledger validate-manifest
+
+      - name: Export evidence bundle
+        env:
+          PROMPT_LEDGER_ROOT: ${{ github.workspace }}
+        run: prompt-ledger evidence -o evidence/ci-evidence.json --env staging --promoter github-actions
+
+      - name: Upload evidence artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prompt-evidence
+          path: evidence/ci-evidence.json
+
+      - name: Verify policy pack
+        env:
+          PROMPT_LEDGER_ROOT: ${{ github.workspace }}
+        run: prompt-ledger pack verify packs/finance-assistant
+
       - name: Scenario tests
         env:
           PROMPT_LEDGER_ROOT: ${{ github.workspace }}
