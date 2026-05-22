@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PromptLedger</title>
+    <link rel="stylesheet" href="/static/styles.css" />
+  </head>
+  <body>
+    <header>
+      <h1>PromptLedger</h1>
+      <p class="subtitle">Repo-native prompt governance · audit · test · promote</p>
+      <span id="health" class="badge">checking…</span>
+    </header>
+
+    <main class="grid">
+      <section class="card">
+        <h2>Governance</h2>
+        <div class="actions">
+          <button id="btn-audit">Run audit</button>
+          <button id="btn-validate">Validate manifest</button>
+          <button id="btn-test">Run scenarios</button>
+          <button id="btn-evidence">Export evidence</button>
+        </div>
+        <pre id="gov-out" class="out">Click an action to see results.</pre>
+      </section>
+
+      <section class="card">
+        <h2>Manifest</h2>
+        <pre id="manifest-out" class="out mono">Loading…</pre>
+      </section>
+
+      <section class="card wide">
+        <h2>GraphRAG</h2>
+        <div class="actions">
+          <button id="btn-gr-index">Build index (stub)</button>
+          <button id="btn-gr-context">Preview context</button>
+        </div>
+        <label>
+          Global question
+          <input id="gr-question" type="text" value="What are the main themes in this corpus?" />
+        </label>
+        <button id="btn-gr-query" class="primary">Query index</button>
+        <pre id="gr-out" class="out">GraphRAG uses the Go module with offline stub LLM.</pre>
+      </section>
+
+      <section class="card">
+        <h2>Promotion (dry-run)</h2>
+        <button id="btn-promote">Preview staging → production</button>
+        <pre id="promote-out" class="out mono"></pre>
+      </section>
+    </main>
+
+    <script src="/static/app.js"></script>
+  </body>
+</html>
