@@ -72,8 +72,16 @@ def _run_graphrag(args: list[str], *, timeout: int = 300) -> tuple[int, str, str
 
 
 @app.get("/api/health")
-def health() -> dict[str, str]:
-    return {"status": "ok", "repo": str(repo_root()), "mode": "demo"}
+def health() -> dict[str, Any]:
+    verticals = list_verticals()
+    return {
+        "status": "ok",
+        "repo": str(repo_root()),
+        "mode": "demo",
+        "verticals": len(verticals),
+        "vertical_ids": [v["id"] for v in verticals],
+        "docs": "/docs",
+    }
 
 
 @app.get("/api/demo/verticals")

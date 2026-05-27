@@ -14,6 +14,16 @@ End-to-end flow: Ingress → PromptLedger API → GraphRAG (Go) → governance &
 | Editable (FigJam) | [docs/architecture/kubernetes-deployment-architecture.jam](docs/architecture/kubernetes-deployment-architecture.jam) |
 | Manifests & runbook | [deploy/kubernetes/README.md](deploy/kubernetes/README.md) |
 
+## Record a demo today
+
+```bash
+make install          # once
+make check            # pre-flight (audit, tests, all 4 verticals)
+make record           # check + start UI → http://127.0.0.1:8765
+```
+
+Follow the timed script: **[DEMO_RECORD.md](DEMO_RECORD.md)** (≈5 min screen recording).
+
 ## Interactive demo (Legal · Fintech · Healthcare · Enterprise AI)
 
 ```bash

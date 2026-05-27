@@ -139,6 +139,23 @@ body {
   border-color: color-mix(in srgb, var(--ok) 40%, var(--border));
 }
 
+.sidebar-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.sidebar-links a {
+  font-size: 0.72rem;
+  color: var(--muted);
+  text-decoration: none;
+}
+
+.sidebar-links a:hover {
+  color: var(--accent);
+}
+
 .main {
   padding: 2rem 2.5rem 3rem;
   max-width: 1100px;

@@ -66,10 +66,26 @@ jobs:
           name: prompt-evidence
           path: evidence/ci-evidence.json
 
-      - name: Verify policy pack
+      - name: Verify all policy packs
         env:
           PROMPT_LEDGER_ROOT: ${{ github.workspace }}
-        run: prompt-ledger pack verify packs/finance-assistant
+        run: |
+          for pack in packs/*-assistant; do
+            echo "==> $pack"
+            prompt-ledger pack verify "$pack"
+          done
+
+      - name: Vertical demo smoke (all industries)
+        env:
+          PROMPT_LEDGER_ROOT: ${{ github.workspace }}
+        run: |
+          python -c "
+          from prompt_ledger.demo import run_vertical_demo
+          for v in ('legal', 'fintech', 'healthcare', 'general'):
+              r = run_vertical_demo(v)
+              assert r['audit']['passed'] and r['scenarios']['passed'], v
+              print('OK', v)
+          "
 
       - name: Scenario tests
         env:

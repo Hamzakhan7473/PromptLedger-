@@ -16,7 +16,6 @@ def test_resolve_graphrag_go_run_when_no_binary() -> None:
 
 
 def test_resolve_graphrag_env_binary(monkeypatch, tmp_path: Path) -> None:
-    from prompt_ledger import graphrag_cli
     from prompt_ledger.graphrag_cli import resolve_graphrag_invocation
 
     fake = tmp_path / "graphrag"

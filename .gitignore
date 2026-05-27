@@ -1,5 +1,7 @@
 .promptledger/
 .data/
+evidence/*.json
+!evidence/.gitkeep
 tests/_eval_tmp_*.yaml
 .venv/
 __pycache__/

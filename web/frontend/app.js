@@ -106,12 +106,31 @@ async function init() {
   await selectVertical(currentId);
 }
 
+function animatePipelineWhile(promise) {
+  const order = ["audit", "test", "manifest", "promote", "graphrag"];
+  let idx = 0;
+  const tick = () => {
+    const state = {};
+    order.forEach((step, i) => {
+      if (i < idx) state[step] = "done";
+      else if (i === idx) state[step] = "active";
+    });
+    setSteps(state);
+    idx = Math.min(idx + 1, order.length - 1);
+  };
+  tick();
+  const timer = setInterval(tick, 700);
+  return promise.finally(() => clearInterval(timer));
+}
+
 $("btn-run-demo").onclick = async () => {
   setStatus("Running pipeline…", "running");
   $("demo-out").textContent = "Executing audit → scenarios → manifest → promote → GraphRAG…";
   setSteps({ audit: "active" });
   try {
-    const result = await api(`/api/demo/run/${currentId}`, { method: "POST" });
+    const result = await animatePipelineWhile(
+      api(`/api/demo/run/${currentId}`, { method: "POST" }),
+    );
     setSteps({
       audit: result.audit?.passed ? "done" : "active",
       test: result.scenarios?.passed ? "done" : "active",

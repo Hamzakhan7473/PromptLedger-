@@ -7,7 +7,6 @@ from pathlib import Path
 from typing import Any
 
 from prompt_ledger.audit import run_audit
-from prompt_ledger.evidence import build_evidence
 from prompt_ledger.graphrag_bridge import context_from_index
 from prompt_ledger.graphrag_cli import resolve_graphrag_invocation
 from prompt_ledger.load import read_yaml
