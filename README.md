@@ -2,6 +2,18 @@
 
 CI/CD for prompt governance: static audits, correctness-first RAG checks, scenario tests, and automated promotion of approved prompt versions.
 
+## Architecture
+
+![PromptLedger Kubernetes Deployment Architecture](docs/architecture/kubernetes-deployment-architecture.png)
+
+End-to-end flow: Ingress → PromptLedger API → GraphRAG (Go) → governance & audit → storage → LLM orchestration → response and feedback loop. Deployed on **Kubernetes** (EKS/GKE/AKS or local **kind**) with Kustomize overlays, HPA, PDB, and NetworkPolicy.
+
+| Asset | Location |
+|-------|----------|
+| Diagram (PNG) | [docs/architecture/kubernetes-deployment-architecture.png](docs/architecture/kubernetes-deployment-architecture.png) |
+| Editable (FigJam) | [docs/architecture/kubernetes-deployment-architecture.jam](docs/architecture/kubernetes-deployment-architecture.jam) |
+| Manifests & runbook | [deploy/kubernetes/README.md](deploy/kubernetes/README.md) |
+
 ## Interactive demo (Legal · Fintech · Healthcare · Enterprise AI)
 
 ```bash
@@ -20,9 +32,7 @@ Run the same demo on a cluster (kind, EKS, GKE, AKS):
 # → http://127.0.0.1:8765
 ```
 
-Manifests use **Kustomize** (base + dev/staging/production overlays), probes, HPA, PDB, NetworkPolicy, and a multi-stage Dockerfile. See [deploy/kubernetes/README.md](deploy/kubernetes/README.md).
-
-**Architecture diagram (FigJam):** [docs/architecture/kubernetes-deployment-architecture.jam](docs/architecture/kubernetes-deployment-architecture.jam) — open in [Figma FigJam](https://www.figma.com/figjam/) for the full Kubernetes deployment walkthrough.
+Manifests use **Kustomize** (base + dev/staging/production overlays), probes, HPA, PDB, NetworkPolicy, and a multi-stage Dockerfile. See [deploy/kubernetes/README.md](deploy/kubernetes/README.md) and the [architecture diagram](docs/architecture/README.md) above.
 
 ## Quick start
 

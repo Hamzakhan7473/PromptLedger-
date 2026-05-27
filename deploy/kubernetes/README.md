@@ -2,7 +2,7 @@
 
 Production-style manifests for the multi-vertical demo API (Legal · Fintech · Healthcare · Enterprise AI).
 
-**Visual architecture (FigJam):** [docs/architecture/kubernetes-deployment-architecture.jam](../../docs/architecture/kubernetes-deployment-architecture.jam)
+**Architecture diagram:** [PNG](../../docs/architecture/kubernetes-deployment-architecture.png) · [FigJam source](../../docs/architecture/kubernetes-deployment-architecture.jam) · [docs](../../docs/architecture/README.md)
 
 ## Architecture
 
