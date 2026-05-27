@@ -1,0 +1,7 @@
+name: healthcare-assistant
+version: "1.0.0"
+description: Policy pack for clinical guidance prompts (HIPAA-aware workflows, medical disclaimers).
+governance: governance.yaml
+scenarios_glob: "*.yaml"
+required_schemas:
+  - schemas/clinical_guidance_response.json

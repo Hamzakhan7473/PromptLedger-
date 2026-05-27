@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# Start PromptLedger API + web UI (single process on port 8765 by default).
+# Start PromptLedger demo UI + API (Legal / Fintech / Healthcare / General AI).
+# Default: http://127.0.0.1:8765
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 cd "$ROOT"

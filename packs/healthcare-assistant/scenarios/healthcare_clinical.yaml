@@ -1,0 +1,9 @@
+id: healthcare_pack_clinical
+prompt_id: healthcare.clinical_guidance
+environment: staging
+variables:
+  clinical_question: "Post-operative fever workup?"
+fixture: "tests/fixtures/rag/healthcare_guidelines.json"
+expect:
+  rendered_contains_after_substitution:
+    - "[g1]"

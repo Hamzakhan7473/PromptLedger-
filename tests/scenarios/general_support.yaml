@@ -1,0 +1,10 @@
+id: general_support_happy_path
+prompt_id: general.policy_support
+version: "1.0.0"
+variables:
+  customer_question: "Can I get a refund on my annual plan after one week?"
+fixture: "tests/fixtures/rag/general_policy_chunks.json"
+expect:
+  rendered_contains_after_substitution:
+    - "Refunds"
+    - "[s2]"

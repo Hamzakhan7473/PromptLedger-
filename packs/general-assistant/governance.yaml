@@ -1,0 +1,6 @@
+version: 1
+banned_phrases:
+  - "guaranteed refund"
+required_markers:
+  - pattern: "(?i)\\bfor informational purposes\\b"
+    message: "General pack requires informational disclaimer."

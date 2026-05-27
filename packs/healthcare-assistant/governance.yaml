@@ -1,0 +1,7 @@
+version: 1
+banned_phrases:
+  - "definitely diagnose"
+  - "100% cure"
+required_markers:
+  - pattern: "(?i)\\bnot medical advice\\b"
+    message: "Healthcare pack requires not-medical-advice marker."

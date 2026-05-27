@@ -1,0 +1,14 @@
+.git
+.github
+.venv
+.pytest_cache
+.ruff_cache
+__pycache__
+*.py[cod]
+*.egg-info
+dist
+.data
+.promptledger
+*.md
+!README.md
+agent-transcripts

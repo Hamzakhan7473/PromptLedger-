@@ -1,0 +1,12 @@
+{
+  "chunks": [
+    {
+      "id": "s1",
+      "text": "Password resets require identity verification via registered email; agents must not disclose other customers' data."
+    },
+    {
+      "id": "s2",
+      "text": "Refunds for annual plans are prorated within 30 days of purchase when usage is below 10% of quota."
+    }
+  ]
+}

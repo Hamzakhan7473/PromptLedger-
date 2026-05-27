@@ -1,0 +1,93 @@
+# Interactive demo configuration — one entry per industry vertical.
+version: 1
+
+verticals:
+  legal:
+    icon: "⚖"
+    label: Legal AI
+    headline: "Prove every clause answer is grounded in real policy"
+    description: >
+      Law firms and legal-tech teams ship RAG assistants that must cite sources, refuse when
+      context is missing, and pass review before production. PromptLedger gates merges with
+      policy-as-code and audit evidence regulators expect.
+    prompt_id: legal.contract_review
+    scenario_dir: tests/scenarios
+    scenario_include:
+      - legal_contract_review.yaml
+      - legal_empty_context.yaml
+    pack_dir: packs/legal-assistant
+    corpus: demo/corpora/legal_corpus.txt
+    graphrag_question: "What are the main contractual and liability themes in this corpus?"
+    accent: "#6366f1"
+    checks:
+      - "RAG placeholder + citation instructions"
+      - "Refusal language when context is empty"
+      - "Banned overconfident legal claims"
+      - "JSON schema for structured review output"
+
+  fintech:
+    icon: "◈"
+    label: Fintech
+    headline: "Classify transactions with policy-backed citations"
+    description: >
+      Finance ops and compliance teams need prompts that never invent policy, always cite
+      retrieved rules, and promote only after tests pass. PromptLedger ties manifest pins to
+      CI audits and evidence exports for model-risk reviews.
+    prompt_id: finance.transaction_classification
+    scenario_dir: tests/scenarios
+    scenario_include:
+      - finance_tx_classify.yaml
+    pack_dir: packs/finance-assistant
+    corpus: demo/corpora/fintech_corpus.txt
+    graphrag_question: "What reimbursement and payment policies apply across this corpus?"
+    accent: "#10b981"
+    checks:
+      - "Not-financial-advice disclaimer"
+      - "Grounding on retrieved policy chunks"
+      - "Manifest pins for staging vs production"
+      - "Promotion dry-run with diff preview"
+
+  healthcare:
+    icon: "✚"
+    label: Healthcare
+    headline: "Clinical AI that refuses when guidelines are missing"
+    description: >
+      Healthcare AI must avoid diagnostic certainty, ground on clinical guidelines, and
+      document change control for HIPAA-aligned workflows. PromptLedger enforces medical
+      disclaimers and empty-context refusal before deploy.
+    prompt_id: healthcare.clinical_guidance
+    scenario_dir: tests/scenarios
+    scenario_include:
+      - healthcare_clinical.yaml
+      - healthcare_empty_context.yaml
+    pack_dir: packs/healthcare-assistant
+    corpus: demo/corpora/healthcare_corpus.txt
+    graphrag_question: "What clinical safety and documentation themes appear in this corpus?"
+    accent: "#f43f5e"
+    checks:
+      - "Not-medical-advice disclaimer"
+      - "Citation of retrieved clinical context"
+      - "Explicit insufficient-context handling"
+      - "High risk_tier metadata for approvers"
+
+  general:
+    icon: "◇"
+    label: General Enterprise AI
+    headline: "Enterprise support bots with policy-first RAG"
+    description: >
+      Any customer-facing AI genre benefits from the same repo-native workflow: version
+      prompts in Git, run deterministic preflight tests without burning LLM budget, and
+      export evidence for security and compliance reviewers.
+    prompt_id: general.policy_support
+    scenario_dir: tests/scenarios
+    scenario_include:
+      - general_support.yaml
+    pack_dir: packs/general-assistant
+    corpus: demo/corpora/general_corpus.txt
+    graphrag_question: "What are the main support and security policies in this knowledge base?"
+    accent: "#0ea5e9"
+    checks:
+      - "Universal governance + per-pack overrides"
+      - "Scenario tests with fixtures"
+      - "GraphRAG context export for {retrieved_context}"
+      - "One-click evidence bundle for auditors"

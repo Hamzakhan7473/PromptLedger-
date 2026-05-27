@@ -1,0 +1,13 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: promptledger-api
+spec:
+  template:
+    metadata:
+      annotations:
+        environment: staging
+    spec:
+      containers:
+        - name: api
+          imagePullPolicy: IfNotPresent

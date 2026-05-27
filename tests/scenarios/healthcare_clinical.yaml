@@ -1,0 +1,11 @@
+id: healthcare_clinical_happy_path
+prompt_id: healthcare.clinical_guidance
+version: "1.0.0"
+variables:
+  clinical_question: "When should we evaluate post-operative fever?"
+fixture: "tests/fixtures/rag/healthcare_guidelines.json"
+golden_response: "tests/golden/healthcare_clinical.json"
+expect:
+  rendered_contains_after_substitution:
+    - "[g1]"
+    - "post-operative"

@@ -4,6 +4,10 @@ environments:
   staging:
     legal.contract_review: "1.0.0"
     finance.transaction_classification: "1.0.0"
+    healthcare.clinical_guidance: "1.0.0"
+    general.policy_support: "1.0.0"
   production:
     legal.contract_review: "1.0.0"
     finance.transaction_classification: "1.0.0"
+    healthcare.clinical_guidance: "1.0.0"
+    general.policy_support: "1.0.0"

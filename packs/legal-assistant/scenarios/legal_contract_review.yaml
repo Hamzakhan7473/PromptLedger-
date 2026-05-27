@@ -1,0 +1,9 @@
+id: legal_pack_contract_review
+prompt_id: legal.contract_review
+environment: staging
+variables:
+  clause_text: "Late payment triggers interest after grace period."
+fixture: "tests/fixtures/rag/legal_policy_chunks.json"
+expect:
+  rendered_contains_after_substitution:
+    - "SOFR"

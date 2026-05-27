@@ -1,5 +1,9 @@
 const $ = (id) => document.getElementById(id);
 
+let verticals = [];
+let currentId = "legal";
+let accent = "#6366f1";
+
 async function api(path, opts = {}) {
   const res = await fetch(path, {
     headers: { Accept: "application/json", ...(opts.headers || {}) },
@@ -12,123 +16,148 @@ async function api(path, opts = {}) {
   } catch {
     data = { raw: text };
   }
-  if (!res.ok) {
-    throw new Error(data.detail || data.raw || res.statusText);
-  }
+  if (!res.ok) throw new Error(data.detail || data.error || data.raw || res.statusText);
   return data;
 }
 
-function show(el, data) {
-  el.textContent = typeof data === "string" ? data : JSON.stringify(data, null, 2);
+function setAccent(color) {
+  accent = color || "#6366f1";
+  document.documentElement.style.setProperty("--accent", accent);
+}
+
+function setSteps(state) {
+  document.querySelectorAll(".step").forEach((el) => {
+    const key = el.dataset.step;
+    el.classList.remove("active", "done");
+    if (state[key] === "active") el.classList.add("active");
+    if (state[key] === "done") el.classList.add("done");
+  });
+}
+
+function setStatus(text, kind = "") {
+  const el = $("demo-status");
+  el.textContent = text;
+  el.className = "status-badge " + kind;
 }
 
 async function refreshHealth() {
-  const badge = $("health");
   try {
-    const h = await api("/api/health");
-    badge.textContent = `connected · ${h.repo.split("/").pop()}`;
-    badge.className = "badge ok";
-  } catch (e) {
-    badge.textContent = "API offline";
-    badge.className = "badge err";
+    await api("/api/health");
+    $("health").textContent = "API connected";
+    $("health").className = "health-pill ok";
+  } catch {
+    $("health").textContent = "API offline";
+    $("health").className = "health-pill";
   }
 }
 
-async function loadManifest() {
+function renderNav() {
+  const nav = $("vertical-nav");
+  nav.innerHTML = "";
+  verticals.forEach((v) => {
+    const btn = document.createElement("button");
+    btn.className = "vert-btn" + (v.id === currentId ? " active" : "");
+    const icon = v.icon ? `<span class="vert-icon">${v.icon}</span>` : "";
+    btn.innerHTML = `${icon}<span>${v.label}<small>${v.prompt_id}</small></span>`;
+    btn.onclick = () => selectVertical(v.id);
+    nav.appendChild(btn);
+  });
+}
+
+async function loadVerticalDetail(id) {
+  const data = await api(`/api/demo/vertical/${id}`);
+  $("hero-title").textContent = data.headline;
+  $("hero-desc").textContent = data.description;
+  setAccent(data.accent);
+
+  const checks = $("checks-list");
+  checks.innerHTML = "";
+  (data.checks || []).forEach((c) => {
+    const li = document.createElement("li");
+    li.textContent = c;
+    checks.appendChild(li);
+  });
+
+  const p = data.preview || {};
+  $("preview-system").textContent = p.system || "—";
+  $("preview-user").textContent = p.user || "—";
+}
+
+async function selectVertical(id) {
+  currentId = id;
+  renderNav();
+  setStatus("Ready");
+  $("demo-out").textContent = `Selected ${id}. Click “Run full demo pipeline”.`;
+  $("graphrag-panel").hidden = true;
+  setSteps({});
   try {
-    const m = await api("/api/manifest");
-    show($("manifest-out"), m);
+    await loadVerticalDetail(id);
   } catch (e) {
-    show($("manifest-out"), String(e));
+    $("hero-desc").textContent = String(e);
   }
 }
 
-$("btn-audit").onclick = async () => {
-  show($("gov-out"), "Running audit…");
-  try {
-    show($("gov-out"), await api("/api/audit"));
-  } catch (e) {
-    show($("gov-out"), String(e));
-  }
-};
+async function init() {
+  await refreshHealth();
+  const data = await api("/api/demo/verticals");
+  verticals = data.verticals || [];
+  if (verticals.length) currentId = verticals[0].id;
+  renderNav();
+  await selectVertical(currentId);
+}
 
-$("btn-validate").onclick = async () => {
-  show($("gov-out"), "Validating manifest…");
+$("btn-run-demo").onclick = async () => {
+  setStatus("Running pipeline…", "running");
+  $("demo-out").textContent = "Executing audit → scenarios → manifest → promote → GraphRAG…";
+  setSteps({ audit: "active" });
   try {
-    show($("gov-out"), await api("/api/validate-manifest"));
-  } catch (e) {
-    show($("gov-out"), String(e));
-  }
-};
-
-$("btn-test").onclick = async () => {
-  show($("gov-out"), "Running scenarios…");
-  try {
-    show($("gov-out"), await api("/api/test"));
-  } catch (e) {
-    show($("gov-out"), String(e));
-  }
-};
-
-$("btn-evidence").onclick = async () => {
-  show($("gov-out"), "Building evidence…");
-  try {
-    show($("gov-out"), await api("/api/evidence?environment=staging"));
-  } catch (e) {
-    show($("gov-out"), String(e));
-  }
-};
-
-$("btn-promote").onclick = async () => {
-  show($("promote-out"), "Dry-run promote…");
-  try {
-    const data = await api("/api/promote", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        environment: "production",
-        sync_from: "staging",
-        dry_run: true,
-      }),
+    const result = await api(`/api/demo/run/${currentId}`, { method: "POST" });
+    setSteps({
+      audit: result.audit?.passed ? "done" : "active",
+      test: result.scenarios?.passed ? "done" : "active",
+      manifest: result.manifest?.passed ? "done" : "active",
+      promote: "done",
+      graphrag: result.graphrag?.indexed ? "done" : "active",
     });
-    show($("promote-out"), data);
+    const allOk =
+      result.audit?.passed &&
+      result.scenarios?.passed &&
+      result.manifest?.passed &&
+      result.pack?.passed;
+    setStatus(allOk ? "All checks passed" : "Review findings", allOk ? "pass" : "fail");
+    $("demo-out").textContent = JSON.stringify(result, null, 2);
+    const gr = result.graphrag?.context_preview;
+    const grPanel = $("graphrag-panel");
+    if (gr) {
+      grPanel.hidden = false;
+      $("graphrag-preview").textContent = gr;
+    } else {
+      grPanel.hidden = true;
+    }
   } catch (e) {
-    show($("promote-out"), String(e));
+    setStatus("Demo failed", "fail");
+    $("demo-out").textContent = String(e);
+    setSteps({});
   }
 };
 
-$("btn-gr-index").onclick = async () => {
-  show($("gr-out"), "Indexing (Go stub)…");
+$("btn-export-evidence").onclick = async () => {
+  setStatus("Exporting…", "running");
   try {
-    show($("gr-out"), await api("/api/graphrag/index", { method: "POST" }));
+    const data = await api("/api/evidence?environment=staging");
+    const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = `promptledger-evidence-${currentId}.json`;
+    a.click();
+    setStatus("Evidence downloaded", "pass");
   } catch (e) {
-    show($("gr-out"), String(e));
+    setStatus("Export failed", "fail");
+    alert(e);
   }
 };
 
-$("btn-gr-context").onclick = async () => {
-  const q = $("gr-question").value;
-  show($("gr-out"), "Loading context…");
-  try {
-    show($("gr-out"), await api(`/api/graphrag/context?question=${encodeURIComponent(q)}`));
-  } catch (e) {
-    show($("gr-out"), String(e));
-  }
-};
-
-$("btn-gr-query").onclick = async () => {
-  const question = $("gr-question").value;
-  show($("gr-out"), "Querying…");
-  try {
-    show($("gr-out"), await api("/api/graphrag/query", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ question }),
-    }));
-  } catch (e) {
-    show($("gr-out"), String(e));
-  }
-};
-
-refreshHealth();
-loadManifest();
+init().catch((e) => {
+  $("hero-title").textContent = "Demo unavailable";
+  $("hero-desc").textContent = String(e);
+});

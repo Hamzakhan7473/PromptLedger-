@@ -8,7 +8,7 @@ banned_phrases:
 
 required_markers:
   # Encourage professional hedging for legal/finance-facing outputs.
-  - pattern: "(?i)\\b(not legal advice|not financial advice|for informational purposes)\\b"
+  - pattern: "(?i)\\b(not legal advice|not financial advice|not medical advice|for informational purposes)\\b"
     message: "Include an explicit not-advice / informational disclaimer."
 
 rag:

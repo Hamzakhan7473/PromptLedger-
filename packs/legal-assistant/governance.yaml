@@ -1,0 +1,7 @@
+version: 1
+banned_phrases:
+  - "guaranteed outcome"
+  - "binding legal conclusion"
+required_markers:
+  - pattern: "(?i)\\bnot legal advice\\b"
+    message: "Legal pack requires not-legal-advice marker."

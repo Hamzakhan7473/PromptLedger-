@@ -3,54 +3,89 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>PromptLedger</title>
+    <title>PromptLedger — AI Change Control Demo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=IBM+Plex+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
     <link rel="stylesheet" href="/static/styles.css" />
   </head>
   <body>
-    <header>
-      <h1>PromptLedger</h1>
-      <p class="subtitle">Repo-native prompt governance · audit · test · promote</p>
-      <span id="health" class="badge">checking…</span>
-    </header>
-
-    <main class="grid">
-      <section class="card">
-        <h2>Governance</h2>
-        <div class="actions">
-          <button id="btn-audit">Run audit</button>
-          <button id="btn-validate">Validate manifest</button>
-          <button id="btn-test">Run scenarios</button>
-          <button id="btn-evidence">Export evidence</button>
+    <div class="shell">
+      <aside class="sidebar">
+        <div class="brand">
+          <span class="logo">PL</span>
+          <div>
+            <strong>PromptLedger</strong>
+            <span class="tag">Demo</span>
+          </div>
         </div>
-        <pre id="gov-out" class="out">Click an action to see results.</pre>
-      </section>
-
-      <section class="card">
-        <h2>Manifest</h2>
-        <pre id="manifest-out" class="out mono">Loading…</pre>
-      </section>
-
-      <section class="card wide">
-        <h2>GraphRAG</h2>
-        <div class="actions">
-          <button id="btn-gr-index">Build index (stub)</button>
-          <button id="btn-gr-context">Preview context</button>
+        <p class="sidebar-lead">
+          Repo-native governance for Legal, Fintech, Healthcare, and enterprise AI.
+        </p>
+        <nav id="vertical-nav" class="vertical-nav"></nav>
+        <div class="sidebar-footer">
+          <span id="health" class="health-pill">Connecting…</span>
         </div>
-        <label>
-          Global question
-          <input id="gr-question" type="text" value="What are the main themes in this corpus?" />
-        </label>
-        <button id="btn-gr-query" class="primary">Query index</button>
-        <pre id="gr-out" class="out">GraphRAG uses the Go module with offline stub LLM.</pre>
-      </section>
+      </aside>
 
-      <section class="card">
-        <h2>Promotion (dry-run)</h2>
-        <button id="btn-promote">Preview staging → production</button>
-        <pre id="promote-out" class="out mono"></pre>
-      </section>
-    </main>
+      <main class="main">
+        <header class="hero" id="hero">
+          <p class="eyebrow">Interactive product demo</p>
+          <h1 id="hero-title">Loading…</h1>
+          <p id="hero-desc" class="hero-desc"></p>
+          <div class="hero-actions">
+            <button id="btn-run-demo" class="btn primary">Run full demo pipeline</button>
+            <button id="btn-export-evidence" class="btn ghost">Export evidence JSON</button>
+          </div>
+        </header>
 
+        <section class="pipeline">
+          <div class="step" data-step="audit"><span>1</span> Audit</div>
+          <div class="step" data-step="test"><span>2</span> Test</div>
+          <div class="step" data-step="manifest"><span>3</span> Manifest</div>
+          <div class="step" data-step="promote"><span>4</span> Promote</div>
+          <div class="step" data-step="graphrag"><span>5</span> GraphRAG</div>
+        </section>
+
+        <div class="content-grid">
+          <section class="panel">
+            <h2>Why teams buy this</h2>
+            <ul id="checks-list" class="checks"></ul>
+          </section>
+
+          <section class="panel">
+            <h2>Live prompt preview</h2>
+            <p class="hint">Rendered from staging pin with RAG fixture — no live LLM call.</p>
+            <div class="prompt-box">
+              <div class="prompt-label">System</div>
+              <pre id="preview-system" class="prompt-text"></pre>
+              <div class="prompt-label">User</div>
+              <pre id="preview-user" class="prompt-text"></pre>
+            </div>
+          </section>
+
+          <section class="panel wide" id="graphrag-panel" hidden>
+            <h2>GraphRAG context for prompts</h2>
+            <p class="hint">
+              Community summaries exported for <code>{retrieved_context}</code> — same format the Go engine
+              feeds into PromptLedger render.
+            </p>
+            <pre id="graphrag-preview" class="results mono"></pre>
+          </section>
+
+          <section class="panel wide">
+            <div class="panel-head">
+              <h2>Pipeline results</h2>
+              <span id="demo-status" class="status-badge">Ready</span>
+            </div>
+            <pre id="demo-out" class="results mono">Select a vertical and click “Run full demo pipeline”.</pre>
+          </section>
+        </div>
+      </main>
+    </div>
     <script src="/static/app.js"></script>
   </body>
 </html>
