@@ -27,6 +27,7 @@ from prompt_ledger.paths import manifest_path, repo_root
 from prompt_ledger.promote import promote_environment
 from prompt_ledger.registry import discover_registry, get_version
 from prompt_ledger.render import format_retrieved_context, render_prompt
+from prompt_ledger.cli_agent import agent_app
 from prompt_ledger.review import emit_review_webhook
 from prompt_ledger.scenarios import run_all_scenarios, run_scenario_file
 
@@ -34,9 +35,11 @@ app = typer.Typer(add_completion=False, no_args_is_help=True)
 approval_app = typer.Typer(help="Promotion approval workflow")
 pack_app = typer.Typer(help="Policy pack verification")
 eval_app = typer.Typer(help="Semantic evaluation (requires OPENAI_API_KEY)")
+
 app.add_typer(approval_app, name="approval")
 app.add_typer(pack_app, name="pack")
 app.add_typer(eval_app, name="eval")
+app.add_typer(agent_app, name="agent")
 console = Console()
 
 

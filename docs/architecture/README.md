@@ -1,5 +1,11 @@
 # Architecture diagrams
 
+## Agent + RL platform
+
+**Doc:** [agent-rl-platform.md](./agent-rl-platform.md)
+
+Stack: Next.js UI → API Gateway → Agent Orchestrator → RL environments → tools → LLM router → trajectory store → reward → evaluation → observability → RL datasets.
+
 ## Kubernetes deployment
 
 ![PromptLedger Kubernetes Deployment Architecture](./kubernetes-deployment-architecture.png)

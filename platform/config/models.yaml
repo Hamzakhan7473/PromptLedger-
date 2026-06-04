@@ -1,0 +1,36 @@
+version: 1
+
+router:
+  default: claude-sonnet
+  fallback: gpt-4o
+  routing:
+    - match: { environment: legal, risk_tier: high }
+      model: claude-sonnet
+    - match: { environment: contract_review }
+      model: claude-sonnet
+    - match: { environment: tax }
+      model: gpt-4o
+    - match: { cost_sensitive: true }
+      model: deepseek-chat
+
+models:
+  claude-sonnet:
+    provider: anthropic
+    model_id: claude-sonnet-4-20250514
+    max_tokens: 8192
+  gpt-4o:
+    provider: openai
+    model_id: gpt-4o
+    max_tokens: 8192
+  gemini-pro:
+    provider: google
+    model_id: gemini-1.5-pro
+    max_tokens: 8192
+  deepseek-chat:
+    provider: deepseek
+    model_id: deepseek-chat
+    max_tokens: 4096
+  local-llama:
+    provider: local
+    model_id: llama3
+    endpoint_env: LOCAL_LLM_URL

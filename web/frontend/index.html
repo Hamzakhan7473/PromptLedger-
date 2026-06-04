@@ -48,6 +48,7 @@
           <div class="hero-actions">
             <button id="btn-run-demo" class="btn primary">Run full demo pipeline</button>
             <button id="btn-export-evidence" class="btn ghost">Export evidence JSON</button>
+            <button id="btn-agent-run" class="btn ghost">Run agent (RL env)</button>
           </div>
         </header>
 
@@ -74,6 +75,12 @@
               <div class="prompt-label">User</div>
               <pre id="preview-user" class="prompt-text"></pre>
             </div>
+          </section>
+
+          <section class="panel wide" id="agent-panel" hidden>
+            <h2>Agent trajectory</h2>
+            <p class="hint">Orchestrator → tools → LLM router → reward → trajectory store</p>
+            <pre id="agent-out" class="results mono"></pre>
           </section>
 
           <section class="panel wide" id="graphrag-panel" hidden>

@@ -2,6 +2,7 @@
 .data/
 evidence/*.json
 !evidence/.gitkeep
+.data/datasets/
 tests/_eval_tmp_*.yaml
 .venv/
 __pycache__/

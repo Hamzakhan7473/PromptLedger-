@@ -1,0 +1,42 @@
+version: 1
+
+tools:
+  rag_retriever:
+    label: RAG Retriever
+    backend: prompt_ledger.graphrag_bridge
+    description: GraphRAG / fixture retrieval for {retrieved_context}
+
+  document_search:
+    label: Document Search
+    backend: stub
+    description: Full-text and metadata search over corpora
+
+  excel_generator:
+    label: Excel Generator
+    backend: stub
+    description: Structured workbook output for financial models
+
+  powerpoint_generator:
+    label: PowerPoint Generator
+    backend: stub
+    description: Slide decks from agent outputs
+
+  calculator:
+    label: Calculator
+    backend: stub
+    description: Deterministic numeric evaluation
+
+  citation_engine:
+    label: Citation Engine
+    backend: prompt_ledger.audit
+    description: Validates citations and grounding markers
+
+  browser_agent:
+    label: Browser Agent
+    backend: stub
+    description: Web retrieval with allowlisted domains
+
+  code_interpreter:
+    label: Code Interpreter
+    backend: stub
+    description: Sandboxed Python for analysis tasks

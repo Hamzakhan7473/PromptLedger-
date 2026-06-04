@@ -1,0 +1,27 @@
+version: 1
+
+tracing:
+  exporter: opentelemetry
+  endpoint_env: OTEL_EXPORTER_OTLP_ENDPOINT
+
+metrics:
+  prometheus:
+    port: 9090
+    path: /metrics
+  grafana:
+    dashboards:
+      - agent-success-rate
+      - reward-distribution
+      - tool-latency
+
+llm_observability:
+  langfuse:
+    public_key_env: LANGFUSE_PUBLIC_KEY
+    secret_key_env: LANGFUSE_SECRET_KEY
+    host_env: LANGFUSE_HOST
+
+storage:
+  trajectory:
+    postgres_url_env: DATABASE_URL
+    s3_bucket_env: TRAJECTORY_S3_BUCKET
+    local_sqlite: .data/trajectories.db

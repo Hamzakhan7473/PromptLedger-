@@ -92,6 +92,14 @@ jobs:
           PROMPT_LEDGER_ROOT: ${{ github.workspace }}
         run: prompt-ledger test
 
+      - name: Agent platform smoke
+        env:
+          PROMPT_LEDGER_ROOT: ${{ github.workspace }}
+          TRAJECTORY_DB_PATH: /tmp/promptledger-trajectories.db
+        run: |
+          prompt-ledger agent run --env legal --task "CI smoke test"
+          prompt-ledger agent evaluate
+
       - name: Pytest
         env:
           PROMPT_LEDGER_ROOT: ${{ github.workspace }}

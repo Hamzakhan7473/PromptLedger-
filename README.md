@@ -13,6 +13,20 @@ End-to-end flow: Ingress → PromptLedger API → GraphRAG (Go) → governance &
 | Diagram (PNG) | [docs/architecture/kubernetes-deployment-architecture.png](docs/architecture/kubernetes-deployment-architecture.png) |
 | Editable (FigJam) | [docs/architecture/kubernetes-deployment-architecture.jam](docs/architecture/kubernetes-deployment-architecture.jam) |
 | Manifests & runbook | [deploy/kubernetes/README.md](deploy/kubernetes/README.md) |
+| Agent + RL platform | [docs/architecture/agent-rl-platform.md](docs/architecture/agent-rl-platform.md) |
+
+## Agent + RL platform
+
+Multi-environment agent orchestration with trajectory logging and RL dataset export:
+
+```bash
+prompt-ledger agent list-envs
+prompt-ledger agent run --env legal --task "Review indemnity clause"
+prompt-ledger agent evaluate
+prompt-ledger agent datasets
+```
+
+Environments: **Tax · Legal · Financial Modeling · Contract Review · Research**. See [platform/README.md](platform/README.md).
 
 ## Record a demo today
 

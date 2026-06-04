@@ -66,6 +66,21 @@ Show `.github/workflows/prompt-ci.yml` briefly if time.
 
 ---
 
+## 3:45 — Agent + RL stack (45 sec)
+
+Terminal or API:
+
+```bash
+prompt-ledger agent run --env contract_review --task "Review indemnity cap"
+prompt-ledger agent evaluate
+```
+
+> “Trajectories capture prompt, state, tool calls, and reward. We export SFT, DPO, and GRPO datasets for the training pipeline — wired to PromptLedger governance for policy compliance.”
+
+Show [docs/architecture/agent-rl-platform.md](docs/architecture/agent-rl-platform.md) diagram if time.
+
+---
+
 ## 4:15 — Kubernetes (45 sec)
 
 > “We deploy the same demo API on Kubernetes — Kustomize overlays, HPA, PDB, Ingress.”

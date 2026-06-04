@@ -59,6 +59,10 @@ for v in ("legal", "fintech", "healthcare", "general"):
 PY
 ok "All 4 vertical demos"
 
+.venv/bin/prompt-ledger agent run --env legal --task "Demo clause review" >/dev/null
+.venv/bin/prompt-ledger agent evaluate >/dev/null
+ok "Agent orchestrator (legal)"
+
 echo ""
 echo -e "${GREEN}Ready to record.${NC} Run: ./scripts/record-demo.sh"
 echo "Script: DEMO_RECORD.md"

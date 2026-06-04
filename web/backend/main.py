@@ -30,6 +30,14 @@ from prompt_ledger.evidence import build_evidence  # noqa: E402
 from prompt_ledger.graphrag_cli import resolve_graphrag_invocation  # noqa: E402
 from prompt_ledger.manifest import load_manifest, validate_manifest  # noqa: E402
 from prompt_ledger.paths import repo_root  # noqa: E402
+from prompt_ledger.platform.dataset import build_rl_datasets  # noqa: E402
+from prompt_ledger.platform.environments import list_environments  # noqa: E402
+from prompt_ledger.platform.evaluation import evaluate_trajectories  # noqa: E402
+from prompt_ledger.platform.observability import observability_stack  # noqa: E402
+from prompt_ledger.platform.orchestrator import run_agent_task  # noqa: E402
+from prompt_ledger.platform.router import list_models  # noqa: E402
+from prompt_ledger.platform.tools import list_tools  # noqa: E402
+from prompt_ledger.platform.trajectory_store import get_trajectory, list_trajectories  # noqa: E402
 from prompt_ledger.scenarios import run_all_scenarios  # noqa: E402
 
 FRONTEND_DIR = Path(__file__).resolve().parents[1] / "frontend"
@@ -53,6 +61,12 @@ class PromoteBody(BaseModel):
 
 class GraphRAGQueryBody(BaseModel):
     question: str
+
+
+class AgentRunBody(BaseModel):
+    environment: str
+    task: str
+    cost_sensitive: bool = False
 
 
 def _run_graphrag(args: list[str], *, timeout: int = 300) -> tuple[int, str, str]:
@@ -82,6 +96,64 @@ def health() -> dict[str, Any]:
         "vertical_ids": [v["id"] for v in verticals],
         "docs": "/docs",
     }
+
+
+@app.get("/api/agent/environments")
+def api_agent_environments() -> dict[str, Any]:
+    return {"environments": list_environments()}
+
+
+@app.get("/api/agent/tools")
+def api_agent_tools() -> dict[str, Any]:
+    return {"tools": list_tools()}
+
+
+@app.get("/api/agent/models")
+def api_agent_models() -> dict[str, Any]:
+    return {"models": list_models()}
+
+
+@app.get("/api/agent/trajectories")
+def api_agent_trajectories(
+    environment: str | None = Query(None),
+    limit: int = Query(20, ge=1, le=200),
+) -> dict[str, Any]:
+    return {"trajectories": list_trajectories(environment=environment, limit=limit)}
+
+
+@app.get("/api/agent/trajectories/{trajectory_id}")
+def api_agent_trajectory(trajectory_id: str) -> dict[str, Any]:
+    data = get_trajectory(trajectory_id)
+    if not data:
+        raise HTTPException(404, "trajectory not found")
+    return data
+
+
+@app.post("/api/agent/run")
+def api_agent_run(body: AgentRunBody) -> dict[str, Any]:
+    try:
+        return run_agent_task(
+            body.environment,
+            body.task,
+            cost_sensitive=body.cost_sensitive,
+        )
+    except KeyError as e:
+        raise HTTPException(404, str(e)) from e
+
+
+@app.get("/api/agent/evaluate")
+def api_agent_evaluate(environment: str | None = Query(None)) -> dict[str, Any]:
+    return evaluate_trajectories(environment=environment)
+
+
+@app.post("/api/agent/datasets")
+def api_agent_datasets(environment: str | None = Query(None)) -> dict[str, Any]:
+    return build_rl_datasets(environment=environment)
+
+
+@app.get("/api/agent/observability")
+def api_agent_observability() -> dict[str, Any]:
+    return observability_stack()
 
 
 @app.get("/api/demo/verticals")

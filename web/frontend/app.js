@@ -4,6 +4,13 @@ let verticals = [];
 let currentId = "legal";
 let accent = "#6366f1";
 
+const envByVertical = {
+  legal: "contract_review",
+  fintech: "financial_modeling",
+  healthcare: "legal",
+  general: "research",
+};
+
 async function api(path, opts = {}) {
   const res = await fetch(path, {
     headers: { Accept: "application/json", ...(opts.headers || {}) },
@@ -157,6 +164,26 @@ $("btn-run-demo").onclick = async () => {
     setStatus("Demo failed", "fail");
     $("demo-out").textContent = String(e);
     setSteps({});
+  }
+};
+
+$("btn-agent-run").onclick = async () => {
+  const env = envByVertical[currentId] || "research";
+  const task = `Demo task for ${currentId} vertical`;
+  setStatus("Running agent…", "running");
+  $("agent-panel").hidden = false;
+  $("agent-out").textContent = "Orchestrator → tools → reward…";
+  try {
+    const result = await api("/api/agent/run", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ environment: env, task }),
+    });
+    setStatus(`Agent reward ${result.reward?.total ?? "—"}`, "pass");
+    $("agent-out").textContent = JSON.stringify(result, null, 2);
+  } catch (e) {
+    setStatus("Agent failed", "fail");
+    $("agent-out").textContent = String(e);
   }
 };
 
