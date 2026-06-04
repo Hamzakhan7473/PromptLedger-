@@ -1,0 +1,33 @@
+# LangGraph-style supervisor multi-agent topology.
+version: 1
+
+orchestration:
+  engine: langgraph
+  workflow_engine: temporal
+  task_queue: celery
+
+supervisor:
+  id: supervisor_agent
+  role: Route tasks and aggregate outputs
+
+agents:
+  - id: retrieval_agent
+    tools: [rag_retriever, document_search]
+  - id: tax_agent
+    environment: tax
+    tools: [rag_retriever, calculator, citation_engine]
+  - id: legal_agent
+    environment: legal
+    tools: [rag_retriever, document_search, citation_engine]
+  - id: citation_agent
+    tools: [citation_engine]
+  - id: excel_agent
+    tools: [excel_generator, calculator]
+  - id: ppt_agent
+    tools: [powerpoint_generator]
+  - id: verification_agent
+    tools: [citation_engine, code_interpreter]
+
+edges:
+  - from: supervisor_agent
+    to: [retrieval_agent, tax_agent, legal_agent, citation_agent, excel_agent, ppt_agent, verification_agent]

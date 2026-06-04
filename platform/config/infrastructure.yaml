@@ -1,0 +1,42 @@
+version: 1
+
+backend:
+  - fastapi
+  - langgraph
+  - temporal
+  - celery
+
+storage:
+  postgres:
+    url_env: DATABASE_URL
+  redis:
+    url_env: REDIS_URL
+  s3:
+    bucket_env: TRAJECTORY_S3_BUCKET
+  vector_db:
+    provider: qdrant
+    url_env: QDRANT_URL
+
+observability:
+  - langfuse
+  - prometheus
+  - grafana
+  - opentelemetry
+
+kubernetes:
+  cluster: eks
+  packaging: helm
+  gitops: argocd
+
+cicd:
+  - github_actions
+  - docker
+  - terraform
+
+services:
+  agent-service: { port: 8081, path: /api/v1/agent }
+  environment-service: { port: 8082, path: /api/v1/env }
+  reward-service: { port: 8083, path: /api/v1/reward }
+  trace-service: { port: 8084, path: /api/v1/trace }
+  eval-service: { port: 8085, path: /api/v1/eval }
+  dataset-service: { port: 8086, path: /api/v1/datasets }

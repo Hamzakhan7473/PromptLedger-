@@ -1,0 +1,44 @@
+namespace: promptledger
+
+image:
+  repository: promptledger/platform
+  tag: latest
+  pullPolicy: IfNotPresent
+
+replicaCount:
+  agent: 2
+  environment: 2
+  reward: 1
+  trace: 2
+  eval: 1
+  dataset: 1
+
+ingress:
+  enabled: true
+  className: nginx
+  host: platform.promptledger.local
+
+config:
+  databaseUrl: postgresql://promptledger:promptledger@postgres:5432/trajectories
+  redisUrl: redis://redis:6379/0
+  qdrantUrl: http://qdrant:6333
+
+services:
+  - name: agent-service
+    port: 8081
+    path: /api/v1/agent
+  - name: environment-service
+    port: 8082
+    path: /api/v1/env
+  - name: reward-service
+    port: 8083
+    path: /api/v1/reward
+  - name: trace-service
+    port: 8084
+    path: /api/v1/trace
+  - name: eval-service
+    port: 8085
+    path: /api/v1/eval
+  - name: dataset-service
+    port: 8086
+    path: /api/v1/datasets

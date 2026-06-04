@@ -6,6 +6,8 @@
 
 Stack: Next.js UI → API Gateway → Agent Orchestrator → RL environments → tools → LLM router → trajectory store → reward → evaluation → observability → RL datasets.
 
+**Kubernetes microservices:** [microservices-kubernetes.md](./microservices-kubernetes.md) — agent, environment, reward, trace, eval, dataset services.
+
 ## Kubernetes deployment
 
 ![PromptLedger Kubernetes Deployment Architecture](./kubernetes-deployment-architecture.png)

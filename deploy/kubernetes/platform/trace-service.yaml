@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trace-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: trace-service
+  template:
+    metadata:
+      labels:
+        app: trace-service
+    spec:
+      containers:
+        - name: trace-service
+          image: promptledger/platform:latest
+          env:
+            - { name: SERVICE, value: trace-service }
+            - { name: PORT, value: "8084" }
+            - { name: PROMPT_LEDGER_ROOT, value: /app }
+          envFrom:
+            - configMapRef:
+                name: platform-services-config
+          volumeMounts:
+            - name: data
+              mountPath: /app/.data
+          ports:
+            - { containerPort: 8084, name: http }
+          livenessProbe:
+            httpGet: { path: /health, port: http }
+      volumes:
+        - name: data
+          emptyDir: {}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trace-service
+spec:
+  selector:
+    app: trace-service
+  ports:
+    - port: 8084
+      targetPort: http

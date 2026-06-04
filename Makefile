@@ -25,3 +25,9 @@ audit:
 
 k8s-build:
 	./scripts/k8s-build.sh
+
+platform:
+	./scripts/platform-services.sh
+
+platform-build:
+	./scripts/k8s-platform-build.sh

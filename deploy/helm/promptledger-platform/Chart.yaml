@@ -1,0 +1,6 @@
+apiVersion: v2
+name: promptledger-platform
+description: PromptLedger RL platform microservices (agent, environment, reward, trace, eval, dataset)
+type: application
+version: 0.1.0
+appVersion: "0.1.0"

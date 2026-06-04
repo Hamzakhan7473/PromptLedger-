@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: environment-service
+  labels:
+    app: environment-service
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: environment-service
+  template:
+    metadata:
+      labels:
+        app: environment-service
+    spec:
+      containers:
+        - name: environment-service
+          image: promptledger/platform:latest
+          env:
+            - { name: SERVICE, value: environment-service }
+            - { name: PORT, value: "8082" }
+            - { name: PROMPT_LEDGER_ROOT, value: /app }
+          ports:
+            - { containerPort: 8082, name: http }
+          livenessProbe:
+            httpGet: { path: /health, port: http }
+          readinessProbe:
+            httpGet: { path: /health, port: http }
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: environment-service
+spec:
+  selector:
+    app: environment-service
+  ports:
+    - port: 8082
+      targetPort: http

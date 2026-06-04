@@ -15,6 +15,12 @@ Layered stack for multi-environment agents, trajectory logging, rewards, and RL 
 
 **Architecture diagram:** [docs/architecture/agent-rl-platform.md](../docs/architecture/agent-rl-platform.md)
 
-**API:** `POST /api/agent/run`, `GET /api/agent/environments`, `GET /api/agent/trajectories`
+**API (monolith):** `POST /api/agent/run`, `GET /api/agent/environments`
+
+**Microservices:** [services/README.md](../services/README.md) — ports 8081–8086, K8s manifests in `deploy/kubernetes/platform/`
 
 **CLI:** `prompt-ledger agent run --env legal --task "..."`
+
+```bash
+./scripts/platform-services.sh
+```

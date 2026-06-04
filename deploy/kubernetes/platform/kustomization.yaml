@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: promptledger
+
+resources:
+  - configmap.yaml
+  - agent-service.yaml
+  - environment-service.yaml
+  - reward-service.yaml
+  - trace-service.yaml
+  - eval-service.yaml
+  - dataset-service.yaml
+  - ingress.yaml
+
+labels:
+  - pairs:
+      app.kubernetes.io/part-of: promptledger-platform
+    includeSelectors: false
+
+images:
+  - name: promptledger/platform
+    newName: promptledger/platform
+    newTag: latest

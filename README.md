@@ -28,6 +28,25 @@ prompt-ledger agent datasets
 
 Environments: **Tax · Legal · Financial Modeling · Contract Review · Research**. See [platform/README.md](platform/README.md).
 
+### Platform microservices (Kubernetes)
+
+| Service | Role |
+|---------|------|
+| `agent-service` | LangGraph supervisor, Temporal/Celery, long-horizon tasks |
+| `environment-service` | Gym API: `reset()` · `step()` · `reward()` · `done()` |
+| `reward-service` | `0.4·correctness + 0.2·citations + 0.15·latency + 0.15·cost + 0.1·compliance` |
+| `trace-service` | Trajectory store (state/action/observation steps) |
+| `eval-service` | Benchmark GPT-4o, Claude, Gemini |
+| `dataset-service` | SFT, preference, DPO, GRPO export |
+
+```bash
+./scripts/platform-services.sh          # local :8081–8086
+kubectl apply -k deploy/kubernetes/platform
+helm upgrade --install pl deploy/helm/promptledger-platform -n promptledger
+```
+
+Docs: [microservices-kubernetes.md](docs/architecture/microservices-kubernetes.md) · [services/README.md](services/README.md)
+
 ## Record a demo today
 
 ```bash
