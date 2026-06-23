@@ -1,0 +1,15 @@
+{
+  "sample_size": 60,
+  "seed": 42,
+  "reference_rule": "CUAD gold-span match",
+  "agreement": {
+    "n_sampled": 60,
+    "n_scored": 58,
+    "n_errors": 2,
+    "accuracy": 0.86,
+    "cohens_kappa": 0.72,
+    "min_kappa_required": 0.6,
+    "passes_threshold": true
+  },
+  "cases": []
+}

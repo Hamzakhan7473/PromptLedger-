@@ -1,0 +1,55 @@
+{
+  "run_id": "demo",
+  "eval_set": "eval_set.jsonl",
+  "n_bootstrap": 1000,
+  "models": {
+    "model-a": {
+      "presence": {
+        "overall": {
+          "precision": 0.667,
+          "recall": 1.0,
+          "f1": 0.8,
+          "f1_ci_95": { "low": 0.5, "high": 0.95 },
+          "confusion_matrix": { "tp": 1, "fp": 1, "fn": 0, "tn": 1 },
+          "n": 3
+        }
+      },
+      "span_grounding": {
+        "overall": {
+          "mean_jaccard": 0.72,
+          "hallucination_rate": 0.0
+        }
+      },
+      "reliability": {
+        "total": 3,
+        "api_errors": 0,
+        "parse_errors": 0,
+        "combined_error_rate": 0.0
+      }
+    },
+    "model-b": {
+      "presence": {
+        "overall": {
+          "precision": 0.5,
+          "recall": 0.5,
+          "f1": 0.5,
+          "f1_ci_95": { "low": 0.2, "high": 0.8 },
+          "confusion_matrix": { "tp": 1, "fp": 1, "fn": 1, "tn": 0 },
+          "n": 3
+        }
+      },
+      "span_grounding": {
+        "overall": {
+          "mean_jaccard": 0.35,
+          "hallucination_rate": 0.5
+        }
+      },
+      "reliability": {
+        "total": 3,
+        "api_errors": 0,
+        "parse_errors": 0,
+        "combined_error_rate": 0.0
+      }
+    }
+  }
+}

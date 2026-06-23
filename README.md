@@ -57,6 +57,8 @@ make record           # check + start UI → http://127.0.0.1:8765
 
 Follow the timed script: **[DEMO_RECORD.md](DEMO_RECORD.md)** (≈5 min screen recording).
 
+**Pre-launch checklist:** **[GO_LIVE.md](GO_LIVE.md)** — what’s done vs stub before recording and deploy.
+
 ## Interactive demo (Legal · Fintech · Healthcare · Enterprise AI)
 
 ```bash

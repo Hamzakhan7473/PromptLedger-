@@ -1,0 +1,16 @@
+.venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+*.egg-info/
+dist/
+build/
+
+# Large downloaded dataset (regenerate via python -m legaleval.data.cuad)
+data/CUAD_v1.json
+
+# Raw model outputs, metrics, calibration, errors (generated via make eval)
+results/*
+!results/.gitkeep
+!results/.gitignore
+

@@ -1,0 +1,21 @@
+{
+  "run_id": "demo",
+  "run_date_utc": "2026-01-15T12:00:00Z",
+  "seeds": { "eval_set": 42, "bootstrap": 42, "judge_validation": 42 },
+  "eval_set": {
+    "path": "eval_set.jsonl",
+    "sha256": "demo"
+  },
+  "models_yaml": {
+    "path": "models.yaml",
+    "sha256": "demo",
+    "pinned": {
+      "models": {
+        "model-a": { "model_id": "demo-model-a" },
+        "model-b": { "model_id": "demo-model-b" }
+      },
+      "judge": { "model_id": "demo-judge" }
+    }
+  },
+  "steps_completed": ["data", "models", "metrics", "judge", "calibration", "errors", "report"]
+}

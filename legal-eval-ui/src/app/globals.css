@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+body {
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+mark {
+  font-weight: inherit;
+}
