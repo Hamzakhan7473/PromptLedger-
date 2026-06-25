@@ -18,6 +18,7 @@ from legaleval.data.cuad import EvalExample, read_eval_set_jsonl
 from legaleval.models.bedrock import (
     build_tool_config,
     converse_usage_tokens,
+    extract_text_content,
     extract_tool_input,
     tool_input_to_text,
 )
@@ -53,6 +54,7 @@ class ModelConfig(BaseModel):
     base_url: str | None = None
     region: str | None = None
     provider_path: str | None = None
+    bedrock_text_mode: bool = False
     max_tokens: int = DEFAULT_MAX_TOKENS
     temperature: float = DEFAULT_TEMPERATURE
 
@@ -170,7 +172,7 @@ class OpenAIClient(ModelClient):
             },
             json={
                 "model": self.model_id,
-                "max_tokens": self.max_tokens,
+                "max_completion_tokens": self.max_tokens,
                 "temperature": self.temperature,
                 "response_format": {"type": "json_object"},
                 "messages": [
@@ -204,8 +206,10 @@ class GoogleClient(ModelClient):
         )
         response = self._http.post(
             url,
-            params={"key": self.api_key},
-            headers={"content-type": "application/json"},
+            headers={
+                "content-type": "application/json",
+                "x-goog-api-key": self.api_key,
+            },
             json={
                 "systemInstruction": {"parts": [{"text": system}]},
                 "contents": [{"role": "user", "parts": [{"text": prompt}]}],
@@ -246,7 +250,7 @@ class OpenAICompatibleClient(ModelClient):
             },
             json={
                 "model": self.model_id,
-                "max_tokens": self.max_tokens,
+                "max_completion_tokens": self.max_tokens,
                 "temperature": self.temperature,
                 "response_format": {"type": "json_object"},
                 "messages": [
@@ -284,6 +288,7 @@ class BedrockClient(ModelClient):
         max_tokens: int = DEFAULT_MAX_TOKENS,
         temperature: float = DEFAULT_TEMPERATURE,
         bedrock_client: Any | None = None,
+        text_mode: bool = False,
     ) -> None:
         super().__init__(
             name=name,
@@ -294,6 +299,7 @@ class BedrockClient(ModelClient):
         )
         self.region = region
         self.resolved_provider_path = provider_path
+        self.text_mode = text_mode
         if bedrock_client is not None:
             self._bedrock = bedrock_client
         else:
@@ -312,7 +318,7 @@ class BedrockClient(ModelClient):
 
     def _complete(self, prompt: str, system: str) -> RawResponse:
         started = time.perf_counter()
-        request = {
+        request: dict[str, Any] = {
             "modelId": self.model_id,
             "system": [{"text": system}],
             "messages": [{"role": "user", "content": [{"text": prompt}]}],
@@ -320,16 +326,20 @@ class BedrockClient(ModelClient):
                 "maxTokens": self.max_tokens,
                 "temperature": self.temperature,
             },
-            "toolConfig": build_tool_config(force_tool=True),
         }
+        if not self.text_mode:
+            request["toolConfig"] = build_tool_config(force_tool=True)
         try:
             response = self._converse(request)
         except ClientError as exc:
             raise _bedrock_client_error(exc, model_id=self.model_id, region=self.region) from exc
 
         latency_ms = (time.perf_counter() - started) * 1000
-        tool_input = extract_tool_input(response)
-        text = tool_input_to_text(tool_input)
+        if self.text_mode:
+            text = extract_text_content(response)
+        else:
+            tool_input = extract_tool_input(response)
+            text = tool_input_to_text(tool_input)
         input_tokens, output_tokens, total_tokens = converse_usage_tokens(response)
         return RawResponse(
             text=text,
@@ -343,6 +353,8 @@ class BedrockClient(ModelClient):
         try:
             return self._bedrock.converse(**request)
         except ClientError as exc:
+            if self.text_mode or "toolConfig" not in request:
+                raise
             if not _tool_choice_rejected(exc):
                 raise
             fallback = dict(request)
@@ -384,6 +396,7 @@ def load_models_config(path: Path | None = None) -> dict[str, ModelConfig]:
             base_url=entry.get("base_url"),
             region=entry.get("region"),
             provider_path=entry.get("provider_path"),
+            bedrock_text_mode=bool(entry.get("bedrock_text_mode", False)),
             max_tokens=entry.get("max_tokens", default_max_tokens),
             temperature=entry.get("temperature", default_temperature),
         )
@@ -415,6 +428,7 @@ def create_client(config: ModelConfig) -> ModelClient:
             provider_path=config.resolved_provider_path,
             max_tokens=config.max_tokens,
             temperature=config.temperature,
+            text_mode=config.bedrock_text_mode,
         )
 
     if not config.env_key:

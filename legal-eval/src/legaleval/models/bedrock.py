@@ -88,6 +88,16 @@ def tool_input_to_text(tool_input: dict[str, Any]) -> str:
     return json.dumps(payload, ensure_ascii=False)
 
 
+def extract_text_content(response: dict[str, Any]) -> str:
+    """Extract plain-text assistant content from a Converse response."""
+    message = response.get("output", {}).get("message") or {}
+    content = message.get("content") or []
+    parts = [block["text"] for block in content if isinstance(block.get("text"), str)]
+    if not parts:
+        raise ValueError("Bedrock response missing text content")
+    return "".join(parts)
+
+
 def converse_usage_tokens(response: dict[str, Any]) -> tuple[int | None, int | None, int | None]:
     usage = response.get("usage") or {}
     input_tokens = usage.get("inputTokens")

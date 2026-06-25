@@ -47,6 +47,25 @@ helm upgrade --install pl deploy/helm/promptledger-platform -n promptledger
 
 Docs: [microservices-kubernetes.md](docs/architecture/microservices-kubernetes.md) · [services/README.md](services/README.md)
 
+## Legal contract eval (CUAD)
+
+Frontier LLM benchmark on **CUAD v1** — 150 lawyer-annotated clause examples across 6 categories. Harness: [`legal-eval/`](legal-eval/) · static UI: [`legal-eval-ui/`](legal-eval-ui/).
+
+### Latest run — `20260625T183510Z_45633959`
+
+| Model | Presence F1 | Span Jaccard | Hallucination | ECE |
+|-------|-------------|--------------|---------------|-----|
+| Google Gemini 2.5 Flash | **0.897** | 0.690 | 17.1% | 0.100 |
+| OpenAI GPT-5.4 mini | **0.887** | 0.669 | 9.9% | 0.085 |
+| Bedrock Claude Sonnet 4.6 | **0.882** | 0.699 | 13.4% | 0.053 |
+
+Judge validation **PASSED** (κ = 0.754). Full tables and failure taxonomy: **[legal-eval/README.md](legal-eval/README.md)**.
+
+```bash
+cd legal-eval-ui && npm install && npm run dev
+# → http://localhost:3000/runs/20260625T183510Z_45633959/summary
+```
+
 ## Record a demo today
 
 ```bash
@@ -114,6 +133,8 @@ prompt-ledger eval run tests/scenarios/legal_contract_review.yaml
 - `prompts/registry/` — versioned prompt packs per domain.
 - `tests/scenarios/` — executable scenarios (render + schema + grounding checks).
 - `graphrag/` — Go GraphRAG: label-prop communities, hierarchical summaries, REST API, PromptLedger context export ([details](graphrag/README.md)).
+- `legal-eval/` — CUAD legal clause eval harness ([results](legal-eval/README.md)).
+- `legal-eval-ui/` — static reader for eval runs (summary, grid, sample viewer).
 - `.github/workflows/` — audit, test, and promote pipeline.
 - `deploy/kubernetes/` — Kustomize manifests (Ingress, HPA, PDB, NetworkPolicy).
 - `docs/architecture/` — FigJam Kubernetes deployment diagram.

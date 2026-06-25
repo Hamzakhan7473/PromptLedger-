@@ -1,4 +1,7 @@
 .venv/
+.env
+.env.*
+models.yaml
 __pycache__/
 *.py[cod]
 .pytest_cache/

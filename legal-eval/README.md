@@ -2,15 +2,46 @@
 
 Frontier-grade LLM evaluation for legal contract understanding on CUAD.
 
-## Latest result
+## Latest result — `20260625T183510Z_45633959`
 
-After running `make eval`, open the deliverable report:
+**Run date (UTC):** 2026-06-25 · **Eval examples:** 150 (6 CUAD categories, ~50/50 present/absent)
 
-**[`results/latest/REPORT.md`](results/latest/REPORT.md)** (symlink to the most recent run)
+### Judge validation
 
-The report includes judge validation (κ), per-model presence F1 with 95% CIs, span grounding, calibration (ECE), failure taxonomy, and a Findings section for qualitative conclusions.
+| Metric | Value |
+|--------|-------|
+| Status | **PASSED** (κ ≥ 0.6 required) |
+| Cohen's κ | **0.754** |
+| Accuracy vs CUAD reference | 0.90 |
+| Sample size | 60 / 60 |
 
-Full reproducibility metadata lives in `results/<run_id>/manifest.json` (pinned model IDs, eval-set hash, seeds).
+### Per-model results (production models)
+
+| Model | Provider | Presence F1 (95% CI) | Span Jaccard (95% CI) | Hallucination | Parse errors | ECE |
+|-------|----------|----------------------|------------------------|---------------|--------------|-----|
+| **google** | Gemini 2.5 Flash | **0.897** [0.844, 0.945] | 0.690 [0.625, 0.757] | 17.1% | 0% | 0.100 |
+| **openai** | GPT-5.4 mini | **0.887** [0.826, 0.934] | 0.669 [0.598, 0.735] | 9.9% | 0% | 0.085 |
+| **bedrock_claude** | Claude Sonnet 4.6 (Bedrock) | **0.882** [0.824, 0.934] | 0.699 [0.625, 0.777] | 13.4% | 0% | 0.053 |
+
+**Takeaways:** All three frontier models achieve ~0.88–0.90 presence F1 on lawyer-annotated CUAD clauses. Google leads on presence F1; Bedrock has the lowest ECE (best calibration). OpenAI has the lowest hallucination rate (9.9%). Dominant failure mode across models is **correct presence, wrong span** (~27–30 examples each).
+
+### Failure taxonomy (production models)
+
+| Bucket | google | openai | bedrock_claude |
+|--------|--------|--------|----------------|
+| correct_present_wrong_span | 27 | 30 | 27 |
+| false_present | 14 | 17 | 13 |
+| hallucinated_span | 12 | 7 | 9 |
+| missed_present | 2 | 1 | 5 |
+| parse_fail | 0 | 0 | 0 |
+
+### Browse results in the UI
+
+Static reader: [legal-eval-ui](../legal-eval-ui) — run synced to `public/results/20260625T183510Z_45633959/`
+
+- [Summary](http://localhost:3000/runs/20260625T183510Z_45633959/summary) · [Grid](http://localhost:3000/runs/20260625T183510Z_45633959/grid) · [Samples](http://localhost:3000/runs/20260625T183510Z_45633959/samples)
+
+Full machine-readable report: [`results/20260625T183510Z_45633959/REPORT.md`](results/20260625T183510Z_45633959/REPORT.md) (local; not committed — regenerate via `make eval`).
 
 ## One-command eval
 
@@ -18,11 +49,17 @@ Full reproducibility metadata lives in `results/<run_id>/manifest.json` (pinned 
 cd legal-eval
 python3.11 -m venv .venv && .venv/bin/pip install -e ".[dev]"
 
-# Pin model IDs in models.yaml, then export API keys:
+# Pin model IDs in models.yaml (copy from models.yaml.example; local, gitignored), then API keys in .env:
 export ANTHROPIC_API_KEY=... OPENAI_API_KEY=... GOOGLE_API_KEY=...
 
 make eval
-# equivalent: ./scripts/run_all.sh
+# scope models: make eval ARGS='--models openai,google,bedrock_claude'
+
+# Pre-flight (3 examples per model):
+make smoke ARGS='--models openai,google,bedrock_claude'
+
+# Sync latest run to legal-eval-ui:
+make sync-ui
 ```
 
 Pipeline steps (single timestamped `run_id`):

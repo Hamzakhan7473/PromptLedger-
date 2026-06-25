@@ -1,0 +1,161 @@
+{
+  "run_id": "20260625T183510Z_45633959",
+  "eval_set": "/Users/hamzakhan/PromptLedger/legal-eval/data/eval_set.jsonl",
+  "models": {
+    "anthropic": {
+      "report_path": "/Users/hamzakhan/PromptLedger/legal-eval/results/20260625T183510Z_45633959/errors/anthropic.md",
+      "total_errors": 150,
+      "counts_by_bucket": {
+        "missed_present": 0,
+        "false_present": 0,
+        "correct_present_wrong_span": 0,
+        "hallucinated_span": 0,
+        "parse_fail": 150
+      },
+      "counts_by_category": {
+        "parse_fail": {
+          "Affiliate License-Licensee": 25,
+          "Affiliate License-Licensor": 25,
+          "Agreement Date": 25,
+          "Anti-Assignment": 25,
+          "Audit Rights": 25,
+          "Cap On Liability": 25
+        }
+      }
+    },
+    "bedrock_claude": {
+      "report_path": "/Users/hamzakhan/PromptLedger/legal-eval/results/20260625T183510Z_45633959/errors/bedrock_claude.md",
+      "total_errors": 54,
+      "counts_by_bucket": {
+        "missed_present": 5,
+        "false_present": 13,
+        "correct_present_wrong_span": 27,
+        "hallucinated_span": 9,
+        "parse_fail": 0
+      },
+      "counts_by_category": {
+        "correct_present_wrong_span": {
+          "Affiliate License-Licensee": 3,
+          "Affiliate License-Licensor": 4,
+          "Agreement Date": 10,
+          "Anti-Assignment": 2,
+          "Audit Rights": 5,
+          "Cap On Liability": 3
+        },
+        "hallucinated_span": {
+          "Affiliate License-Licensee": 1,
+          "Affiliate License-Licensor": 1,
+          "Anti-Assignment": 3,
+          "Audit Rights": 3,
+          "Cap On Liability": 1
+        },
+        "false_present": {
+          "Affiliate License-Licensee": 2,
+          "Affiliate License-Licensor": 1,
+          "Agreement Date": 10
+        },
+        "missed_present": {
+          "Affiliate License-Licensor": 2,
+          "Cap On Liability": 3
+        }
+      }
+    },
+    "google": {
+      "report_path": "/Users/hamzakhan/PromptLedger/legal-eval/results/20260625T183510Z_45633959/errors/google.md",
+      "total_errors": 55,
+      "counts_by_bucket": {
+        "missed_present": 2,
+        "false_present": 14,
+        "correct_present_wrong_span": 27,
+        "hallucinated_span": 12,
+        "parse_fail": 0
+      },
+      "counts_by_category": {
+        "correct_present_wrong_span": {
+          "Affiliate License-Licensee": 2,
+          "Affiliate License-Licensor": 4,
+          "Agreement Date": 10,
+          "Anti-Assignment": 2,
+          "Audit Rights": 5,
+          "Cap On Liability": 4
+        },
+        "hallucinated_span": {
+          "Affiliate License-Licensee": 3,
+          "Affiliate License-Licensor": 1,
+          "Anti-Assignment": 2,
+          "Audit Rights": 3,
+          "Cap On Liability": 3
+        },
+        "false_present": {
+          "Affiliate License-Licensee": 1,
+          "Affiliate License-Licensor": 1,
+          "Agreement Date": 10,
+          "Audit Rights": 1,
+          "Cap On Liability": 1
+        },
+        "missed_present": {
+          "Affiliate License-Licensor": 1,
+          "Cap On Liability": 1
+        }
+      }
+    },
+    "open": {
+      "report_path": "/Users/hamzakhan/PromptLedger/legal-eval/results/20260625T183510Z_45633959/errors/open.md",
+      "total_errors": 150,
+      "counts_by_bucket": {
+        "missed_present": 0,
+        "false_present": 0,
+        "correct_present_wrong_span": 0,
+        "hallucinated_span": 0,
+        "parse_fail": 150
+      },
+      "counts_by_category": {
+        "parse_fail": {
+          "Affiliate License-Licensee": 25,
+          "Affiliate License-Licensor": 25,
+          "Agreement Date": 25,
+          "Anti-Assignment": 25,
+          "Audit Rights": 25,
+          "Cap On Liability": 25
+        }
+      }
+    },
+    "openai": {
+      "report_path": "/Users/hamzakhan/PromptLedger/legal-eval/results/20260625T183510Z_45633959/errors/openai.md",
+      "total_errors": 55,
+      "counts_by_bucket": {
+        "missed_present": 1,
+        "false_present": 17,
+        "correct_present_wrong_span": 30,
+        "hallucinated_span": 7,
+        "parse_fail": 0
+      },
+      "counts_by_category": {
+        "correct_present_wrong_span": {
+          "Affiliate License-Licensee": 4,
+          "Affiliate License-Licensor": 6,
+          "Agreement Date": 9,
+          "Anti-Assignment": 3,
+          "Audit Rights": 5,
+          "Cap On Liability": 3
+        },
+        "hallucinated_span": {
+          "Affiliate License-Licensee": 1,
+          "Affiliate License-Licensor": 1,
+          "Audit Rights": 3,
+          "Cap On Liability": 2
+        },
+        "false_present": {
+          "Affiliate License-Licensee": 1,
+          "Affiliate License-Licensor": 2,
+          "Agreement Date": 11,
+          "Anti-Assignment": 1,
+          "Cap On Liability": 2
+        },
+        "missed_present": {
+          "Cap On Liability": 1
+        }
+      }
+    }
+  }
+}

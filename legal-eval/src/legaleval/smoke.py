@@ -17,6 +17,7 @@ from legaleval.models.runner import (
     create_client,
     execute_example,
     load_models_config,
+    resolve_model_names,
 )
 from legaleval.paths import default_eval_set_path, models_config_path, project_root
 
@@ -269,6 +270,11 @@ def build_parser() -> argparse.ArgumentParser:
         help=f"Path to eval_set.jsonl (default: {default_eval_set_path()}).",
     )
     parser.add_argument(
+        "--models",
+        default="all",
+        help='Comma-separated model keys from models.yaml, or "all" (default).',
+    )
+    parser.add_argument(
         "--models-config",
         type=Path,
         default=None,
@@ -309,6 +315,12 @@ def main(argv: list[str] | None = None) -> int:
     configs = load_models_config(config_path)
     if not configs:
         parser.error(f"No models defined in {config_path}")
+
+    try:
+        selected = resolve_model_names(args.models, configs)
+    except ValueError as exc:
+        parser.error(str(exc))
+    configs = {name: configs[name] for name in selected}
 
     results = run_smoke(examples=examples, configs=configs)
     render_smoke_report(results, example_limit=args.limit)

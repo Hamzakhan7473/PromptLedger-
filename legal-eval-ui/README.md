@@ -31,10 +31,29 @@ A **`demo`** run is included under `public/results/demo/` for local development.
 
 ```bash
 npm install
-npm run dev
+npm run dev          # development
+npm run build && npm run start   # production
 ```
 
 Open [http://localhost:3000](http://localhost:3000) → pick a run.
+
+## Full product build (eval → sync → UI)
+
+From repo root, with API keys in `legal-eval/.env` (see `legal-eval/.env.example`):
+
+```bash
+cd legal-eval
+cp .env.example .env   # fill in OPENAI_API_KEY, GOOGLE_API_KEY, etc.
+set -a && source .env && set +a
+
+# smoke → eval → sync → npm build
+../scripts/build-legal-eval-product.sh
+
+# or step by step:
+make eval ARGS='--models openai,google,bedrock_claude'
+make sync-ui
+cd ../legal-eval-ui && npm run build
+```
 
 ## Views
 

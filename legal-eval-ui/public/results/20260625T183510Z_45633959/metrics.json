@@ -1,0 +1,1375 @@
+{
+  "run_id": "20260625T183510Z_45633959",
+  "eval_set": "/Users/hamzakhan/PromptLedger/legal-eval/data/eval_set.jsonl",
+  "n_bootstrap": 1000,
+  "models": {
+    "anthropic": {
+      "presence": {
+        "overall": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "confusion_matrix": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "n": 0,
+          "n_excluded": 150
+        },
+        "by_category": {}
+      },
+      "span_grounding": {
+        "overall": {
+          "n_tp_presence": 0,
+          "hallucination_count": 0,
+          "hallucination_rate": 0.0,
+          "substring_grounded_count": 0,
+          "substring_grounded_rate": 0.0,
+          "mean_jaccard": 0.0,
+          "jaccard_distribution": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          },
+          "jaccard_values": []
+        },
+        "by_category": {}
+      },
+      "reliability": {
+        "total": 150,
+        "api_errors": 150,
+        "parse_errors": 0,
+        "scored": 0,
+        "api_error_rate": 1.0,
+        "parse_error_rate": 0.0,
+        "combined_error_rate": 1.0
+      }
+    },
+    "bedrock_claude": {
+      "presence": {
+        "overall": {
+          "precision": 0.8375,
+          "recall": 0.930556,
+          "f1": 0.881579,
+          "confusion_matrix": {
+            "tp": 67,
+            "fp": 13,
+            "fn": 5,
+            "tn": 65
+          },
+          "n": 150,
+          "f1_ci_95": {
+            "low": 0.824427,
+            "high": 0.934136
+          },
+          "n_excluded": 0
+        },
+        "by_category": {
+          "Affiliate License-Licensee": {
+            "precision": 0.857143,
+            "recall": 1.0,
+            "f1": 0.923077,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 2,
+              "fn": 0,
+              "tn": 11
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.782609,
+              "high": 1.0
+            }
+          },
+          "Affiliate License-Licensor": {
+            "precision": 0.909091,
+            "recall": 0.833333,
+            "f1": 0.869565,
+            "confusion_matrix": {
+              "tp": 10,
+              "fp": 1,
+              "fn": 2,
+              "tn": 12
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.666667,
+              "high": 1.0
+            }
+          },
+          "Agreement Date": {
+            "precision": 0.545455,
+            "recall": 1.0,
+            "f1": 0.705882,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 10,
+              "fn": 0,
+              "tn": 3
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.5,
+              "high": 0.864865
+            }
+          },
+          "Anti-Assignment": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 0,
+              "fn": 0,
+              "tn": 13
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Audit Rights": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 0,
+              "fn": 0,
+              "tn": 13
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Cap On Liability": {
+            "precision": 1.0,
+            "recall": 0.75,
+            "f1": 0.857143,
+            "confusion_matrix": {
+              "tp": 9,
+              "fp": 0,
+              "fn": 3,
+              "tn": 13
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.665909,
+              "high": 1.0
+            }
+          }
+        }
+      },
+      "span_grounding": {
+        "overall": {
+          "n_tp_presence": 67,
+          "hallucination_count": 9,
+          "hallucination_rate": 0.134328,
+          "substring_grounded_count": 58,
+          "substring_grounded_rate": 0.865672,
+          "mean_jaccard": 0.698721,
+          "jaccard_distribution": {
+            "n": 67,
+            "min": 0.066667,
+            "p25": 0.454545,
+            "median": 0.777778,
+            "p75": 1.0,
+            "max": 1.0
+          },
+          "jaccard_values": [
+            0.367647,
+            0.888889,
+            0.976744,
+            0.777778,
+            0.444444,
+            0.137931,
+            1.0,
+            0.493827,
+            1.0,
+            1.0,
+            1.0,
+            0.723404,
+            0.487179,
+            0.923077,
+            0.698113,
+            0.846154,
+            0.7,
+            1.0,
+            0.628205,
+            1.0,
+            0.294118,
+            1.0,
+            0.230769,
+            0.176471,
+            0.25,
+            0.6,
+            0.75,
+            0.125,
+            0.357143,
+            0.176471,
+            1.0,
+            0.5,
+            0.066667,
+            0.081081,
+            1.0,
+            1.0,
+            1.0,
+            0.880952,
+            0.485294,
+            1.0,
+            1.0,
+            1.0,
+            0.403509,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.682927,
+            1.0,
+            0.166667,
+            0.454545,
+            0.786885,
+            0.45,
+            0.494737,
+            0.5,
+            0.5,
+            0.840909,
+            1.0,
+            1.0,
+            0.628571,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.147727,
+            0.690476,
+            1.0
+          ],
+          "mean_jaccard_ci_95": {
+            "low": 0.624954,
+            "high": 0.776905
+          }
+        },
+        "by_category": {
+          "Affiliate License-Licensee": {
+            "n_tp_presence": 12,
+            "hallucination_count": 1,
+            "hallucination_rate": 0.083333,
+            "substring_grounded_count": 11,
+            "substring_grounded_rate": 0.916667,
+            "mean_jaccard": 0.734222,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.137931,
+              "p25": 0.493827,
+              "median": 0.888889,
+              "p75": 1.0,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              0.367647,
+              0.888889,
+              0.976744,
+              0.777778,
+              0.444444,
+              0.137931,
+              1.0,
+              0.493827,
+              1.0,
+              1.0,
+              1.0,
+              0.723404
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.565798,
+              "high": 0.897162
+            }
+          },
+          "Affiliate License-Licensor": {
+            "n_tp_presence": 10,
+            "hallucination_count": 1,
+            "hallucination_rate": 0.1,
+            "substring_grounded_count": 9,
+            "substring_grounded_rate": 0.9,
+            "mean_jaccard": 0.757685,
+            "jaccard_distribution": {
+              "n": 10,
+              "min": 0.294118,
+              "p25": 0.628205,
+              "median": 0.7,
+              "p75": 1.0,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              0.487179,
+              0.923077,
+              0.698113,
+              0.846154,
+              0.7,
+              1.0,
+              0.628205,
+              1.0,
+              0.294118,
+              1.0
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.609113,
+              "high": 0.89494
+            }
+          },
+          "Agreement Date": {
+            "n_tp_presence": 12,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 12,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.359467,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.066667,
+              "p25": 0.176471,
+              "median": 0.25,
+              "p75": 0.5,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              0.230769,
+              0.176471,
+              0.25,
+              0.6,
+              0.75,
+              0.125,
+              0.357143,
+              0.176471,
+              1.0,
+              0.5,
+              0.066667,
+              0.081081
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.214307,
+              "high": 0.529414
+            }
+          },
+          "Anti-Assignment": {
+            "n_tp_presence": 12,
+            "hallucination_count": 3,
+            "hallucination_rate": 0.25,
+            "substring_grounded_count": 9,
+            "substring_grounded_rate": 0.75,
+            "mean_jaccard": 0.89748,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.403509,
+              "p25": 1.0,
+              "median": 1.0,
+              "p75": 1.0,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              1.0,
+              1.0,
+              1.0,
+              0.880952,
+              0.485294,
+              1.0,
+              1.0,
+              1.0,
+              0.403509,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.771753,
+              "high": 0.990079
+            }
+          },
+          "Audit Rights": {
+            "n_tp_presence": 12,
+            "hallucination_count": 3,
+            "hallucination_rate": 0.25,
+            "substring_grounded_count": 9,
+            "substring_grounded_rate": 0.75,
+            "mean_jaccard": 0.656389,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.166667,
+              "p25": 0.494737,
+              "median": 0.682927,
+              "p75": 0.840909,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              1.0,
+              0.682927,
+              1.0,
+              0.166667,
+              0.454545,
+              0.786885,
+              0.45,
+              0.494737,
+              0.5,
+              0.5,
+              0.840909,
+              1.0
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.507477,
+              "high": 0.798811
+            }
+          },
+          "Cap On Liability": {
+            "n_tp_presence": 9,
+            "hallucination_count": 1,
+            "hallucination_rate": 0.111111,
+            "substring_grounded_count": 8,
+            "substring_grounded_rate": 0.888889,
+            "mean_jaccard": 0.829642,
+            "jaccard_distribution": {
+              "n": 9,
+              "min": 0.147727,
+              "p25": 0.690476,
+              "median": 1.0,
+              "p75": 1.0,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              1.0,
+              0.628571,
+              1.0,
+              1.0,
+              1.0,
+              1.0,
+              0.147727,
+              0.690476,
+              1.0
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.633369,
+              "high": 0.966468
+            }
+          }
+        }
+      },
+      "reliability": {
+        "total": 150,
+        "api_errors": 0,
+        "parse_errors": 0,
+        "scored": 150,
+        "api_error_rate": 0.0,
+        "parse_error_rate": 0.0,
+        "combined_error_rate": 0.0
+      }
+    },
+    "google": {
+      "presence": {
+        "overall": {
+          "precision": 0.833333,
+          "recall": 0.972222,
+          "f1": 0.897436,
+          "confusion_matrix": {
+            "tp": 70,
+            "fp": 14,
+            "fn": 2,
+            "tn": 64
+          },
+          "n": 150,
+          "f1_ci_95": {
+            "low": 0.844123,
+            "high": 0.944785
+          },
+          "n_excluded": 0
+        },
+        "by_category": {
+          "Affiliate License-Licensee": {
+            "precision": 0.923077,
+            "recall": 1.0,
+            "f1": 0.96,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 1,
+              "fn": 0,
+              "tn": 12
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.857143,
+              "high": 1.0
+            }
+          },
+          "Affiliate License-Licensor": {
+            "precision": 0.916667,
+            "recall": 0.916667,
+            "f1": 0.916667,
+            "confusion_matrix": {
+              "tp": 11,
+              "fp": 1,
+              "fn": 1,
+              "tn": 12
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.782609,
+              "high": 1.0
+            }
+          },
+          "Agreement Date": {
+            "precision": 0.545455,
+            "recall": 1.0,
+            "f1": 0.705882,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 10,
+              "fn": 0,
+              "tn": 3
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.5,
+              "high": 0.864865
+            }
+          },
+          "Anti-Assignment": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 0,
+              "fn": 0,
+              "tn": 13
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Audit Rights": {
+            "precision": 0.923077,
+            "recall": 1.0,
+            "f1": 0.96,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 1,
+              "fn": 0,
+              "tn": 12
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.857143,
+              "high": 1.0
+            }
+          },
+          "Cap On Liability": {
+            "precision": 0.916667,
+            "recall": 0.916667,
+            "f1": 0.916667,
+            "confusion_matrix": {
+              "tp": 11,
+              "fp": 1,
+              "fn": 1,
+              "tn": 12
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.777778,
+              "high": 1.0
+            }
+          }
+        }
+      },
+      "span_grounding": {
+        "overall": {
+          "n_tp_presence": 70,
+          "hallucination_count": 12,
+          "hallucination_rate": 0.171429,
+          "substring_grounded_count": 58,
+          "substring_grounded_rate": 0.828571,
+          "mean_jaccard": 0.690152,
+          "jaccard_distribution": {
+            "n": 70,
+            "min": 0.09375,
+            "p25": 0.454545,
+            "median": 0.7,
+            "p75": 1.0,
+            "max": 1.0
+          },
+          "jaccard_values": [
+            0.514706,
+            0.430108,
+            0.976744,
+            0.736842,
+            1.0,
+            0.166667,
+            1.0,
+            0.7875,
+            1.0,
+            1.0,
+            1.0,
+            0.723404,
+            0.564103,
+            1.0,
+            0.923077,
+            1.0,
+            0.7,
+            0.960784,
+            1.0,
+            0.653846,
+            1.0,
+            0.294118,
+            0.333333,
+            0.333333,
+            0.5,
+            0.25,
+            0.6,
+            0.113208,
+            1.0,
+            0.357143,
+            0.176471,
+            1.0,
+            0.5,
+            0.1875,
+            0.5,
+            0.803922,
+            1.0,
+            1.0,
+            0.840909,
+            0.471429,
+            1.0,
+            1.0,
+            0.360465,
+            0.315068,
+            1.0,
+            0.852941,
+            0.7,
+            1.0,
+            0.7,
+            1.0,
+            0.506726,
+            0.454545,
+            0.623377,
+            0.45,
+            0.38843,
+            0.347032,
+            1.0,
+            0.480519,
+            1.0,
+            0.524272,
+            0.628571,
+            1.0,
+            0.747253,
+            1.0,
+            0.09375,
+            1.0,
+            1.0,
+            0.181818,
+            0.556701,
+            1.0
+          ],
+          "mean_jaccard_ci_95": {
+            "low": 0.625131,
+            "high": 0.757027
+          }
+        },
+        "by_category": {
+          "Affiliate License-Licensee": {
+            "n_tp_presence": 12,
+            "hallucination_count": 3,
+            "hallucination_rate": 0.25,
+            "substring_grounded_count": 9,
+            "substring_grounded_rate": 0.75,
+            "mean_jaccard": 0.777998,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.166667,
+              "p25": 0.723404,
+              "median": 0.976744,
+              "p75": 1.0,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              0.514706,
+              0.430108,
+              0.976744,
+              0.736842,
+              1.0,
+              0.166667,
+              1.0,
+              0.7875,
+              1.0,
+              1.0,
+              1.0,
+              0.723404
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.610788,
+              "high": 0.922219
+            }
+          },
+          "Affiliate License-Licensor": {
+            "n_tp_presence": 11,
+            "hallucination_count": 1,
+            "hallucination_rate": 0.090909,
+            "substring_grounded_count": 10,
+            "substring_grounded_rate": 0.909091,
+            "mean_jaccard": 0.766296,
+            "jaccard_distribution": {
+              "n": 11,
+              "min": 0.294118,
+              "p25": 0.564103,
+              "median": 0.923077,
+              "p75": 1.0,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              0.564103,
+              1.0,
+              0.923077,
+              1.0,
+              0.7,
+              0.960784,
+              1.0,
+              0.653846,
+              1.0,
+              0.294118,
+              0.333333
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.608114,
+              "high": 0.916005
+            }
+          },
+          "Agreement Date": {
+            "n_tp_presence": 12,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 12,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.459805,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.113208,
+              "p25": 0.25,
+              "median": 0.5,
+              "p75": 0.5,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              0.333333,
+              0.5,
+              0.25,
+              0.6,
+              0.113208,
+              1.0,
+              0.357143,
+              0.176471,
+              1.0,
+              0.5,
+              0.1875,
+              0.5
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.316702,
+              "high": 0.630387
+            }
+          },
+          "Anti-Assignment": {
+            "n_tp_presence": 12,
+            "hallucination_count": 2,
+            "hallucination_rate": 0.166667,
+            "substring_grounded_count": 10,
+            "substring_grounded_rate": 0.833333,
+            "mean_jaccard": 0.778728,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.315068,
+              "p25": 0.7,
+              "median": 0.852941,
+              "p75": 1.0,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              0.803922,
+              1.0,
+              1.0,
+              0.840909,
+              0.471429,
+              1.0,
+              1.0,
+              0.360465,
+              0.315068,
+              1.0,
+              0.852941,
+              0.7
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.633849,
+              "high": 0.913342
+            }
+          },
+          "Audit Rights": {
+            "n_tp_presence": 12,
+            "hallucination_count": 3,
+            "hallucination_rate": 0.25,
+            "substring_grounded_count": 9,
+            "substring_grounded_rate": 0.75,
+            "mean_jaccard": 0.662552,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.347032,
+              "p25": 0.454545,
+              "median": 0.623377,
+              "p75": 1.0,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              1.0,
+              0.7,
+              1.0,
+              0.506726,
+              0.454545,
+              0.623377,
+              0.45,
+              0.38843,
+              0.347032,
+              1.0,
+              0.480519,
+              1.0
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.522156,
+              "high": 0.811603
+            }
+          },
+          "Cap On Liability": {
+            "n_tp_presence": 11,
+            "hallucination_count": 3,
+            "hallucination_rate": 0.272727,
+            "substring_grounded_count": 8,
+            "substring_grounded_rate": 0.727273,
+            "mean_jaccard": 0.702942,
+            "jaccard_distribution": {
+              "n": 11,
+              "min": 0.09375,
+              "p25": 0.524272,
+              "median": 0.747253,
+              "p75": 1.0,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              0.524272,
+              0.628571,
+              1.0,
+              0.747253,
+              1.0,
+              0.09375,
+              1.0,
+              1.0,
+              0.181818,
+              0.556701,
+              1.0
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.502693,
+              "high": 0.88512
+            }
+          }
+        }
+      },
+      "reliability": {
+        "total": 150,
+        "api_errors": 0,
+        "parse_errors": 0,
+        "scored": 150,
+        "api_error_rate": 0.0,
+        "parse_error_rate": 0.0,
+        "combined_error_rate": 0.0
+      }
+    },
+    "open": {
+      "presence": {
+        "overall": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0,
+          "confusion_matrix": {
+            "tp": 0,
+            "fp": 0,
+            "fn": 0,
+            "tn": 0
+          },
+          "n": 0,
+          "n_excluded": 150
+        },
+        "by_category": {}
+      },
+      "span_grounding": {
+        "overall": {
+          "n_tp_presence": 0,
+          "hallucination_count": 0,
+          "hallucination_rate": 0.0,
+          "substring_grounded_count": 0,
+          "substring_grounded_rate": 0.0,
+          "mean_jaccard": 0.0,
+          "jaccard_distribution": {
+            "n": 0,
+            "min": null,
+            "p25": null,
+            "median": null,
+            "p75": null,
+            "max": null
+          },
+          "jaccard_values": []
+        },
+        "by_category": {}
+      },
+      "reliability": {
+        "total": 150,
+        "api_errors": 150,
+        "parse_errors": 0,
+        "scored": 0,
+        "api_error_rate": 1.0,
+        "parse_error_rate": 0.0,
+        "combined_error_rate": 1.0
+      }
+    },
+    "openai": {
+      "presence": {
+        "overall": {
+          "precision": 0.806818,
+          "recall": 0.986111,
+          "f1": 0.8875,
+          "confusion_matrix": {
+            "tp": 71,
+            "fp": 17,
+            "fn": 1,
+            "tn": 61
+          },
+          "n": 150,
+          "f1_ci_95": {
+            "low": 0.825791,
+            "high": 0.934132
+          },
+          "n_excluded": 0
+        },
+        "by_category": {
+          "Affiliate License-Licensee": {
+            "precision": 0.923077,
+            "recall": 1.0,
+            "f1": 0.96,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 1,
+              "fn": 0,
+              "tn": 12
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.857143,
+              "high": 1.0
+            }
+          },
+          "Affiliate License-Licensor": {
+            "precision": 0.857143,
+            "recall": 1.0,
+            "f1": 0.923077,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 2,
+              "fn": 0,
+              "tn": 11
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.782609,
+              "high": 1.0
+            }
+          },
+          "Agreement Date": {
+            "precision": 0.521739,
+            "recall": 1.0,
+            "f1": 0.685714,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 11,
+              "fn": 0,
+              "tn": 2
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.482759,
+              "high": 0.85
+            }
+          },
+          "Anti-Assignment": {
+            "precision": 0.923077,
+            "recall": 1.0,
+            "f1": 0.96,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 1,
+              "fn": 0,
+              "tn": 12
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.857143,
+              "high": 1.0
+            }
+          },
+          "Audit Rights": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 12,
+              "fp": 0,
+              "fn": 0,
+              "tn": 13
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Cap On Liability": {
+            "precision": 0.846154,
+            "recall": 0.916667,
+            "f1": 0.88,
+            "confusion_matrix": {
+              "tp": 11,
+              "fp": 2,
+              "fn": 1,
+              "tn": 11
+            },
+            "n": 25,
+            "f1_ci_95": {
+              "low": 0.7,
+              "high": 1.0
+            }
+          }
+        }
+      },
+      "span_grounding": {
+        "overall": {
+          "n_tp_presence": 71,
+          "hallucination_count": 7,
+          "hallucination_rate": 0.098592,
+          "substring_grounded_count": 64,
+          "substring_grounded_rate": 0.901408,
+          "mean_jaccard": 0.669059,
+          "jaccard_distribution": {
+            "n": 71,
+            "min": 0.095238,
+            "p25": 0.384615,
+            "median": 0.711864,
+            "p75": 1.0,
+            "max": 1.0
+          },
+          "jaccard_values": [
+            0.206897,
+            0.888889,
+            1.0,
+            1.0,
+            1.0,
+            0.166667,
+            1.0,
+            0.539683,
+            0.266667,
+            0.352113,
+            1.0,
+            0.723404,
+            0.376068,
+            0.765625,
+            0.75,
+            0.698113,
+            0.384615,
+            0.366667,
+            0.313131,
+            0.711864,
+            0.653846,
+            1.0,
+            0.294118,
+            1.0,
+            0.333333,
+            0.5,
+            0.25,
+            0.6,
+            0.75,
+            1.0,
+            0.357143,
+            0.176471,
+            1.0,
+            0.5,
+            0.15,
+            0.096774,
+            1.0,
+            0.939394,
+            0.972222,
+            0.840909,
+            0.6,
+            0.913043,
+            0.923077,
+            0.449275,
+            0.315068,
+            1.0,
+            0.95082,
+            1.0,
+            1.0,
+            0.682927,
+            1.0,
+            0.095238,
+            0.454545,
+            0.786885,
+            0.580645,
+            0.494737,
+            0.5,
+            1.0,
+            0.615385,
+            1.0,
+            0.555556,
+            0.571429,
+            1.0,
+            0.971429,
+            0.857143,
+            0.125,
+            1.0,
+            1.0,
+            0.181818,
+            0.954545,
+            1.0
+          ],
+          "mean_jaccard_ci_95": {
+            "low": 0.598189,
+            "high": 0.734872
+          }
+        },
+        "by_category": {
+          "Affiliate License-Licensee": {
+            "n_tp_presence": 12,
+            "hallucination_count": 1,
+            "hallucination_rate": 0.083333,
+            "substring_grounded_count": 11,
+            "substring_grounded_rate": 0.916667,
+            "mean_jaccard": 0.678693,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.166667,
+              "p25": 0.352113,
+              "median": 0.888889,
+              "p75": 1.0,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              0.206897,
+              0.888889,
+              1.0,
+              1.0,
+              1.0,
+              0.166667,
+              1.0,
+              0.539683,
+              0.266667,
+              0.352113,
+              1.0,
+              0.723404
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.494885,
+              "high": 0.865099
+            }
+          },
+          "Affiliate License-Licensor": {
+            "n_tp_presence": 12,
+            "hallucination_count": 1,
+            "hallucination_rate": 0.083333,
+            "substring_grounded_count": 11,
+            "substring_grounded_rate": 0.916667,
+            "mean_jaccard": 0.609504,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.294118,
+              "p25": 0.376068,
+              "median": 0.698113,
+              "p75": 0.75,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              0.376068,
+              0.765625,
+              0.75,
+              0.698113,
+              0.384615,
+              0.366667,
+              0.313131,
+              0.711864,
+              0.653846,
+              1.0,
+              0.294118,
+              1.0
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.47518,
+              "high": 0.750038
+            }
+          },
+          "Agreement Date": {
+            "n_tp_presence": 12,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 12,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.476143,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.096774,
+              "p25": 0.25,
+              "median": 0.5,
+              "p75": 0.6,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              0.333333,
+              0.5,
+              0.25,
+              0.6,
+              0.75,
+              1.0,
+              0.357143,
+              0.176471,
+              1.0,
+              0.5,
+              0.15,
+              0.096774
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.321306,
+              "high": 0.644487
+            }
+          },
+          "Anti-Assignment": {
+            "n_tp_presence": 12,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 12,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.825317,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.315068,
+              "p25": 0.840909,
+              "median": 0.939394,
+              "p75": 0.972222,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              1.0,
+              0.939394,
+              0.972222,
+              0.840909,
+              0.6,
+              0.913043,
+              0.923077,
+              0.449275,
+              0.315068,
+              1.0,
+              0.95082,
+              1.0
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.692122,
+              "high": 0.93734
+            }
+          },
+          "Audit Rights": {
+            "n_tp_presence": 12,
+            "hallucination_count": 3,
+            "hallucination_rate": 0.25,
+            "substring_grounded_count": 9,
+            "substring_grounded_rate": 0.75,
+            "mean_jaccard": 0.684197,
+            "jaccard_distribution": {
+              "n": 12,
+              "min": 0.095238,
+              "p25": 0.5,
+              "median": 0.682927,
+              "p75": 1.0,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              1.0,
+              0.682927,
+              1.0,
+              0.095238,
+              0.454545,
+              0.786885,
+              0.580645,
+              0.494737,
+              0.5,
+              1.0,
+              0.615385,
+              1.0
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.520695,
+              "high": 0.835992
+            }
+          },
+          "Cap On Liability": {
+            "n_tp_presence": 11,
+            "hallucination_count": 2,
+            "hallucination_rate": 0.181818,
+            "substring_grounded_count": 9,
+            "substring_grounded_rate": 0.818182,
+            "mean_jaccard": 0.746993,
+            "jaccard_distribution": {
+              "n": 11,
+              "min": 0.125,
+              "p25": 0.555556,
+              "median": 0.954545,
+              "p75": 1.0,
+              "max": 1.0
+            },
+            "jaccard_values": [
+              0.555556,
+              0.571429,
+              1.0,
+              0.971429,
+              0.857143,
+              0.125,
+              1.0,
+              1.0,
+              0.181818,
+              0.954545,
+              1.0
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.536292,
+              "high": 0.918893
+            }
+          }
+        }
+      },
+      "reliability": {
+        "total": 150,
+        "api_errors": 0,
+        "parse_errors": 0,
+        "scored": 150,
+        "api_error_rate": 0.0,
+        "parse_error_rate": 0.0,
+        "combined_error_rate": 0.0
+      }
+    }
+  }
+}

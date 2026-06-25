@@ -1,0 +1,30 @@
+# Copy to models.yaml (gitignored) and pin model IDs before running evals.
+# API keys go in .env — NOT in this file.
+
+defaults:
+  max_tokens: 4096
+  temperature: 0.0
+
+models:
+  openai:
+    provider: openai
+    model_id: "gpt-5.4-mini"
+    env_key: OPENAI_API_KEY
+
+  google:
+    provider: google
+    model_id: "gemini-2.5-flash"
+    env_key: GOOGLE_API_KEY
+
+  bedrock_claude:
+    provider: bedrock
+    provider_path: bedrock
+    model_id: "us.anthropic.claude-sonnet-4-6"
+    region: us-east-1
+
+judge:
+  provider: bedrock
+  provider_path: bedrock
+  model_id: "us.anthropic.claude-sonnet-4-6"
+  region: us-east-1
+  bedrock_text_mode: true

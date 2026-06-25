@@ -27,6 +27,7 @@ def load_judge_config(path: Path | None = None) -> ModelConfig:
         base_url=judge.get("base_url"),
         region=judge.get("region"),
         provider_path=judge.get("provider_path"),
+        bedrock_text_mode=bool(judge.get("bedrock_text_mode", False)),
         max_tokens=judge.get("max_tokens", defaults.get("max_tokens", 4096)),
         temperature=judge.get("temperature", defaults.get("temperature", 0.0)),
     )

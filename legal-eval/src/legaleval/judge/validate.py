@@ -40,6 +40,7 @@ from legaleval.judge.adjudicate import adjudicate_case
 from legaleval.judge.borderline import BorderlineCase, primary_gold_span
 from legaleval.judge.config import load_judge_config
 from legaleval.metrics.span import best_gold_jaccard, span_in_contract
+from legaleval.models.runner import ModelClient, create_client
 from legaleval.paths import project_root, run_judge_validation_path
 
 DEFAULT_SAMPLE_SIZE = 60
