@@ -1,7 +1,0 @@
-# Pack-level governance overlay (extends repo governance when applied).
-version: 1
-banned_phrases:
-  - "guaranteed refund"
-required_markers:
-  - pattern: "(?i)\\bnot financial advice\\b"
-    message: "Finance pack requires not-financial-advice marker."

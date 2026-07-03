@@ -1,1 +1,0 @@
-Enterprise Customer Support Policy. Identity verification required before password reset. Refunds on annual plans are prorated within 30 days if usage is below 10% of quota. Agents must not disclose other customers' account details. Security incidents escalate to SOC within 15 minutes. Prompt changes to production support bots require approval from Support Ops lead.

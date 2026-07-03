@@ -1,9 +1,0 @@
-id: general_pack_support
-prompt_id: general.policy_support
-environment: staging
-variables:
-  customer_question: "Refund policy for annual plan?"
-fixture: "tests/fixtures/rag/general_policy_chunks.json"
-expect:
-  rendered_contains_after_substitution:
-    - "Refunds"

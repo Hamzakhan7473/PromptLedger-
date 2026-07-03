@@ -1,9 +1,4 @@
-.promptledger/
-.data/
-evidence/*.json
-!evidence/.gitkeep
-.data/datasets/
-tests/_eval_tmp_*.yaml
+# Python
 .venv/
 __pycache__/
 *.py[cod]
@@ -11,3 +6,27 @@ __pycache__/
 .ruff_cache/
 dist/
 *.egg-info/
+.mypy_cache/
+
+# Legal-eval local config & generated runs
+legal-eval/.env
+legal-eval/.env.*
+legal-eval/models.yaml
+legal-eval/.matplotlib/
+legal-eval/results/*
+!legal-eval/results/.gitkeep
+!legal-eval/results/.gitignore
+
+# CUAD download (regenerate via python -m legaleval.data.cuad)
+legal-eval/data/CUAD_v1.json
+
+# Node / Next.js
+legal-eval-ui/node_modules/
+legal-eval-ui/.next/
+legal-eval-ui/out/
+
+# OS / IDE
+.DS_Store
+*.swp
+.idea/
+.vscode/

@@ -1,33 +1,29 @@
-.PHONY: install check demo record verticals test audit k8s-build
+.PHONY: install eval smoke sync-ui product test ui-dev ui-build
+
+# Delegate to legal-eval; pass args via ARGS=, e.g. make eval ARGS='--models openai,google'
+ARGS ?=
 
 install:
-	python3 -m venv .venv
-	.venv/bin/pip install -U pip
-	.venv/bin/pip install -e ".[dev,web]"
+	$(MAKE) -C legal-eval install
+	cd legal-eval-ui && npm install
 
-check:
-	./scripts/demo-check.sh
+eval:
+	$(MAKE) -C legal-eval eval ARGS="$(ARGS)"
 
-demo:
-	./scripts/run-web.sh
+smoke:
+	$(MAKE) -C legal-eval smoke ARGS="$(ARGS)"
 
-record:
-	./scripts/record-demo.sh
+sync-ui:
+	$(MAKE) -C legal-eval sync-ui ARGS="$(ARGS)"
 
-verticals:
-	./scripts/run-all-verticals.sh
+product:
+	./scripts/build-legal-eval-product.sh
 
 test:
-	.venv/bin/prompt-ledger test
+	$(MAKE) -C legal-eval test
 
-audit:
-	.venv/bin/prompt-ledger audit
+ui-dev:
+	cd legal-eval-ui && npm run dev
 
-k8s-build:
-	./scripts/k8s-build.sh
-
-platform:
-	./scripts/platform-services.sh
-
-platform-build:
-	./scripts/k8s-platform-build.sh
+ui-build:
+	cd legal-eval-ui && npm run build

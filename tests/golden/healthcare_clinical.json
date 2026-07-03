@@ -1,6 +1,0 @@
-{
-  "summary": "Evaluate post-operative fever per guideline [g1]; anticoagulation decisions follow institutional pathway [g2].",
-  "citations_used": ["g1", "g2"],
-  "insufficient_context": false,
-  "escalation_recommended": false
-}

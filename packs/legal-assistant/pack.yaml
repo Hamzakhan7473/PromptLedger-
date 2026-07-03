@@ -1,7 +1,0 @@
-name: legal-assistant
-version: "1.0.0"
-description: Policy pack for legal contract review prompts (citations, refusal, disclaimers).
-governance: governance.yaml
-scenarios_glob: "*.yaml"
-required_schemas:
-  - schemas/contract_review_response.json

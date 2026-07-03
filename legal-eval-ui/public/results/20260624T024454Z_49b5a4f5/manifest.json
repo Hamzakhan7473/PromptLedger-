@@ -1,0 +1,108 @@
+{
+  "run_id": "20260624T024454Z_49b5a4f5",
+  "run_date_utc": "2026-06-24T02:59:30.173700+00:00",
+  "seeds": {
+    "eval_set": 42,
+    "bootstrap": 42,
+    "judge_validation": 42
+  },
+  "eval_set": {
+    "path": "/Users/hamzakhan/PromptLedger/legal-eval/data/eval_set.jsonl",
+    "sha256": "187a9b90cea400493402e2c54292b8e503a05481cb3aabd68870327ae2c6d2b0"
+  },
+  "models_yaml": {
+    "path": "/Users/hamzakhan/PromptLedger/legal-eval/models.yaml",
+    "sha256": "16d39fd9e4877f251df46e5483639417ba15857a89857d32b0e4aa0a11836330",
+    "pinned": {
+      "defaults": {
+        "max_tokens": 4096,
+        "temperature": 0.0
+      },
+      "models": {
+        "anthropic": {
+          "provider": "anthropic",
+          "model_id": "TODO_ANTHROPIC_MODEL",
+          "env_key": "ANTHROPIC_API_KEY"
+        },
+        "openai": {
+          "provider": "openai",
+          "model_id": "TODO_OPENAI_MODEL",
+          "env_key": "OPENAI_API_KEY"
+        },
+        "google": {
+          "provider": "google",
+          "model_id": "TODO_GOOGLE_MODEL",
+          "env_key": "GOOGLE_API_KEY"
+        },
+        "open": {
+          "provider": "openai_compatible",
+          "model_id": "TODO_OPEN_MODEL",
+          "base_url": "TODO_OPENAI_COMPATIBLE_BASE_URL",
+          "env_key": "OPENAI_COMPATIBLE_API_KEY"
+        },
+        "bedrock_claude": {
+          "provider": "bedrock",
+          "provider_path": "bedrock",
+          "model_id": "us.anthropic.claude-sonnet-4-6",
+          "region": "us-east-1"
+        }
+      },
+      "judge": {
+        "provider": "bedrock",
+        "provider_path": "bedrock",
+        "model_id": "us.anthropic.claude-sonnet-4-6",
+        "region": "us-east-1",
+        "bedrock_text_mode": true
+      }
+    }
+  },
+  "model_routing": {
+    "anthropic": {
+      "provider_path": "anthropic",
+      "provider": "anthropic",
+      "model_id": "TODO_ANTHROPIC_MODEL"
+    },
+    "bedrock_claude": {
+      "provider_path": "bedrock",
+      "provider": "bedrock",
+      "model_id": "us.anthropic.claude-sonnet-4-6",
+      "region": "us-east-1"
+    },
+    "google": {
+      "provider_path": "google",
+      "provider": "google",
+      "model_id": "TODO_GOOGLE_MODEL"
+    },
+    "open": {
+      "provider_path": "openai_compatible",
+      "provider": "openai_compatible",
+      "model_id": "TODO_OPEN_MODEL"
+    },
+    "openai": {
+      "provider_path": "openai",
+      "provider": "openai",
+      "model_id": "TODO_OPENAI_MODEL"
+    },
+    "judge": {
+      "provider_path": "bedrock",
+      "provider": "bedrock",
+      "model_id": "us.anthropic.claude-sonnet-4-6",
+      "region": "us-east-1"
+    }
+  },
+  "steps_completed": [
+    "data",
+    "models",
+    "metrics",
+    "judge_adjudicate",
+    "judge_validate",
+    "calibration",
+    "errors",
+    "report"
+  ],
+  "models_run": "bedrock_claude",
+  "judge_validation": {
+    "cohens_kappa": 0.754098,
+    "passes_threshold": true
+  }
+}

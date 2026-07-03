@@ -1,7 +1,0 @@
-name: general-assistant
-version: "1.0.0"
-description: Policy pack for enterprise support / general AI assistants.
-governance: governance.yaml
-scenarios_glob: "*.yaml"
-required_schemas:
-  - schemas/policy_support_response.json

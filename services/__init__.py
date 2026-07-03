@@ -1,1 +1,0 @@
-# Platform microservices (FastAPI)

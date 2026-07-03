@@ -1,7 +1,0 @@
-name: finance-assistant
-version: "1.0.0"
-description: Policy pack for finance transaction classification prompts.
-governance: governance.yaml
-scenarios_glob: "*.yaml"
-required_schemas:
-  - schemas/transaction_classification_response.json
