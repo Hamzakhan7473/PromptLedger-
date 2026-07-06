@@ -7,15 +7,21 @@ from pathlib import Path
 
 import pytest
 
-from legaleval.data.cuad import EvalExample
+from legaleval.data.schema import EvalExample
 from legaleval.manifest import build_manifest, sha256_file, write_manifest
 from legaleval.paths import run_root
-from legaleval.pipeline import ensure_eval_set, generate_run_id
+from legaleval.pipeline import EvalSetNotFoundError, ensure_eval_set, generate_run_id
 from legaleval.report.generate import eval_set_stats, generate_report, write_report
 
 
 def test_generate_run_id_unique() -> None:
     assert generate_run_id() != generate_run_id()
+
+
+def test_ensure_eval_set_raises_when_missing(tmp_path: Path) -> None:
+    path = tmp_path / "missing.jsonl"
+    with pytest.raises(EvalSetNotFoundError, match="No eval set found"):
+        ensure_eval_set(path, rebuild=False, build_cuad_if_missing=False)
 
 
 def test_ensure_eval_set_uses_existing(tmp_path: Path) -> None:

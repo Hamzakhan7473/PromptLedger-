@@ -1,9 +1,14 @@
 import { Suspense } from "react";
-import { notFound } from "next/navigation";
 
-import { RunNav } from "@/components/RunNav";
-import { SampleViewer } from "@/components/SampleViewer";
-import { loadRun } from "@/lib/loadRun";
+import { RunViewPage } from "@/components/RunViewPage";
+
+function RunViewFallback() {
+  return (
+    <div className="h-screen flex items-center justify-center text-sm text-muted-foreground">
+      Loading…
+    </div>
+  );
+}
 
 export default async function SamplesPage({
   params,
@@ -11,30 +16,9 @@ export default async function SamplesPage({
   params: Promise<{ runId: string }>;
 }) {
   const { runId } = await params;
-
-  let run;
-  try {
-    run = loadRun(runId);
-  } catch {
-    notFound();
-  }
-
   return (
-    <div className="h-screen flex flex-col">
-      <RunNav
-        runId={runId}
-        view="samples"
-        kappa={run.judgeValidation.agreement.cohens_kappa}
-      />
-      <Suspense
-        fallback={
-          <div className="flex-1 flex items-center justify-center text-xs text-neutral-500">
-            Loading…
-          </div>
-        }
-      >
-        <SampleViewer run={run} />
-      </Suspense>
-    </div>
+    <Suspense fallback={<RunViewFallback />}>
+      <RunViewPage runId={runId} view="samples" />
+    </Suspense>
   );
 }

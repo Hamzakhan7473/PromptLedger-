@@ -9,7 +9,7 @@ from typing import Any
 
 import pandas as pd
 
-from legaleval.data.cuad import EvalExample, read_eval_set_jsonl
+from legaleval.data.schema import EvalExample, read_eval_set_jsonl
 from legaleval.metrics.presence import presence_metrics
 from legaleval.metrics.span import span_grounding_metrics
 from legaleval.paths import (

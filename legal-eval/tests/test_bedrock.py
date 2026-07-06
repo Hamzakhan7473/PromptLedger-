@@ -7,7 +7,7 @@ from unittest.mock import MagicMock
 import pytest
 from botocore.exceptions import ClientError
 
-from legaleval.data.cuad import EvalExample
+from legaleval.data.schema import EvalExample
 from legaleval.models.bedrock import CLAUSE_PREDICTION_TOOL_NAME
 from legaleval.models.runner import (
     BedrockClient,

@@ -10,7 +10,7 @@ from pydantic import BaseModel, ValidationError
 
 SYSTEM_PROMPT = """You are an expert legal annotator adjudicating span-level correctness.
 
-You will receive a contract excerpt, a clause category, a gold reference span from CUAD,
+You will receive a contract excerpt, a clause category, a gold reference span,
 and a model's predicted span. Both presence labels are already agreed (clause is present).
 
 Your ONLY task: decide whether the predicted span correctly identifies the relevant clause
@@ -34,7 +34,7 @@ Contract excerpt:
 {contract_excerpt}
 ---
 
-Gold reference span (CUAD annotation):
+Gold reference span (reference annotation):
 ---
 {gold_span}
 ---

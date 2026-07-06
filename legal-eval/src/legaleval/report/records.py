@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
-from legaleval.data.cuad import EvalExample
+from legaleval.data.schema import EvalExample
 from legaleval.metrics.compute import JoinedRow, join_row
 from legaleval.models.runner import CallLogRow
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   CartesianGrid,
   ComposedChart,
@@ -11,6 +11,8 @@ import {
   YAxis,
 } from "recharts";
 
+import { runArtifactFileUrl } from "@/lib/api";
+import { getOrgApiKey } from "@/lib/orgAuth";
 import type { CalibrationBin } from "@/lib/types";
 
 const CHART_COLORS = {
@@ -103,16 +105,53 @@ export function CalibrationPanel({
   model,
   ece,
   bins,
+  shareToken,
 }: {
   runId: string;
   model: string;
   ece: number;
   bins?: CalibrationBin[];
+  shareToken?: string;
 }) {
-  const pngUrl = `/results/${runId}/calibration/${model}.png`;
+  const [pngUrl, setPngUrl] = useState<string | null>(null);
   const [pngFailed, setPngFailed] = useState(false);
 
-  if (!pngFailed) {
+  useEffect(() => {
+    let objectUrl: string | null = null;
+    const url = runArtifactFileUrl(runId, `calibration/${model}.png`, shareToken);
+    const headers: HeadersInit = {};
+    if (!shareToken) {
+      const key = getOrgApiKey();
+      if (key) {
+        headers.Authorization = `Bearer ${key}`;
+      }
+    }
+
+    fetch(url, { headers })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("PNG unavailable");
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        objectUrl = URL.createObjectURL(blob);
+        setPngUrl(objectUrl);
+        setPngFailed(false);
+      })
+      .catch(() => {
+        setPngFailed(true);
+        setPngUrl(null);
+      });
+
+    return () => {
+      if (objectUrl) {
+        URL.revokeObjectURL(objectUrl);
+      }
+    };
+  }, [runId, model, shareToken]);
+
+  if (pngUrl && !pngFailed) {
     return (
       <div className="border border-neutral-300 bg-white p-2">
         <p className="text-xs font-mono text-neutral-600 mb-1 px-1">
@@ -123,7 +162,6 @@ export function CalibrationPanel({
           src={pngUrl}
           alt={`Reliability curve for ${model}`}
           className="max-w-full h-auto"
-          onError={() => setPngFailed(true)}
         />
       </div>
     );

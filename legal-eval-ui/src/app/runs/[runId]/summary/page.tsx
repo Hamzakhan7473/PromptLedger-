@@ -1,8 +1,14 @@
-import { notFound } from "next/navigation";
+import { Suspense } from "react";
 
-import { RunNav } from "@/components/RunNav";
-import { SummaryView } from "@/components/SummaryView";
-import { loadRun } from "@/lib/loadRun";
+import { RunViewPage } from "@/components/RunViewPage";
+
+function RunViewFallback() {
+  return (
+    <div className="h-screen flex items-center justify-center text-sm text-muted-foreground">
+      Loading…
+    </div>
+  );
+}
 
 export default async function SummaryPage({
   params,
@@ -10,22 +16,9 @@ export default async function SummaryPage({
   params: Promise<{ runId: string }>;
 }) {
   const { runId } = await params;
-
-  let run;
-  try {
-    run = loadRun(runId);
-  } catch {
-    notFound();
-  }
-
   return (
-    <div className="h-screen flex flex-col">
-      <RunNav
-        runId={runId}
-        view="summary"
-        kappa={run.judgeValidation.agreement.cohens_kappa}
-      />
-      <SummaryView run={run} />
-    </div>
+    <Suspense fallback={<RunViewFallback />}>
+      <RunViewPage runId={runId} view="summary" />
+    </Suspense>
   );
 }

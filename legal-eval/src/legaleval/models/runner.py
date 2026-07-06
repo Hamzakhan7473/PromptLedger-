@@ -14,7 +14,7 @@ from botocore.exceptions import ClientError
 from pydantic import BaseModel, Field
 from tenacity import retry, retry_if_not_exception_type, stop_after_attempt, wait_exponential
 
-from legaleval.data.cuad import EvalExample, read_eval_set_jsonl
+from legaleval.data.schema import EvalExample, read_eval_set_jsonl
 from legaleval.models.bedrock import (
     build_tool_config,
     converse_usage_tokens,

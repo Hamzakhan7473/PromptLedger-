@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from legaleval.data.cuad import EvalExample
+from legaleval.data.schema import EvalExample
 from legaleval.models.runner import (
     CallLogRow,
     ModelClient,

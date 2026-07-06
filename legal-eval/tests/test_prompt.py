@@ -4,7 +4,7 @@ from __future__ import annotations
 
 import pytest
 
-from legaleval.data.cuad import EvalExample
+from legaleval.data.schema import EvalExample
 from legaleval.models.prompt import (
     SYSTEM_PROMPT,
     build_user_prompt,

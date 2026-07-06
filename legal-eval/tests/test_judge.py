@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from legaleval.data.cuad import EvalExample
+from legaleval.data.schema import EvalExample
 from legaleval.judge.adjudicate import adjudicate_case
 from legaleval.judge.borderline import (
     BorderlineCase,
@@ -20,7 +20,7 @@ from legaleval.judge.validate import (
     MIN_KAPPA,
     build_validation_pool,
     compute_agreement,
-    cuad_reference_span_correct,
+    reference_span_correct,
     run_validation,
     stratified_sample,
     validate_and_exit,
@@ -50,7 +50,7 @@ class StubJudgeClient(ModelClient):
 
 
 class RuleMirrorJudge(ModelClient):
-    """Judge that mirrors the CUAD reference rule (for high-kappa validation tests)."""
+    """Judge that mirrors the gold reference rule (for high-kappa validation tests)."""
 
     provider = "stub"
 
@@ -61,9 +61,9 @@ class RuleMirrorJudge(ModelClient):
         predicted = prompt.split("Model predicted span:")[1].split("---")[1].strip()
         gold = prompt.split("Gold reference span")[1].split("---")[1].strip()
         excerpt = prompt.split("Contract excerpt:")[1].split("---")[1].strip()
-        correct = cuad_reference_span_correct(predicted, [gold], excerpt)
+        correct = reference_span_correct(predicted, [gold], excerpt)
         return RawResponse(
-            text=json.dumps({"span_correct": correct, "rationale": "mirrors CUAD"}),
+            text=json.dumps({"span_correct": correct, "rationale": "mirrors reference"}),
             latency_ms=1.0,
         )
 
@@ -135,11 +135,11 @@ def test_parse_judge_response() -> None:
     assert decision.span_correct is True
 
 
-def test_cuad_reference_span_correct() -> None:
+def test_reference_span_correct() -> None:
     gold = ["Assignment requires consent"]
     excerpt = "Assignment requires consent."
-    assert cuad_reference_span_correct("Assignment requires consent", gold, excerpt)
-    assert not cuad_reference_span_correct("totally wrong", gold, excerpt)
+    assert reference_span_correct("Assignment requires consent", gold, excerpt)
+    assert not reference_span_correct("totally wrong", gold, excerpt)
 
 
 def test_build_validation_pool_and_stratified_sample() -> None:

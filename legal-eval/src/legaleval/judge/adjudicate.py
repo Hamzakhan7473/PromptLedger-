@@ -8,7 +8,7 @@ from typing import Any
 
 from pydantic import BaseModel
 
-from legaleval.data.cuad import read_eval_set_jsonl
+from legaleval.data.schema import read_eval_set_jsonl
 from legaleval.judge.borderline import (
     DEFAULT_GRAY_HIGH,
     DEFAULT_GRAY_LOW,

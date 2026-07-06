@@ -1,62 +1,35 @@
-# legal-eval
+# PromptLedger — Legal Eval (source repository)
 
-Frontier-grade LLM evaluation for legal contract understanding on **CUAD v1**.
+> **End users:** this repository is for development and deployment of the product. Use the **hosted web app** at your deployed URL — you do not need to clone or run anything locally.
 
-Two packages:
+Maintainers: see package READMEs below for development, Docker, and Cloud Run deploy.
 
-| Directory | What it is |
-|-----------|------------|
-| [`legal-eval/`](legal-eval/) | Python harness — data, models, metrics, judge, calibration, REPORT.md |
-| [`legal-eval-ui/`](legal-eval-ui/) | Static Next.js reader for run output (summary, grid, sample viewer) |
+| Directory | Role |
+|-----------|------|
+| [`legal-eval/`](legal-eval/) | Python eval harness (metrics, judge, calibration) |
+| [`legal-eval-api/`](legal-eval-api/) | FastAPI backend — orgs, datasets, runs, artifacts |
+| [`legal-eval-ui/`](legal-eval-ui/) | Next.js web app — upload, run status, results viewer |
 
-## Latest benchmark — `20260625T183510Z_45633959`
-
-150 lawyer-annotated CUAD clauses · 6 categories · judge validation **PASSED** (κ = 0.754)
-
-| Model | Presence F1 | Span Jaccard | Hallucination | ECE |
-|-------|-------------|--------------|---------------|-----|
-| Google Gemini 2.5 Flash | **0.897** | 0.690 | 17.1% | 0.100 |
-| OpenAI GPT-5.4 mini | **0.887** | 0.669 | 9.9% | 0.085 |
-| Bedrock Claude Sonnet 4.6 | **0.882** | 0.699 | 13.4% | 0.053 |
-
-Full tables, failure taxonomy, and methodology: **[legal-eval/README.md](legal-eval/README.md)**
-
-Browse results locally:
+## Development (maintainers only)
 
 ```bash
+# API + harness (local dev — not the end-user path)
+cp legal-eval/.env.example legal-eval/.env   # dev model keys
+make -C legal-eval-api install              # or pip install -e legal-eval-api
+./scripts/start-api.sh                      # dev server :8787
+
+# UI (points at local API or NEXT_PUBLIC_LEGAL_EVAL_API_URL)
 cd legal-eval-ui && npm install && npm run dev
-# → http://localhost:3000/runs/20260625T183510Z_45633959/summary
 ```
 
-## Quick start
+**Deploy API to Cloud Run:** [`deploy/cloudrun/deploy.sh`](deploy/cloudrun/deploy.sh)
 
-```bash
-# Harness
-cd legal-eval
-python3.11 -m venv .venv && .venv/bin/pip install -e ".[dev]"
-cp models.yaml.example models.yaml   # pin model IDs (local, gitignored)
-cp .env.example .env                 # API keys (local, gitignored)
-set -a && source .env && set +a
-
-make smoke ARGS='--models openai,google,bedrock_claude'
-make eval ARGS='--models openai,google,bedrock_claude'
-make sync-ui
-```
-
-One-shot smoke → eval → sync → UI build (from repo root):
-
-```bash
-./scripts/build-legal-eval-product.sh
-```
-
-## Layout
-
-```
-legal-eval/          # CUAD eval harness (Python)
-legal-eval-ui/       # Static results reader (Next.js)
-scripts/             # build-legal-eval-product.sh
-```
+**Local Docker smoke test (maintainers):** `docker compose up --build` (see comment in `docker-compose.yml`).
 
 ## Task
 
-Models receive a contract excerpt and clause category; they return JSON `{present, span, confidence, reasoning}`. Gold labels come from CUAD v1. Metrics include presence F1 with bootstrap CIs, span Jaccard, hallucination rate, judge κ on borderline spans, and calibration (ECE).
+Models receive a contract excerpt and clause category; they return JSON `{present, span, confidence, reasoning}`. Gold labels come from your uploaded JSONL eval set. Metrics include presence F1 with bootstrap CIs, span Jaccard, hallucination rate, judge κ on borderline spans, and calibration (ECE).
+
+## Background
+
+Sample benchmark numbers and harness details: **[legal-eval/README.md](legal-eval/README.md)**

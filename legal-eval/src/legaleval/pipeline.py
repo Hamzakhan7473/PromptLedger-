@@ -6,15 +6,12 @@ import json
 import sys
 from datetime import UTC, datetime
 from pathlib import Path
-from typing import Any
+from typing import Any, Literal
 from uuid import uuid4
 
 from legaleval.calibration.run import run_calibration, write_ece_json
-from legaleval.data.cuad import (
-    DEFAULT_SEED as EVAL_SET_SEED,
-    build_eval_set,
-    write_eval_set_jsonl,
-)
+from legaleval.data.cuad import DEFAULT_SEED as EVAL_SET_SEED, build_eval_set
+from legaleval.data.schema import write_eval_set_jsonl
 from legaleval.judge.adjudicate import run_adjudication
 from legaleval.judge.validate import (
     DEFAULT_SAMPLE_SIZE,
@@ -51,22 +48,44 @@ from legaleval.report.generate import write_report
 PIPELINE_BOOTSTRAP_SEED = 42
 PIPELINE_JUDGE_SEED = 42
 
+RunMode = Literal["eval", "agent"]
+
 
 def generate_run_id() -> str:
     stamp = datetime.now(UTC).strftime("%Y%m%dT%H%M%SZ")
     return f"{stamp}_{uuid4().hex[:8]}"
 
 
+class EvalSetNotFoundError(FileNotFoundError):
+    """Raised when no eval set exists and CUAD auto-build was not requested."""
+
+
 def ensure_eval_set(
     eval_set_path: Path,
     *,
     rebuild: bool = False,
+    build_cuad_if_missing: bool = False,
     seed: int = EVAL_SET_SEED,
 ) -> Path:
-    if rebuild or not eval_set_path.exists():
+    if rebuild:
         examples = build_eval_set(seed=seed)
         write_eval_set_jsonl(examples, eval_set_path)
-    return eval_set_path
+        return eval_set_path
+
+    if eval_set_path.exists():
+        return eval_set_path
+
+    if build_cuad_if_missing:
+        examples = build_eval_set(seed=seed)
+        write_eval_set_jsonl(examples, eval_set_path)
+        return eval_set_path
+
+    raise EvalSetNotFoundError(
+        f"No eval set found at {eval_set_path}. "
+        "Provide --eval-set PATH to your JSONL file, run "
+        "`python -m legaleval.data.cuad` to build a CUAD sample, or pass "
+        "--build-cuad-if-missing to download and sample CUAD automatically."
+    )
 
 
 def run_pipeline(
@@ -74,9 +93,12 @@ def run_pipeline(
     run_id: str | None = None,
     eval_set_path: Path | None = None,
     models: str = "all",
+    mode: RunMode = "eval",
     rebuild_eval_set: bool = False,
+    build_cuad_if_missing: bool = False,
     skip_judge_validate: bool = False,
     models_config: Path | None = None,
+    dataset_name: str | None = None,
 ) -> dict[str, Any]:
     run_id = run_id or generate_run_id()
     eval_set_path = eval_set_path or default_eval_set_path()
@@ -87,17 +109,34 @@ def run_pipeline(
     steps: list[str] = []
 
     # 1. Data
-    ensure_eval_set(eval_set_path, rebuild=rebuild_eval_set, seed=EVAL_SET_SEED)
-    steps.append("data")
-
-    # 2. Models
-    run_eval(
-        models=models,
-        eval_set_path=eval_set_path,
-        run_id=run_id,
-        models_config_path=config_path,
+    ensure_eval_set(
+        eval_set_path,
+        rebuild=rebuild_eval_set,
+        build_cuad_if_missing=build_cuad_if_missing,
+        seed=EVAL_SET_SEED,
     )
-    steps.append("models")
+    steps.append("data")
+    eval_set_label = dataset_name or eval_set_path.name
+
+    # 2. Models (direct eval or Deep Agents harness)
+    if mode == "agent":
+        from legaleval.agents.runner import run_agent_eval
+
+        run_agent_eval(
+            models=models,
+            eval_set_path=eval_set_path,
+            run_id=run_id,
+            models_config_path=config_path,
+        )
+        steps.append("agent_models")
+    else:
+        run_eval(
+            models=models,
+            eval_set_path=eval_set_path,
+            run_id=run_id,
+            models_config_path=config_path,
+        )
+        steps.append("models")
 
     # 3. Metrics
     metrics = compute_run_metrics(
@@ -173,6 +212,8 @@ def run_pipeline(
         models_config=config_path,
         extra={
             "models_run": models,
+            "mode": mode,
+            "eval_set_label": eval_set_label,
             "judge_validation": {
                 "cohens_kappa": kappa,
                 "passes_threshold": validation["agreement"].get("passes_threshold"),
@@ -182,7 +223,11 @@ def run_pipeline(
     write_manifest(manifest, run_manifest_path(run_id))
 
     # 9. Report
-    report_path = write_report(run_id, eval_set_path=eval_set_path)
+    report_path = write_report(
+        run_id,
+        eval_set_path=eval_set_path,
+        dataset_name=eval_set_label,
+    )
     steps.append("report")
 
     # Latest symlink
@@ -226,7 +271,22 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument("--run-id", default=None)
     parser.add_argument("--eval-set", type=Path, default=None)
     parser.add_argument("--models", default="all")
-    parser.add_argument("--rebuild-eval-set", action="store_true")
+    parser.add_argument(
+        "--mode",
+        choices=("eval", "agent"),
+        default="eval",
+        help="eval = direct model calls; agent = Deep Agents harness",
+    )
+    parser.add_argument(
+        "--rebuild-eval-set",
+        action="store_true",
+        help="Download CUAD and overwrite the eval set at --eval-set (or default path).",
+    )
+    parser.add_argument(
+        "--build-cuad-if-missing",
+        action="store_true",
+        help="If the eval set file is missing, download CUAD and build a balanced sample.",
+    )
     parser.add_argument("--skip-judge-validate", action="store_true")
     parser.add_argument("--models-config", type=Path, default=None)
     args = parser.parse_args(argv)
@@ -235,7 +295,9 @@ def main(argv: list[str] | None = None) -> int:
         run_id=args.run_id,
         eval_set_path=args.eval_set,
         models=args.models,
+        mode=args.mode,
         rebuild_eval_set=args.rebuild_eval_set,
+        build_cuad_if_missing=args.build_cuad_if_missing,
         skip_judge_validate=args.skip_judge_validate,
         models_config=args.models_config,
     )

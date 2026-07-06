@@ -13,6 +13,7 @@ legal-eval/.env
 legal-eval/.env.*
 legal-eval/models.yaml
 legal-eval/.matplotlib/
+legal-eval/.data/
 legal-eval/results/*
 !legal-eval/results/.gitkeep
 !legal-eval/results/.gitignore
@@ -24,6 +25,10 @@ legal-eval/data/CUAD_v1.json
 legal-eval-ui/node_modules/
 legal-eval-ui/.next/
 legal-eval-ui/out/
+
+# API local data (datasets, job metadata)
+legal-eval-api/data/
+legal-eval-api/.master_key
 
 # OS / IDE
 .DS_Store

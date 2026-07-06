@@ -1,4 +1,4 @@
-"""Load CUAD v1 and build a balanced legal clause-presence eval set."""
+"""Optional CUAD v1 adapter: download, normalize, and sample a balanced eval set."""
 
 from __future__ import annotations
 
@@ -9,8 +9,9 @@ from dataclasses import dataclass
 from pathlib import Path
 
 import httpx
-from pydantic import BaseModel
 from tenacity import retry, stop_after_attempt, wait_exponential
+
+from legaleval.data.schema import EvalExample, write_eval_set_jsonl
 
 CUAD_URL = (
     "https://huggingface.co/datasets/theatticusproject/cuad/"
@@ -22,15 +23,6 @@ DEFAULT_N_CATEGORIES = 6
 DEFAULT_N_PER_CATEGORY = 25
 DEFAULT_MAX_CHARS = 8000
 DEFAULT_SEED = 42
-
-
-class EvalExample(BaseModel):
-    id: str
-    contract_excerpt: str
-    category: str
-    present: bool
-    gold_spans: list[str]
-    contract_title: str
 
 
 @dataclass(frozen=True)
@@ -275,28 +267,6 @@ def build_eval_set(
         max_chars=max_chars,
         seed=seed,
     )
-
-
-def write_eval_set_jsonl(
-    examples: list[EvalExample],
-    output_path: Path | None = None,
-) -> Path:
-    path = output_path or (project_data_dir() / "eval_set.jsonl")
-    path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("w", encoding="utf-8") as handle:
-        for example in examples:
-            handle.write(example.model_dump_json() + "\n")
-    return path
-
-
-def read_eval_set_jsonl(path: Path) -> list[EvalExample]:
-    examples: list[EvalExample] = []
-    with path.open(encoding="utf-8") as handle:
-        for line in handle:
-            line = line.strip()
-            if line:
-                examples.append(EvalExample.model_validate_json(line))
-    return examples
 
 
 def build_eval_set_from_raw(

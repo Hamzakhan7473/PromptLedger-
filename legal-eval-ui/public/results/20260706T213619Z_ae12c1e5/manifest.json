@@ -1,0 +1,76 @@
+{
+  "run_id": "20260706T213619Z_ae12c1e5",
+  "run_date_utc": "2026-07-06T21:36:19.691439+00:00",
+  "seeds": {
+    "eval_set": 42,
+    "bootstrap": 42,
+    "judge_validation": 42
+  },
+  "eval_set": {
+    "path": "/Users/hamzakhan/PromptLedger/legal-eval-api/data/datasets/3d79fead0cf7/eval_set.jsonl",
+    "sha256": "d6e7a8b9cf5430aeb1e9b8a26f479321d5fdac4e0667f270c09dfa805aeb020c"
+  },
+  "models_yaml": {
+    "path": "/Users/hamzakhan/PromptLedger/legal-eval-api/data/job_configs/20260706T213619Z_ae12c1e5_models.yaml",
+    "sha256": "c8fbb555565e66a53c44b951af4a8b303d1ee133f7defcf1c71ab1a31e9d6e8b",
+    "pinned": {
+      "defaults": {
+        "max_tokens": 4096,
+        "temperature": 0.0
+      },
+      "models": {
+        "openai": {
+          "provider": "openai",
+          "model_id": "gpt-5.4-mini",
+          "env_key": "OPENAI_API_KEY"
+        },
+        "google": {
+          "provider": "google",
+          "model_id": "gemini-2.5-flash",
+          "env_key": "GOOGLE_API_KEY"
+        }
+      },
+      "judge": {
+        "provider": "bedrock",
+        "provider_path": "bedrock",
+        "model_id": "us.anthropic.claude-sonnet-4-6",
+        "region": "us-east-1",
+        "bedrock_text_mode": true
+      }
+    }
+  },
+  "model_routing": {
+    "google": {
+      "provider_path": "google",
+      "provider": "google",
+      "model_id": "gemini-2.5-flash"
+    },
+    "openai": {
+      "provider_path": "openai",
+      "provider": "openai",
+      "model_id": "gpt-5.4-mini"
+    },
+    "judge": {
+      "provider_path": "bedrock",
+      "provider": "bedrock",
+      "model_id": "us.anthropic.claude-sonnet-4-6",
+      "region": "us-east-1"
+    }
+  },
+  "steps_completed": [
+    "data",
+    "models",
+    "metrics",
+    "judge_adjudicate",
+    "judge_validate",
+    "calibration",
+    "errors"
+  ],
+  "models_run": "openai,google",
+  "mode": "eval",
+  "eval_set_label": "legal_eval_dataset_valid_schema.jsonl",
+  "judge_validation": {
+    "cohens_kappa": 1.0,
+    "passes_threshold": true
+  }
+}

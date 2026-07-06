@@ -1,11 +1,11 @@
-"""Validate judge trustworthiness against CUAD gold-span reference labels.
+"""Validate judge trustworthiness against gold-span reference labels.
 
 Why an unvalidated judge invalidates the eval
 --------------------------------------------
 
 The judge is used ONLY for borderline span cases (token Jaccard in a gray zone)
 where automatic overlap metrics are ambiguous. If the judge disagrees systematically
-with the CUAD gold-span reference, then:
+with the dataset's gold-span reference, then:
 
 1. **Span grounding numbers become uninterpretable** — adjudicated cases would be
    relabeled using a standard that does not align with the dataset's human annotations.
@@ -14,8 +14,8 @@ with the CUAD gold-span reference, then:
 3. **Reported confidence is false** — downstream metrics that incorporate judge
    decisions would imply human-grade adjudication without empirical support.
 
-Cohen's kappa below 0.6 indicates only slight-to-moderate agreement with the CUAD
-reference — insufficient for a frontier-grade eval. The pipeline MUST fail loudly
+Cohen's kappa below 0.6 indicates only slight-to-moderate agreement with the
+gold reference — insufficient for a frontier-grade eval. The pipeline MUST fail loudly
 rather than silently reporting judge-adjusted results that cannot be trusted.
 
 Run validation before trusting any judge-mediated span scores::
@@ -35,7 +35,7 @@ from typing import Any
 
 from sklearn.metrics import cohen_kappa_score
 
-from legaleval.data.cuad import EvalExample, read_eval_set_jsonl
+from legaleval.data.schema import EvalExample, read_eval_set_jsonl
 from legaleval.judge.adjudicate import adjudicate_case
 from legaleval.judge.borderline import BorderlineCase, primary_gold_span
 from legaleval.judge.config import load_judge_config
@@ -80,14 +80,14 @@ def validation_output_path(run_id: str | None = None) -> Path:
     return run_judge_validation_path(run_id)
 
 
-def cuad_reference_span_correct(
+def reference_span_correct(
     predicted_span: str,
     gold_spans: list[str],
     contract_excerpt: str,
     *,
     jaccard_threshold: float = DEFAULT_REFERENCE_JACCARD_THRESHOLD,
 ) -> bool:
-    """CUAD gold-span match proxy used as the human reference for validation."""
+    """Gold-span match proxy used as the human reference for validation."""
     if not predicted_span or not span_in_contract(predicted_span, contract_excerpt):
         return False
     return best_gold_jaccard(predicted_span, gold_spans) >= jaccard_threshold
@@ -109,7 +109,7 @@ def _wrong_span_from_excerpt(excerpt: str, gold_spans: list[str]) -> str:
 
 
 def build_validation_pool(examples: list[EvalExample]) -> list[ValidationCase]:
-    """Build stratified validation candidates with known CUAD reference labels."""
+    """Build stratified validation candidates with known gold reference labels."""
     pool: list[ValidationCase] = []
     for example in examples:
         if not example.present or not example.gold_spans:
@@ -129,7 +129,7 @@ def build_validation_pool(examples: list[EvalExample]) -> list[ValidationCase]:
             if not predicted:
                 continue
             jaccard = best_gold_jaccard(predicted, example.gold_spans)
-            reference = cuad_reference_span_correct(
+            reference = reference_span_correct(
                 predicted, example.gold_spans, excerpt
             )
             pool.append(
@@ -274,7 +274,7 @@ def run_validation(
         "sample_size": sample_size,
         "seed": seed,
         "reference_rule": (
-            f"CUAD gold-span match: span in contract AND "
+            f"Gold-span match: span in contract AND "
             f"token Jaccard >= {DEFAULT_REFERENCE_JACCARD_THRESHOLD}"
         ),
         "agreement": agreement,

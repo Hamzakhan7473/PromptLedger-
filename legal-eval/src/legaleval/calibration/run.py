@@ -12,7 +12,7 @@ from legaleval.calibration.ece import (
     bins_to_dict,
 )
 from legaleval.calibration.plot import plot_reliability_curve
-from legaleval.data.cuad import read_eval_set_jsonl
+from legaleval.data.schema import read_eval_set_jsonl
 from legaleval.metrics.compute import load_raw_run
 from legaleval.paths import run_calibration_dir, run_calibration_ece_path
 from legaleval.report.records import EnrichedRow, enrich_run

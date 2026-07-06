@@ -18,6 +18,11 @@ dependencies = [
 
 [project.optional-dependencies]
 dev = ["pytest"]
+agents = [
+    "deepagents>=0.6",
+    "langchain-openai>=0.3",
+    "langchain-google-genai>=2",
+]
 
 [build-system]
 requires = ["setuptools>=61"]

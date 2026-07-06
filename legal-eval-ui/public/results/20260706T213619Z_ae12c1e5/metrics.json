@@ -1,0 +1,1323 @@
+{
+  "run_id": "20260706T213619Z_ae12c1e5",
+  "eval_set": "/Users/hamzakhan/PromptLedger/legal-eval-api/data/datasets/3d79fead0cf7/eval_set.jsonl",
+  "n_bootstrap": 1000,
+  "models": {
+    "google": {
+      "presence": {
+        "overall": {
+          "precision": 0.833333,
+          "recall": 1.0,
+          "f1": 0.909091,
+          "confusion_matrix": {
+            "tp": 15,
+            "fp": 3,
+            "fn": 0,
+            "tn": 2
+          },
+          "n": 20,
+          "f1_ci_95": {
+            "low": 0.8,
+            "high": 1.0
+          },
+          "n_excluded": 0
+        },
+        "by_category": {
+          "Arbitration": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Assignment": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.666667,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 1,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 2,
+            "f1_ci_95": {
+              "low": 0.0,
+              "high": 1.0
+            }
+          },
+          "Automatic Renewal": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Confidentiality": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1
+            },
+            "n": 2,
+            "f1_ci_95": {
+              "low": 0.0,
+              "high": 1.0
+            }
+          },
+          "Contract Term": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Data Processing": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Data Security": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Force Majeure": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Governing Law": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "IP Ownership": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Indemnification": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.666667,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 1,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 2,
+            "f1_ci_95": {
+              "low": 0.0,
+              "high": 1.0
+            }
+          },
+          "Limitation of Liability": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Payment Terms": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.666667,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 1,
+              "fn": 0,
+              "tn": 1
+            },
+            "n": 3,
+            "f1_ci_95": {
+              "low": 0.0,
+              "high": 1.0
+            }
+          },
+          "Termination for Convenience": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Warranty": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          }
+        }
+      },
+      "span_grounding": {
+        "overall": {
+          "n_tp_presence": 15,
+          "hallucination_count": 0,
+          "hallucination_rate": 0.0,
+          "substring_grounded_count": 15,
+          "substring_grounded_rate": 1.0,
+          "mean_jaccard": 0.690868,
+          "jaccard_distribution": {
+            "n": 15,
+            "min": 0.363636,
+            "p25": 0.592593,
+            "median": 0.708333,
+            "p75": 0.789474,
+            "max": 0.904762
+          },
+          "jaccard_values": [
+            0.857143,
+            0.666667,
+            0.764706,
+            0.588235,
+            0.708333,
+            0.684211,
+            0.4,
+            0.533333,
+            0.592593,
+            0.857143,
+            0.904762,
+            0.777778,
+            0.363636,
+            0.789474,
+            0.875
+          ],
+          "mean_jaccard_ci_95": {
+            "low": 0.609312,
+            "high": 0.770162
+          }
+        },
+        "by_category": {
+          "Arbitration": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.4,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.4,
+              "p25": 0.4,
+              "median": 0.4,
+              "p75": 0.4,
+              "max": 0.4
+            },
+            "jaccard_values": [
+              0.4
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.4,
+              "high": 0.4
+            }
+          },
+          "Assignment": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.904762,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.904762,
+              "p25": 0.904762,
+              "median": 0.904762,
+              "p75": 0.904762,
+              "max": 0.904762
+            },
+            "jaccard_values": [
+              0.904762
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.904762,
+              "high": 0.904762
+            }
+          },
+          "Automatic Renewal": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.533333,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.533333,
+              "p25": 0.533333,
+              "median": 0.533333,
+              "p75": 0.533333,
+              "max": 0.533333
+            },
+            "jaccard_values": [
+              0.533333
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.533333,
+              "high": 0.533333
+            }
+          },
+          "Confidentiality": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.588235,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.588235,
+              "p25": 0.588235,
+              "median": 0.588235,
+              "p75": 0.588235,
+              "max": 0.588235
+            },
+            "jaccard_values": [
+              0.588235
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.588235,
+              "high": 0.588235
+            }
+          },
+          "Contract Term": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.363636,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.363636,
+              "p25": 0.363636,
+              "median": 0.363636,
+              "p75": 0.363636,
+              "max": 0.363636
+            },
+            "jaccard_values": [
+              0.363636
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.363636,
+              "high": 0.363636
+            }
+          },
+          "Data Processing": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.875,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.875,
+              "p25": 0.875,
+              "median": 0.875,
+              "p75": 0.875,
+              "max": 0.875
+            },
+            "jaccard_values": [
+              0.875
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.875,
+              "high": 0.875
+            }
+          },
+          "Data Security": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.857143,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.857143,
+              "p25": 0.857143,
+              "median": 0.857143,
+              "p75": 0.857143,
+              "max": 0.857143
+            },
+            "jaccard_values": [
+              0.857143
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.857143,
+              "high": 0.857143
+            }
+          },
+          "Force Majeure": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.592593,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.592593,
+              "p25": 0.592593,
+              "median": 0.592593,
+              "p75": 0.592593,
+              "max": 0.592593
+            },
+            "jaccard_values": [
+              0.592593
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.592593,
+              "high": 0.592593
+            }
+          },
+          "Governing Law": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.764706,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.764706,
+              "p25": 0.764706,
+              "median": 0.764706,
+              "p75": 0.764706,
+              "max": 0.764706
+            },
+            "jaccard_values": [
+              0.764706
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.764706,
+              "high": 0.764706
+            }
+          },
+          "IP Ownership": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.684211,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.684211,
+              "p25": 0.684211,
+              "median": 0.684211,
+              "p75": 0.684211,
+              "max": 0.684211
+            },
+            "jaccard_values": [
+              0.684211
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.684211,
+              "high": 0.684211
+            }
+          },
+          "Indemnification": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.789474,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.789474,
+              "p25": 0.789474,
+              "median": 0.789474,
+              "p75": 0.789474,
+              "max": 0.789474
+            },
+            "jaccard_values": [
+              0.789474
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.789474,
+              "high": 0.789474
+            }
+          },
+          "Limitation of Liability": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.708333,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.708333,
+              "p25": 0.708333,
+              "median": 0.708333,
+              "p75": 0.708333,
+              "max": 0.708333
+            },
+            "jaccard_values": [
+              0.708333
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.708333,
+              "high": 0.708333
+            }
+          },
+          "Payment Terms": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.857143,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.857143,
+              "p25": 0.857143,
+              "median": 0.857143,
+              "p75": 0.857143,
+              "max": 0.857143
+            },
+            "jaccard_values": [
+              0.857143
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.857143,
+              "high": 0.857143
+            }
+          },
+          "Termination for Convenience": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.666667,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.666667,
+              "p25": 0.666667,
+              "median": 0.666667,
+              "p75": 0.666667,
+              "max": 0.666667
+            },
+            "jaccard_values": [
+              0.666667
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.666667,
+              "high": 0.666667
+            }
+          },
+          "Warranty": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.777778,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.777778,
+              "p25": 0.777778,
+              "median": 0.777778,
+              "p75": 0.777778,
+              "max": 0.777778
+            },
+            "jaccard_values": [
+              0.777778
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.777778,
+              "high": 0.777778
+            }
+          }
+        }
+      },
+      "reliability": {
+        "total": 20,
+        "api_errors": 0,
+        "parse_errors": 0,
+        "scored": 20,
+        "api_error_rate": 0.0,
+        "parse_error_rate": 0.0,
+        "combined_error_rate": 0.0
+      }
+    },
+    "openai": {
+      "presence": {
+        "overall": {
+          "precision": 0.9375,
+          "recall": 1.0,
+          "f1": 0.967742,
+          "confusion_matrix": {
+            "tp": 15,
+            "fp": 1,
+            "fn": 0,
+            "tn": 4
+          },
+          "n": 20,
+          "f1_ci_95": {
+            "low": 0.88,
+            "high": 1.0
+          },
+          "n_excluded": 0
+        },
+        "by_category": {
+          "Arbitration": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Assignment": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1
+            },
+            "n": 2,
+            "f1_ci_95": {
+              "low": 0.0,
+              "high": 1.0
+            }
+          },
+          "Automatic Renewal": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Confidentiality": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1
+            },
+            "n": 2,
+            "f1_ci_95": {
+              "low": 0.0,
+              "high": 1.0
+            }
+          },
+          "Contract Term": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Data Processing": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Data Security": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Force Majeure": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Governing Law": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "IP Ownership": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Indemnification": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 1
+            },
+            "n": 2,
+            "f1_ci_95": {
+              "low": 0.0,
+              "high": 1.0
+            }
+          },
+          "Limitation of Liability": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Payment Terms": {
+            "precision": 0.5,
+            "recall": 1.0,
+            "f1": 0.666667,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 1,
+              "fn": 0,
+              "tn": 1
+            },
+            "n": 3,
+            "f1_ci_95": {
+              "low": 0.0,
+              "high": 1.0
+            }
+          },
+          "Termination for Convenience": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          },
+          "Warranty": {
+            "precision": 1.0,
+            "recall": 1.0,
+            "f1": 1.0,
+            "confusion_matrix": {
+              "tp": 1,
+              "fp": 0,
+              "fn": 0,
+              "tn": 0
+            },
+            "n": 1,
+            "f1_ci_95": {
+              "low": 1.0,
+              "high": 1.0
+            }
+          }
+        }
+      },
+      "span_grounding": {
+        "overall": {
+          "n_tp_presence": 15,
+          "hallucination_count": 0,
+          "hallucination_rate": 0.0,
+          "substring_grounded_count": 15,
+          "substring_grounded_rate": 1.0,
+          "mean_jaccard": 0.690868,
+          "jaccard_distribution": {
+            "n": 15,
+            "min": 0.363636,
+            "p25": 0.592593,
+            "median": 0.708333,
+            "p75": 0.789474,
+            "max": 0.904762
+          },
+          "jaccard_values": [
+            0.857143,
+            0.666667,
+            0.764706,
+            0.588235,
+            0.708333,
+            0.684211,
+            0.4,
+            0.533333,
+            0.592593,
+            0.857143,
+            0.904762,
+            0.777778,
+            0.363636,
+            0.789474,
+            0.875
+          ],
+          "mean_jaccard_ci_95": {
+            "low": 0.609312,
+            "high": 0.770162
+          }
+        },
+        "by_category": {
+          "Arbitration": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.4,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.4,
+              "p25": 0.4,
+              "median": 0.4,
+              "p75": 0.4,
+              "max": 0.4
+            },
+            "jaccard_values": [
+              0.4
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.4,
+              "high": 0.4
+            }
+          },
+          "Assignment": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.904762,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.904762,
+              "p25": 0.904762,
+              "median": 0.904762,
+              "p75": 0.904762,
+              "max": 0.904762
+            },
+            "jaccard_values": [
+              0.904762
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.904762,
+              "high": 0.904762
+            }
+          },
+          "Automatic Renewal": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.533333,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.533333,
+              "p25": 0.533333,
+              "median": 0.533333,
+              "p75": 0.533333,
+              "max": 0.533333
+            },
+            "jaccard_values": [
+              0.533333
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.533333,
+              "high": 0.533333
+            }
+          },
+          "Confidentiality": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.588235,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.588235,
+              "p25": 0.588235,
+              "median": 0.588235,
+              "p75": 0.588235,
+              "max": 0.588235
+            },
+            "jaccard_values": [
+              0.588235
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.588235,
+              "high": 0.588235
+            }
+          },
+          "Contract Term": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.363636,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.363636,
+              "p25": 0.363636,
+              "median": 0.363636,
+              "p75": 0.363636,
+              "max": 0.363636
+            },
+            "jaccard_values": [
+              0.363636
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.363636,
+              "high": 0.363636
+            }
+          },
+          "Data Processing": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.875,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.875,
+              "p25": 0.875,
+              "median": 0.875,
+              "p75": 0.875,
+              "max": 0.875
+            },
+            "jaccard_values": [
+              0.875
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.875,
+              "high": 0.875
+            }
+          },
+          "Data Security": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.857143,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.857143,
+              "p25": 0.857143,
+              "median": 0.857143,
+              "p75": 0.857143,
+              "max": 0.857143
+            },
+            "jaccard_values": [
+              0.857143
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.857143,
+              "high": 0.857143
+            }
+          },
+          "Force Majeure": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.592593,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.592593,
+              "p25": 0.592593,
+              "median": 0.592593,
+              "p75": 0.592593,
+              "max": 0.592593
+            },
+            "jaccard_values": [
+              0.592593
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.592593,
+              "high": 0.592593
+            }
+          },
+          "Governing Law": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.764706,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.764706,
+              "p25": 0.764706,
+              "median": 0.764706,
+              "p75": 0.764706,
+              "max": 0.764706
+            },
+            "jaccard_values": [
+              0.764706
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.764706,
+              "high": 0.764706
+            }
+          },
+          "IP Ownership": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.684211,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.684211,
+              "p25": 0.684211,
+              "median": 0.684211,
+              "p75": 0.684211,
+              "max": 0.684211
+            },
+            "jaccard_values": [
+              0.684211
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.684211,
+              "high": 0.684211
+            }
+          },
+          "Indemnification": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.789474,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.789474,
+              "p25": 0.789474,
+              "median": 0.789474,
+              "p75": 0.789474,
+              "max": 0.789474
+            },
+            "jaccard_values": [
+              0.789474
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.789474,
+              "high": 0.789474
+            }
+          },
+          "Limitation of Liability": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.708333,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.708333,
+              "p25": 0.708333,
+              "median": 0.708333,
+              "p75": 0.708333,
+              "max": 0.708333
+            },
+            "jaccard_values": [
+              0.708333
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.708333,
+              "high": 0.708333
+            }
+          },
+          "Payment Terms": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.857143,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.857143,
+              "p25": 0.857143,
+              "median": 0.857143,
+              "p75": 0.857143,
+              "max": 0.857143
+            },
+            "jaccard_values": [
+              0.857143
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.857143,
+              "high": 0.857143
+            }
+          },
+          "Termination for Convenience": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.666667,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.666667,
+              "p25": 0.666667,
+              "median": 0.666667,
+              "p75": 0.666667,
+              "max": 0.666667
+            },
+            "jaccard_values": [
+              0.666667
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.666667,
+              "high": 0.666667
+            }
+          },
+          "Warranty": {
+            "n_tp_presence": 1,
+            "hallucination_count": 0,
+            "hallucination_rate": 0.0,
+            "substring_grounded_count": 1,
+            "substring_grounded_rate": 1.0,
+            "mean_jaccard": 0.777778,
+            "jaccard_distribution": {
+              "n": 1,
+              "min": 0.777778,
+              "p25": 0.777778,
+              "median": 0.777778,
+              "p75": 0.777778,
+              "max": 0.777778
+            },
+            "jaccard_values": [
+              0.777778
+            ],
+            "mean_jaccard_ci_95": {
+              "low": 0.777778,
+              "high": 0.777778
+            }
+          }
+        }
+      },
+      "reliability": {
+        "total": 20,
+        "api_errors": 0,
+        "parse_errors": 0,
+        "scored": 20,
+        "api_error_rate": 0.0,
+        "parse_error_rate": 0.0,
+        "combined_error_rate": 0.0
+      }
+    }
+  }
+}

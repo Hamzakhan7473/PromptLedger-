@@ -1,0 +1,21 @@
+{
+  "run_id": "demo",
+  "eval_set": "eval_set.jsonl",
+  "models": {
+    "model-a": {
+      "report_path": "errors/model-a.md",
+      "total_errors": 1,
+      "counts_by_bucket": {
+        "false_present": 1
+      }
+    },
+    "model-b": {
+      "report_path": "errors/model-b.md",
+      "total_errors": 2,
+      "counts_by_bucket": {
+        "missed_present": 1,
+        "hallucinated_span": 1
+      }
+    }
+  }
+}

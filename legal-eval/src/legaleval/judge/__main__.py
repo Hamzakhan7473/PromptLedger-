@@ -34,7 +34,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     validate = subparsers.add_parser(
         "validate",
-        help="Validate judge against CUAD gold-span reference (fails if kappa < 0.6).",
+        help="Validate judge against gold-span reference labels (fails if kappa < 0.6).",
     )
     validate.add_argument("--eval-set", required=True, type=Path)
     validate.add_argument("--sample-size", type=int, default=DEFAULT_SAMPLE_SIZE)

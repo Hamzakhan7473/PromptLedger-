@@ -1,0 +1,29 @@
+# Docker build context ignore (repo root). Canonical patterns live in legal-eval-api/.dockerignore.
+# Local `docker build` reads this file from the context root; gcloud uses --ignore-file legal-eval-api/.dockerignore.
+
+legal-eval-api/data/
+legal-eval-api/.venv/
+legal-eval-api/**/__pycache__/
+legal-eval-api/**/.pytest_cache/
+legal-eval-api/tests/
+legal-eval-api/.env
+legal-eval-api/.env.*
+legal-eval/.venv/
+legal-eval/.env
+legal-eval/.env.*
+legal-eval/results/
+legal-eval/**/__pycache__/
+legal-eval/**/.pytest_cache/
+legal-eval/.matplotlib/
+legal-eval/models.yaml
+legal-eval-ui/
+web/
+platform/
+deploy/
+scripts/
+docs/
+.git/
+.github/
+**/.git/
+**/.DS_Store
+**/node_modules/

@@ -1,13 +1,21 @@
 import { CalibrationPanel } from "@/components/CalibrationPanel";
 import { FailureTaxonomyChart } from "@/components/FailureTaxonomyChart";
 import { ModelMetricsTable } from "@/components/ModelMetricsTable";
+import { ProvenancePanel } from "@/components/ProvenancePanel";
 import { TrustBanner } from "@/components/TrustBanner";
 import type { EvalRun } from "@/lib/types";
 
-export function SummaryView({ run }: { run: EvalRun }) {
+export function SummaryView({
+  run,
+  shareToken,
+}: {
+  run: EvalRun;
+  shareToken?: string;
+}) {
   return (
     <div className="flex-1 overflow-y-auto">
       <div className="max-w-5xl mx-auto p-4 space-y-6">
+        <ProvenancePanel run={run} />
         <TrustBanner validation={run.judgeValidation} />
 
         <section>
@@ -41,6 +49,7 @@ export function SummaryView({ run }: { run: EvalRun }) {
                   model={model}
                   ece={cal.ece}
                   bins={cal.bins}
+                  shareToken={shareToken}
                 />
               );
             })}

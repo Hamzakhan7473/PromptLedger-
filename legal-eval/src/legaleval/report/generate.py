@@ -7,7 +7,7 @@ from collections import Counter
 from pathlib import Path
 from typing import Any
 
-from legaleval.data.cuad import EvalExample, read_eval_set_jsonl
+from legaleval.data.schema import EvalExample, read_eval_set_jsonl
 from legaleval.judge.validate import MIN_KAPPA
 from legaleval.paths import (
     run_calibration_ece_path,
@@ -96,6 +96,7 @@ def generate_report(
     run_id: str,
     *,
     eval_set_path: Path,
+    dataset_name: str | None = None,
 ) -> str:
     manifest = _load_json(run_manifest_path(run_id))
     metrics = _load_json(run_metrics_path(run_id))
@@ -105,6 +106,14 @@ def generate_report(
 
     examples = read_eval_set_jsonl(eval_set_path)
     stats = eval_set_stats(examples)
+    dataset_label = (
+        dataset_name
+        or manifest.get("eval_set_label")
+        or eval_set_path.name
+    )
+    category_preview = ", ".join(stats["categories"][:8])
+    if len(stats["categories"]) > 8:
+        category_preview += f", … (+{len(stats['categories']) - 8} more)"
 
     agreement = validation["agreement"]
     kappa = agreement.get("cohens_kappa")
@@ -131,7 +140,7 @@ def generate_report(
             [
                 f"- **Status:** {status} (κ ≥ {MIN_KAPPA} required)",
                 f"- **Cohen's κ:** {kappa:.4f}",
-                f"- **Accuracy vs CUAD reference:** {agreement.get('accuracy')}",
+                f"- **Accuracy vs gold reference:** {agreement.get('accuracy')}",
                 f"- **Sample size:** {agreement.get('n_scored')} scored / "
                 f"{validation.get('sample_size', 'n/a')} sampled",
                 "",
@@ -151,11 +160,14 @@ def generate_report(
             "",
             "Models read a contract excerpt and return structured JSON: "
             "`present`, `span`, `confidence`, `reasoning`. "
-            "Gold labels come from **CUAD v1** (Atticus Project) — "
-            "41 legal clause categories, lawyer-review annotations.",
+            "Gold labels come from the uploaded eval set — lawyer-reviewed "
+            "clause presence and verbatim span annotations.",
             "",
+            f"- **Dataset:** `{dataset_label}`",
+            f"- **Eval set path:** `{eval_set_path}`",
             f"- **Eval examples:** {stats['n_examples']}",
-            f"- **Categories in eval set:** {stats['n_categories']}",
+            f"- **Categories in eval set:** {stats['n_categories']} "
+            f"({category_preview})",
             f"- **Present / absent balance:** {stats['present']} present, "
             f"{stats['absent']} absent "
             f"({stats['present'] / stats['n_examples']:.0%} / "
@@ -246,8 +258,8 @@ def generate_report(
             "weaknesses, or calibration patterns._",
             "",
             "1. **Statement 1:** ",
-            "   > _e.g. Model X systematically misses `Anti-Assignment` clauses when "
-            "they appear only as a cross-reference…_",
+            "   > _e.g. Model X systematically misses a category when "
+            "clauses appear only as a cross-reference…_",
             "",
             "2. **Statement 2:** ",
             "   > _e.g. High-confidence false positives cluster in categories with "
@@ -273,9 +285,14 @@ def write_report(
     run_id: str,
     *,
     eval_set_path: Path,
+    dataset_name: str | None = None,
     output_path: Path | None = None,
 ) -> Path:
-    content = generate_report(run_id, eval_set_path=eval_set_path)
+    content = generate_report(
+        run_id,
+        eval_set_path=eval_set_path,
+        dataset_name=dataset_name,
+    )
     path = output_path or run_report_path(run_id)
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")

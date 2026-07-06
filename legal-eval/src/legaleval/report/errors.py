@@ -8,7 +8,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Any
 
-from legaleval.data.cuad import read_eval_set_jsonl
+from legaleval.data.schema import read_eval_set_jsonl
 from legaleval.metrics.compute import load_raw_run
 from legaleval.metrics.span import best_gold_jaccard, span_in_contract
 from legaleval.paths import project_root, run_errors_dir

@@ -1,0 +1,38 @@
+# Used with repo-root build context:
+#   docker build -f legal-eval-api/Dockerfile --ignorefile legal-eval-api/.dockerignore .
+# Paths below are relative to the repository root.
+
+# API local state and dev artifacts
+legal-eval-api/data/
+legal-eval-api/.venv/
+legal-eval-api/**/__pycache__/
+legal-eval-api/**/.pytest_cache/
+legal-eval-api/tests/
+legal-eval-api/.env
+legal-eval-api/.env.*
+
+# Harness local state (keep source; exclude heavy/ephemeral dirs)
+legal-eval/.venv/
+legal-eval/.env
+legal-eval/.env.*
+legal-eval/results/
+legal-eval/**/__pycache__/
+legal-eval/**/.pytest_cache/
+legal-eval/.matplotlib/
+legal-eval/models.yaml
+
+# Unrelated monorepo packages
+legal-eval-ui/
+web/
+platform/
+deploy/
+scripts/
+docs/
+.git/
+.github/
+**/.git/
+**/.DS_Store
+**/node_modules/
+**/*.md
+!legal-eval-api/README.md
+!legal-eval/README.md

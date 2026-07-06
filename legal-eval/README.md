@@ -1,6 +1,40 @@
 # legal-eval
 
-Frontier-grade LLM evaluation for legal contract understanding on CUAD.
+Frontier-grade LLM evaluation for **legal clause presence detection and span extraction** on any JSONL eval set you provide.
+
+## Eval set format (primary interface)
+
+Each line of `eval_set.jsonl` is one `EvalExample`:
+
+```json
+{
+  "id": "ex-001",
+  "contract_excerpt": "Section 3. Assignment. No party may assign without prior written consent.",
+  "category": "Anti-Assignment",
+  "present": true,
+  "gold_spans": ["No party may assign without prior written consent"],
+  "contract_title": "Master Services Agreement"
+}
+```
+
+| Field | Meaning |
+|-------|---------|
+| `id` | Stable example identifier |
+| `contract_excerpt` | Contract text shown to the model |
+| `category` | Clause type label (any string — not limited to CUAD) |
+| `present` | Whether the category is substantively present |
+| `gold_spans` | Verbatim reference span(s) when `present=true`; `[]` when absent |
+| `contract_title` | Human-readable contract name |
+
+Upload this JSONL via the API/UI, or point the CLI at it with `--eval-set PATH`.
+
+**Optional CUAD adapter:** To build a balanced sample from [CUAD v1](https://huggingface.co/datasets/theatticusproject/cuad) (6 categories × 25 examples, ~50/50 present/absent):
+
+```bash
+python -m legaleval.data.cuad          # writes data/eval_set.jsonl
+# or, on first pipeline run without an existing file:
+python -m legaleval.pipeline --build-cuad-if-missing
+```
 
 ## Latest result — `20260625T183510Z_45633959`
 
@@ -12,7 +46,7 @@ Frontier-grade LLM evaluation for legal contract understanding on CUAD.
 |--------|-------|
 | Status | **PASSED** (κ ≥ 0.6 required) |
 | Cohen's κ | **0.754** |
-| Accuracy vs CUAD reference | 0.90 |
+| Accuracy vs gold reference | 0.90 |
 | Sample size | 60 / 60 |
 
 ### Per-model results (production models)
@@ -23,7 +57,7 @@ Frontier-grade LLM evaluation for legal contract understanding on CUAD.
 | **openai** | GPT-5.4 mini | **0.887** [0.826, 0.934] | 0.669 [0.598, 0.735] | 9.9% | 0% | 0.085 |
 | **bedrock_claude** | Claude Sonnet 4.6 (Bedrock) | **0.882** [0.824, 0.934] | 0.699 [0.625, 0.777] | 13.4% | 0% | 0.053 |
 
-**Takeaways:** All three frontier models achieve ~0.88–0.90 presence F1 on lawyer-annotated CUAD clauses. Google leads on presence F1; Bedrock has the lowest ECE (best calibration). OpenAI has the lowest hallucination rate (9.9%). Dominant failure mode across models is **correct presence, wrong span** (~27–30 examples each).
+**Takeaways:** All three frontier models achieve ~0.88–0.90 presence F1 on lawyer-annotated clauses. Google leads on presence F1; Bedrock has the lowest ECE (best calibration). OpenAI has the lowest hallucination rate (9.9%). Dominant failure mode across models is **correct presence, wrong span** (~27–30 examples each).
 
 ### Failure taxonomy (production models)
 
@@ -62,9 +96,15 @@ make smoke ARGS='--models openai,google,bedrock_claude'
 make sync-ui
 ```
 
+`make eval` runs the pipeline with `--build-cuad-if-missing` when `data/eval_set.jsonl` is absent. For your own dataset:
+
+```bash
+python -m legaleval.pipeline --eval-set path/to/my_eval_set.jsonl --models openai
+```
+
 Pipeline steps (single timestamped `run_id`):
 
-1. **Data** — CUAD → `data/eval_set.jsonl`
+1. **Data** — load `--eval-set` JSONL (or build CUAD sample if `--build-cuad-if-missing`)
 2. **Models** — all providers in `models.yaml`
 3. **Metrics** — presence, span grounding, reliability
 4. **Judge** — borderline span adjudication (Jaccard 0.2–0.7)
@@ -98,7 +138,7 @@ pytest
 
 | Stage | Command |
 |-------|---------|
-| Eval set only | `python -m legaleval.data.cuad` |
+| CUAD sample (optional) | `python -m legaleval.data.cuad` |
 | Models only | `python -m legaleval.run --models all --eval-set data/eval_set.jsonl --run-id <id>` |
 | Metrics | `python -m legaleval.metrics --run-id <id> --eval-set data/eval_set.jsonl` |
 | Judge | `python -m legaleval.judge adjudicate …` / `validate …` |
@@ -107,4 +147,4 @@ pytest
 
 ## Task
 
-Models receive a contract excerpt and clause category; they return JSON `{present, span, confidence, reasoning}`. Gold labels come from **CUAD v1** (510 contracts, 41 categories). The frozen eval set balances 6 categories × 25 examples (~50/50 present/absent).
+Models receive a contract excerpt and clause category; they return JSON `{present, span, confidence, reasoning}`. Gold labels come from your eval set JSONL. CUAD v1 is supported as an optional adapter to generate a balanced benchmark set (510 contracts, 41 categories in the full corpus; default sample uses 6 categories × 25 examples).

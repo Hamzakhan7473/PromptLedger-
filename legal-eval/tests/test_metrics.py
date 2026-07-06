@@ -7,7 +7,7 @@ from pathlib import Path
 
 import pytest
 
-from legaleval.data.cuad import EvalExample
+from legaleval.data.schema import EvalExample
 from legaleval.metrics.bootstrap import bootstrap_f1_ci, bootstrap_percentile_ci
 from legaleval.metrics.compute import (
     JoinedRow,

@@ -23,4 +23,4 @@ echo "    root:   $ROOT"
 
 "$PYTHON" -m pip install -q -e ".[dev]" 2>/dev/null || "$PYTHON" -m pip install -q -e .
 
-exec "$PYTHON" -m legaleval.pipeline "$@"
+exec "$PYTHON" -m legaleval.pipeline --build-cuad-if-missing "$@"

@@ -1,0 +1,36 @@
+[project]
+name = "legal-eval-api"
+version = "0.4.0"
+description = "HTTP API for legal-eval — upload datasets, route models, run eval pipeline"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "uvicorn[standard]>=0.32",
+    "python-multipart>=0.0.9",
+    "cryptography>=42",
+    "httpx>=0.27",
+    "fpdf2>=2.8",
+    "pyyaml>=6",
+    "datasets>=3.0",
+    "pypdf>=5.0",
+    "python-docx>=1.1",
+    "legal-eval[agents] @ file:../legal-eval",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "httpx"]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src", "../legal-eval/src"]
+
+[project.scripts]
+legal-eval-api = "legal_eval_api.main:main"

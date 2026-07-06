@@ -8,7 +8,7 @@ from typing import Any
 
 from pydantic import BaseModel, Field, ValidationError
 
-from legaleval.data.cuad import EvalExample
+from legaleval.data.schema import EvalExample
 
 SYSTEM_PROMPT = """You are a legal contract analyst. Your task is to determine whether a specific \
 clause category is present in a contract excerpt.

@@ -6,7 +6,7 @@ import io
 
 import pytest
 
-from legaleval.data.cuad import EvalExample
+from legaleval.data.schema import EvalExample
 from legaleval.models.runner import CallLogRow, ModelConfig
 from legaleval.smoke import (
     SMOKE_EXAMPLE_LIMIT,

@@ -9,7 +9,7 @@ from pathlib import Path
 from statistics import mean
 from typing import TextIO
 
-from legaleval.data.cuad import EvalExample, read_eval_set_jsonl
+from legaleval.data.schema import EvalExample, read_eval_set_jsonl
 from legaleval.models.runner import (
     CallLogRow,
     ModelClient,

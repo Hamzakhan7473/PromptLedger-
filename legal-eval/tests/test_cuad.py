@@ -9,12 +9,11 @@ from pathlib import Path
 import pytest
 from pydantic import TypeAdapter
 
+from legaleval.data.schema import EvalExample, write_eval_set_jsonl
 from legaleval.data.cuad import (
-    EvalExample,
     build_eval_set_from_raw,
     cap_excerpt,
     normalize_cuad,
-    write_eval_set_jsonl,
 )
 from tests.fixtures.synthetic_cuad import make_synthetic_cuad
 

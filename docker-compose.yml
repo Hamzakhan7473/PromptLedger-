@@ -1,0 +1,38 @@
+# For local development/testing only.
+# This product is deployed and used entirely via the hosted web app — not intended for end users to run.
+#
+# Repo-root compose: API build context must include sibling legal-eval/ (see Dockerfile).
+# The API uses SQLite + local filesystem (LEGAL_EVAL_API_DATA), not Postgres.
+# postgres service below is scaffolding for a future DATABASE_URL migration — the app does not read it yet.
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: legal-eval-api/Dockerfile
+    ports:
+      - "8787:8080"
+    environment:
+      PORT: "8080"
+      LEGAL_EVAL_API_DATA: /data
+      LEGAL_EVAL_CORS_ORIGINS: "http://localhost:3000,http://127.0.0.1:3000"
+    volumes:
+      - api-data:/data
+      - eval-results:/app/legal-eval/results
+
+  # Scaffolding only — not wired to the app yet.
+  # postgres:
+  #   image: postgres:16-alpine
+  #   environment:
+  #     POSTGRES_USER: legal_eval
+  #     POSTGRES_PASSWORD: localdev
+  #     POSTGRES_DB: legal_eval
+  #   ports:
+  #     - "5432:5432"
+  #   volumes:
+  #     - postgres-data:/var/lib/postgresql/data
+
+volumes:
+  api-data:
+  eval-results:
+  # postgres-data:

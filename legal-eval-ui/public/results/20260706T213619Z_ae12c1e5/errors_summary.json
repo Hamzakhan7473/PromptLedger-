@@ -1,0 +1,58 @@
+{
+  "run_id": "20260706T213619Z_ae12c1e5",
+  "eval_set": "/Users/hamzakhan/PromptLedger/legal-eval-api/data/datasets/3d79fead0cf7/eval_set.jsonl",
+  "models": {
+    "google": {
+      "report_path": "/Users/hamzakhan/PromptLedger/legal-eval/results/20260706T213619Z_ae12c1e5/errors/google.md",
+      "total_errors": 10,
+      "counts_by_bucket": {
+        "missed_present": 0,
+        "false_present": 3,
+        "correct_present_wrong_span": 7,
+        "hallucinated_span": 0,
+        "parse_fail": 0
+      },
+      "counts_by_category": {
+        "false_present": {
+          "Payment Terms": 1,
+          "Assignment": 1,
+          "Indemnification": 1
+        },
+        "correct_present_wrong_span": {
+          "Termination for Convenience": 1,
+          "Confidentiality": 1,
+          "IP Ownership": 1,
+          "Arbitration": 1,
+          "Automatic Renewal": 1,
+          "Force Majeure": 1,
+          "Contract Term": 1
+        }
+      }
+    },
+    "openai": {
+      "report_path": "/Users/hamzakhan/PromptLedger/legal-eval/results/20260706T213619Z_ae12c1e5/errors/openai.md",
+      "total_errors": 8,
+      "counts_by_bucket": {
+        "missed_present": 0,
+        "false_present": 1,
+        "correct_present_wrong_span": 7,
+        "hallucinated_span": 0,
+        "parse_fail": 0
+      },
+      "counts_by_category": {
+        "correct_present_wrong_span": {
+          "Termination for Convenience": 1,
+          "Confidentiality": 1,
+          "IP Ownership": 1,
+          "Arbitration": 1,
+          "Automatic Renewal": 1,
+          "Force Majeure": 1,
+          "Contract Term": 1
+        },
+        "false_present": {
+          "Payment Terms": 1
+        }
+      }
+    }
+  }
+}
