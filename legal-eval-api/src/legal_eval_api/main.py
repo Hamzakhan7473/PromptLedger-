@@ -31,8 +31,10 @@ from legal_eval_api.export_pdf import load_run_report_pdf
 from legal_eval_api.jobs import create_run, get_run, list_runs
 from legal_eval_api.orgs import (
     ensure_default_org,
+    get_onboarding_status,
     get_profile,
     get_secrets_status,
+    mark_onboarding_complete,
     register_org,
     update_models,
     update_secrets,
@@ -51,6 +53,7 @@ from legal_eval_api.schemas import (
     OrgProfile,
     OrgSecretsStatus,
     OrgStats,
+    OnboardingStatus,
     RunDetail,
     RunSummary,
     ShareLinkResponse,
@@ -117,6 +120,20 @@ def api_create_org(request: CreateOrgRequest) -> CreateOrgResponse:
 @app.get("/api/v1/orgs/me", response_model=OrgProfile)
 def api_org_profile(org: Annotated[AuthContext, Depends(get_current_org)]) -> OrgProfile:
     return get_profile(org.org_id)
+
+
+@app.get("/api/v1/orgs/me/onboarding", response_model=OnboardingStatus)
+def api_onboarding_status(
+    org: Annotated[AuthContext, Depends(get_current_org)],
+) -> OnboardingStatus:
+    return get_onboarding_status(org.org_id)
+
+
+@app.post("/api/v1/orgs/me/onboarding/complete", response_model=OnboardingStatus)
+def api_complete_onboarding(
+    org: Annotated[AuthContext, Depends(get_current_org)],
+) -> OnboardingStatus:
+    return mark_onboarding_complete(org.org_id)
 
 
 @app.put("/api/v1/orgs/me/secrets", response_model=OrgSecretsStatus)

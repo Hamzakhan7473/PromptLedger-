@@ -53,7 +53,9 @@ def init_db() -> None:
                 name TEXT NOT NULL,
                 api_key_hash TEXT NOT NULL UNIQUE,
                 enabled_models TEXT NOT NULL DEFAULT '[]',
-                created_at TEXT NOT NULL
+                created_at TEXT NOT NULL,
+                firebase_uid TEXT,
+                onboarding_completed_at TEXT
             );
 
             CREATE TABLE IF NOT EXISTS org_secrets (
@@ -99,16 +101,43 @@ def init_db() -> None:
             );
             """
         )
+        _migrate_orgs_schema(conn)
 
 
-def create_org(name: str) -> tuple[str, str]:
+def _migrate_orgs_schema(conn: sqlite3.Connection) -> None:
+    """Apply additive schema changes for org identity columns."""
+    columns = {row[1] for row in conn.execute("PRAGMA table_info(orgs)")}
+    if "onboarding_completed_at" not in columns:
+        conn.execute("ALTER TABLE orgs ADD COLUMN onboarding_completed_at TEXT")
+    # Fresh firebase_uid column (not renamed from clerk_user_id — SQLite has no cheap rename).
+    if "firebase_uid" not in columns:
+        conn.execute("ALTER TABLE orgs ADD COLUMN firebase_uid TEXT")
+    if "clerk_user_id" in columns:
+        conn.execute(
+            """
+            UPDATE orgs
+            SET firebase_uid = clerk_user_id
+            WHERE firebase_uid IS NULL AND clerk_user_id IS NOT NULL
+            """
+        )
+    conn.execute(
+        """
+        CREATE UNIQUE INDEX IF NOT EXISTS idx_orgs_firebase_uid
+            ON orgs(firebase_uid) WHERE firebase_uid IS NOT NULL
+        """
+    )
+
+
+def create_org(name: str, *, firebase_uid: str | None = None) -> tuple[str, str]:
     org_id = secrets.token_hex(8)
     api_key = generate_org_api_key()
     with connect() as conn:
         conn.execute(
             """
-            INSERT INTO orgs (org_id, name, api_key_hash, enabled_models, created_at)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO orgs (
+                org_id, name, api_key_hash, enabled_models, created_at, firebase_uid
+            )
+            VALUES (?, ?, ?, ?, ?, ?)
             """,
             (
                 org_id,
@@ -116,6 +145,7 @@ def create_org(name: str) -> tuple[str, str]:
                 hash_api_key(api_key),
                 json.dumps(["openai", "google", "bedrock_claude"]),
                 utc_now_iso(),
+                firebase_uid,
             ),
         )
     return org_id, api_key
@@ -135,6 +165,23 @@ def get_org(org_id: str) -> dict[str, Any] | None:
     with connect() as conn:
         row = conn.execute("SELECT * FROM orgs WHERE org_id = ?", (org_id,)).fetchone()
     return dict(row) if row else None
+
+
+def get_org_by_firebase_uid(firebase_uid: str) -> dict[str, Any] | None:
+    with connect() as conn:
+        row = conn.execute(
+            "SELECT * FROM orgs WHERE firebase_uid = ?",
+            (firebase_uid,),
+        ).fetchone()
+    return dict(row) if row else None
+
+
+def complete_onboarding(org_id: str) -> None:
+    with connect() as conn:
+        conn.execute(
+            "UPDATE orgs SET onboarding_completed_at = ? WHERE org_id = ?",
+            (utc_now_iso(), org_id),
+        )
 
 
 def list_org_ids() -> list[str]:

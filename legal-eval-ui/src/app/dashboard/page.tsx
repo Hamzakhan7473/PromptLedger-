@@ -1,5 +1,7 @@
 import { AppShell } from "@/components/AppShell";
+import { AuthGuard } from "@/components/AuthGuard";
 import { HomeRunList } from "@/components/HomeRunList";
+import { OnboardingRedirect } from "@/components/OnboardingRedirect";
 import { OrgDashboard } from "@/components/OrgDashboard";
 
 export default function DashboardPage() {
@@ -10,10 +12,13 @@ export default function DashboardPage() {
       backHref="/"
       backLabel="← Home"
     >
-      <div className="space-y-8">
-        <OrgDashboard />
-        <HomeRunList />
-      </div>
+      <OnboardingRedirect />
+      <AuthGuard>
+        <div className="space-y-8">
+          <OrgDashboard />
+          <HomeRunList />
+        </div>
+      </AuthGuard>
     </AppShell>
   );
 }

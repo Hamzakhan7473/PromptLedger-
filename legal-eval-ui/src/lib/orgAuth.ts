@@ -1,18 +1,22 @@
-const STORAGE_KEY = "legal_eval_org_api_key";
+/**
+ * Firebase ID token bridge for API requests.
+ * Register a token getter from AuthProvider (client-side).
+ */
 
-export function getOrgApiKey(): string | null {
-  if (typeof window === "undefined") return null;
-  return localStorage.getItem(STORAGE_KEY);
+export type AuthTokenGetter = () => Promise<string | null>;
+
+let authTokenGetter: AuthTokenGetter | null = null;
+
+export function setAuthTokenGetter(getter: AuthTokenGetter): void {
+  authTokenGetter = getter;
 }
 
-export function setOrgApiKey(key: string): void {
-  localStorage.setItem(STORAGE_KEY, key);
+export async function getSessionToken(): Promise<string | null> {
+  if (!authTokenGetter) return null;
+  return authTokenGetter();
 }
 
-export function clearOrgApiKey(): void {
-  localStorage.removeItem(STORAGE_KEY);
-}
-
-export function hasOrgApiKey(): boolean {
-  return Boolean(getOrgApiKey());
+export async function isAuthenticated(): Promise<boolean> {
+  const token = await getSessionToken();
+  return Boolean(token);
 }

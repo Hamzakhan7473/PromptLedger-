@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { DM_Sans, Instrument_Serif } from "next/font/google";
 
-import { SiteFooter } from "@/components/marketing/SiteFooter";
-import { SiteHeader } from "@/components/marketing/SiteHeader";
+import { AuthProvider } from "@/components/AuthProvider";
 
 import "./globals.css";
 
@@ -23,6 +22,8 @@ export const metadata: Metadata = {
     "Reproducible, auditable evaluation for legal document extraction teams. BYOK, custom datasets, multi-provider comparison, judge-validated metrics, and shareable trust reports for enterprise buyers.",
 };
 
+export const dynamic = "force-dynamic";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -30,17 +31,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`h-full ${dmSans.variable} ${instrumentSerif.variable}`}>
-      <body className="min-h-full antialiased">{children}</body>
+      <body className="min-h-full antialiased">
+        <AuthProvider>{children}</AuthProvider>
+      </body>
     </html>
-  );
-}
-
-export function MarketingLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <>
-      <SiteHeader />
-      {children}
-      <SiteFooter />
-    </>
   );
 }

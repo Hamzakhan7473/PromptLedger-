@@ -64,6 +64,7 @@ $LEGAL_EVAL_API_DATA/
   legal_eval.db
   .master_key
   datasets/<id>/eval_set.jsonl
+  document_staging/<staging_id>/
   runs/<run_id>.json
 ```
 

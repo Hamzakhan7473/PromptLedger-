@@ -122,6 +122,12 @@ class OrgProfile(BaseModel):
     enabled_models: list[str]
     stored_secret_keys: list[str]
     created_at: str
+    onboarding_completed_at: str | None = None
+
+
+class OnboardingStatus(BaseModel):
+    completed: bool
+    completed_at: str | None = None
 
 
 class UpdateOrgSecretsRequest(BaseModel):

@@ -37,8 +37,7 @@ export function HomeRunList() {
 
       {apiError && (
         <p className="text-xs text-muted-foreground card-surface p-4">
-          Could not reach the API ({apiError}). Check your connection or try again later. Sign in
-          under Settings if you have not created an organization yet.
+          Could not reach the API ({apiError}). Check your connection or try again later.
         </p>
       )}
 

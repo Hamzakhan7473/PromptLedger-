@@ -1,5 +1,6 @@
 import { AppShell } from "@/components/AppShell";
 import { AuditLogView } from "@/components/AuditLogView";
+import { AuthGuard } from "@/components/AuthGuard";
 
 export default function AuditPage() {
   return (
@@ -7,7 +8,9 @@ export default function AuditPage() {
       title="Audit log"
       description="Immutable record of uploads, runs, settings changes, and share links."
     >
-      <AuditLogView />
+      <AuthGuard>
+        <AuditLogView />
+      </AuthGuard>
     </AppShell>
   );
 }

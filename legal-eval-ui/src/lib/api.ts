@@ -1,4 +1,4 @@
-import { getOrgApiKey } from "./orgAuth";
+import { getSessionToken } from "./orgAuth";
 
 const API_BASE =
   process.env.NEXT_PUBLIC_LEGAL_EVAL_API_URL ?? "http://127.0.0.1:8787";
@@ -87,6 +87,7 @@ export type OrgProfile = {
   enabled_models: string[];
   stored_secret_keys: string[];
   created_at: string;
+  onboarding_completed_at?: string | null;
 };
 
 export type CreateOrgResponse = {
@@ -94,6 +95,11 @@ export type CreateOrgResponse = {
   name: string;
   api_key: string;
   enabled_models: string[];
+};
+
+export type OnboardingStatus = {
+  completed: boolean;
+  completed_at: string | null;
 };
 
 export type OrgSecretsStatus = {
@@ -156,9 +162,9 @@ async function apiFetch<T>(path: string, init: FetchOptions = {}): Promise<T> {
   const headers = new Headers(rest.headers);
 
   if (auth) {
-    const key = apiKey ?? getOrgApiKey();
+    const key = apiKey ?? (await getSessionToken());
     if (!key && !shareToken) {
-      throw new Error("Organization API key required. Open Settings to create or paste your key.");
+      throw new Error("Sign in required. Use the Log in button to access your workspace.");
     }
     if (key) {
       headers.set("Authorization", `Bearer ${key}`);
@@ -206,6 +212,16 @@ export async function createOrganization(name: string): Promise<CreateOrgRespons
 
 export async function fetchOrgProfile(): Promise<OrgProfile> {
   return apiFetch<OrgProfile>("/api/v1/orgs/me");
+}
+
+export async function fetchOnboardingStatus(): Promise<OnboardingStatus> {
+  return apiFetch<OnboardingStatus>("/api/v1/orgs/me/onboarding");
+}
+
+export async function completeOnboarding(): Promise<OnboardingStatus> {
+  return apiFetch<OnboardingStatus>("/api/v1/orgs/me/onboarding/complete", {
+    method: "POST",
+  });
 }
 
 export async function updateOrgSecrets(secrets: Record<string, string>): Promise<OrgSecretsStatus> {
@@ -269,9 +285,9 @@ export async function downloadDocumentTemplate(
   downloadPath: string,
   filename: string,
 ): Promise<void> {
-  const key = getOrgApiKey();
+  const key = await getSessionToken();
   if (!key) {
-    throw new Error("Organization API key required. Open Settings to create or paste your key.");
+    throw new Error("Sign in required to download the template.");
   }
   const response = await fetch(`${API_BASE}${downloadPath}`, {
     headers: { Authorization: `Bearer ${key}` },
@@ -390,8 +406,8 @@ export function runPdfExportUrl(runId: string): string {
 }
 
 export async function downloadRunPdf(runId: string): Promise<void> {
-  const key = getOrgApiKey();
-  if (!key) throw new Error("Organization API key required.");
+  const key = await getSessionToken();
+  if (!key) throw new Error("Sign in required.");
   const response = await fetch(runPdfExportUrl(runId), {
     headers: { Authorization: `Bearer ${key}` },
   });

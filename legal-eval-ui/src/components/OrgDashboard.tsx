@@ -3,20 +3,17 @@
 import { useEffect, useState } from "react";
 
 import { fetchOrgStats, type OrgStats } from "@/lib/api";
-import { hasOrgApiKey } from "@/lib/orgAuth";
 
 export function OrgDashboard() {
   const [stats, setStats] = useState<OrgStats | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!hasOrgApiKey()) return;
     fetchOrgStats()
       .then(setStats)
       .catch((err: Error) => setError(err.message));
   }, []);
 
-  if (!hasOrgApiKey()) return null;
   if (error) {
     return (
       <p className="text-xs text-muted-foreground card-surface p-4">

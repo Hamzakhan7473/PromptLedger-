@@ -12,7 +12,7 @@ import {
 } from "recharts";
 
 import { runArtifactFileUrl } from "@/lib/api";
-import { getOrgApiKey } from "@/lib/orgAuth";
+import { getSessionToken } from "@/lib/orgAuth";
 import type { CalibrationBin } from "@/lib/types";
 
 const CHART_COLORS = {
@@ -119,30 +119,35 @@ export function CalibrationPanel({
   useEffect(() => {
     let objectUrl: string | null = null;
     const url = runArtifactFileUrl(runId, `calibration/${model}.png`, shareToken);
-    const headers: HeadersInit = {};
-    if (!shareToken) {
-      const key = getOrgApiKey();
-      if (key) {
-        headers.Authorization = `Bearer ${key}`;
+
+    async function loadPng() {
+      const headers: HeadersInit = {};
+      if (!shareToken) {
+        const key = await getSessionToken();
+        if (key) {
+          headers.Authorization = `Bearer ${key}`;
+        }
       }
+
+      fetch(url, { headers })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("PNG unavailable");
+          }
+          return response.blob();
+        })
+        .then((blob) => {
+          objectUrl = URL.createObjectURL(blob);
+          setPngUrl(objectUrl);
+          setPngFailed(false);
+        })
+        .catch(() => {
+          setPngFailed(true);
+          setPngUrl(null);
+        });
     }
 
-    fetch(url, { headers })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("PNG unavailable");
-        }
-        return response.blob();
-      })
-      .then((blob) => {
-        objectUrl = URL.createObjectURL(blob);
-        setPngUrl(objectUrl);
-        setPngFailed(false);
-      })
-      .catch(() => {
-        setPngFailed(true);
-        setPngUrl(null);
-      });
+    void loadPng();
 
     return () => {
       if (objectUrl) {

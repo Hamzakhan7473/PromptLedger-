@@ -7,7 +7,6 @@ import {
   updateEnterpriseSettings,
   type EnterpriseSettings,
 } from "@/lib/api";
-import { hasOrgApiKey } from "@/lib/orgAuth";
 
 export function EnterpriseSettingsForm() {
   const [settings, setSettings] = useState<EnterpriseSettings | null>(null);
@@ -21,7 +20,6 @@ export function EnterpriseSettingsForm() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (!hasOrgApiKey()) return;
     fetchEnterpriseSettings()
       .then((data) => {
         setSettings(data);
@@ -32,8 +30,6 @@ export function EnterpriseSettingsForm() {
       })
       .catch((err: Error) => setError(err.message));
   }, []);
-
-  if (!hasOrgApiKey()) return null;
 
   async function handleSave() {
     setLoading(true);

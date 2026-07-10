@@ -21,11 +21,10 @@ import {
   type ModelInfo,
   type RunMode,
 } from "@/lib/api";
-import { hasOrgApiKey } from "@/lib/orgAuth";
 
 type DatasetSource = "jsonl" | "huggingface" | "documents";
 
-export function NewEvalForm() {
+export function NewEvalForm({ compact = false }: { compact?: boolean }) {
   const router = useRouter();
   const [datasetSource, setDatasetSource] = useState<DatasetSource>("jsonl");
   const [models, setModels] = useState<ModelInfo[]>([]);
@@ -54,10 +53,6 @@ export function NewEvalForm() {
   const [documentImport, setDocumentImport] = useState<DocumentImportResponse | null>(null);
 
   useEffect(() => {
-    if (!hasOrgApiKey()) {
-      setLoadError("Create an organization in Settings and paste your org API key first.");
-      return;
-    }
     Promise.all([
       fetchModels(),
       fetchOrgProfile(),
@@ -380,8 +375,8 @@ export function NewEvalForm() {
         ) : (
           <div className="space-y-3 card-surface p-5">
             <p className="text-xs text-muted-foreground">
-              Import a public Hugging Face dataset on the server and convert it to EvalExample
-              rows. Network access required on the API host.
+              Import a public Hugging Face dataset and convert it to EvalExample rows in your
+              workspace. Requires outbound network from the hosted API.
             </p>
             <input
               type="text"

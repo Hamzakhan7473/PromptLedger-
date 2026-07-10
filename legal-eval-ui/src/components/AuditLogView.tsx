@@ -4,17 +4,12 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 import { fetchAuditLog, type AuditEvent } from "@/lib/api";
-import { hasOrgApiKey } from "@/lib/orgAuth";
 
 export function AuditLogView() {
   const [events, setEvents] = useState<AuditEvent[]>([]);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (!hasOrgApiKey()) {
-      setError("Set your organization API key in Settings first.");
-      return;
-    }
     fetchAuditLog()
       .then(setEvents)
       .catch((err: Error) => setError(err.message));

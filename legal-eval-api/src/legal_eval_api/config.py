@@ -40,3 +40,9 @@ MODEL_KEY_REQUIREMENTS: dict[str, str | None] = {
     "google": "GOOGLE_API_KEY",
     "bedrock_claude": None,
 }
+
+# Firebase project ID (same GCP project as Cloud Run, e.g. legaleval)
+FIREBASE_PROJECT_ID = os.environ.get(
+    "FIREBASE_PROJECT_ID",
+    os.environ.get("GCP_PROJECT_ID", "legaleval"),
+).strip()

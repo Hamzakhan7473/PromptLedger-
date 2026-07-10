@@ -10,10 +10,12 @@ from legal_eval_api.audit import record_audit
 from legal_eval_api.config import AVAILABLE_MODELS, LOCAL_KEY_VARS
 from legal_eval_api.crypto import decrypt_secret, encrypt_secret
 from legal_eval_api.db import (
+    complete_onboarding,
     create_org,
     delete_secret,
     get_enabled_models,
     get_org,
+    get_org_by_firebase_uid,
     get_secrets,
     list_org_ids,
     list_secret_keys,
@@ -23,6 +25,7 @@ from legal_eval_api.db import (
 from legal_eval_api.schemas import (
     CreateOrgRequest,
     CreateOrgResponse,
+    OnboardingStatus,
     OrgProfile,
     OrgSecretsStatus,
     UpdateOrgModelsRequest,
@@ -40,6 +43,29 @@ def register_org(request: CreateOrgRequest) -> CreateOrgResponse:
     )
 
 
+def ensure_org_for_firebase_user(
+    firebase_uid: str,
+    claims: dict[str, object],
+) -> tuple[str, str]:
+    """Return org_id and name for a Firebase user, creating one on first login."""
+    existing = get_org_by_firebase_uid(firebase_uid)
+    if existing:
+        return existing["org_id"], existing["name"]
+
+    from legal_eval_api.firebase_auth import default_org_name_from_claims
+
+    name = default_org_name_from_claims(claims)
+    org_id, _api_key = create_org(name, firebase_uid=firebase_uid)
+    record_audit(
+        org_id,
+        "org.created",
+        resource_type="org",
+        resource_id=org_id,
+        metadata={"via": "firebase", "firebase_uid": firebase_uid},
+    )
+    return org_id, name
+
+
 def get_profile(org_id: str) -> OrgProfile:
     org = get_org(org_id)
     if not org:
@@ -50,7 +76,25 @@ def get_profile(org_id: str) -> OrgProfile:
         enabled_models=get_enabled_models(org_id),
         stored_secret_keys=list_secret_keys(org_id),
         created_at=org["created_at"],
+        onboarding_completed_at=org.get("onboarding_completed_at"),
     )
+
+
+def get_onboarding_status(org_id: str) -> OnboardingStatus:
+    org = get_org(org_id)
+    if not org:
+        raise HTTPException(status_code=404, detail="Organization not found.")
+    completed_at = org.get("onboarding_completed_at")
+    return OnboardingStatus(
+        completed=bool(completed_at),
+        completed_at=completed_at,
+    )
+
+
+def mark_onboarding_complete(org_id: str) -> OnboardingStatus:
+    complete_onboarding(org_id)
+    record_audit(org_id, "onboarding.completed", resource_type="org", resource_id=org_id)
+    return get_onboarding_status(org_id)
 
 
 def update_models(org_id: str, request: UpdateOrgModelsRequest) -> OrgProfile:

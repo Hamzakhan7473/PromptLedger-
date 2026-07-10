@@ -1,4 +1,5 @@
 import { AppShell } from "@/components/AppShell";
+import { AuthGuard } from "@/components/AuthGuard";
 import { SettingsForm } from "@/components/SettingsForm";
 
 export default function SettingsPage() {
@@ -7,7 +8,9 @@ export default function SettingsPage() {
       title="Settings"
       description="Organization, model routing, and enterprise options."
     >
-      <SettingsForm />
+      <AuthGuard>
+        <SettingsForm />
+      </AuthGuard>
     </AppShell>
   );
 }

@@ -5,18 +5,18 @@ import Link from "next/link";
 const STEPS = [
   {
     step: "01",
-    title: "Create your organization",
-    body: "Sign up in Settings to get an org API key. Your workspace is isolated from other teams on the platform.",
+    title: "Sign up",
+    body: "Create an account — your workspace is provisioned automatically on first login.",
   },
   {
     step: "02",
     title: "Add model keys & upload data",
-    body: "Save OpenAI, Google, or Bedrock credentials under Settings → Model API keys. Upload a JSONL eval set on New eval.",
+    body: "Save OpenAI, Google, or Anthropic credentials under Settings. Upload JSONL, import from Hugging Face, or extract from PDFs.",
   },
   {
     step: "03",
     title: "Run & share results",
-    body: "Pick models, run your eval, and track presence F1, span grounding, judge κ, and calibration. Share read-only links or export a trust report when complete.",
+    body: "Compare models, track presence F1, span grounding, judge κ, and calibration. Share read-only links or export a trust report.",
   },
 ];
 
@@ -49,12 +49,12 @@ export function GettingStartedGuide({ compact = false }: GettingStartedGuideProp
       </ol>
       <p className="text-xs text-muted-foreground">
         New here?{" "}
-        <Link href="/settings" className="text-primary underline-offset-2 hover:underline">
-          Open Settings
+        <Link href="/sign-up" className="text-primary underline-offset-2 hover:underline">
+          Sign up
         </Link>{" "}
-        to create an org, then{" "}
-        <Link href="/new" className="text-primary underline-offset-2 hover:underline">
-          start an eval
+        or{" "}
+        <Link href="/onboarding" className="text-primary underline-offset-2 hover:underline">
+          follow the setup guide
         </Link>
         .
       </p>

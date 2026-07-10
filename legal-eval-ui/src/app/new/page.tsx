@@ -1,4 +1,5 @@
 import { AppShell } from "@/components/AppShell";
+import { AuthGuard } from "@/components/AuthGuard";
 import { NewEvalForm } from "@/components/NewEvalForm";
 
 export default function NewEvalPage() {
@@ -7,7 +8,9 @@ export default function NewEvalPage() {
       title="New eval"
       description="Upload a dataset, pick models, and run the full legal-eval pipeline."
     >
-      <NewEvalForm />
+      <AuthGuard>
+        <NewEvalForm />
+      </AuthGuard>
     </AppShell>
   );
 }

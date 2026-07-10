@@ -14,8 +14,9 @@ legal-eval/.env.*
 legal-eval/results/
 legal-eval/**/__pycache__/
 legal-eval/**/.pytest_cache/
-legal-eval/.matplotlib/
-legal-eval/models.yaml
+legal-eval/.data/
+legal-eval/**/*.egg-info/
+legal-eval-api/**/*.egg-info/
 legal-eval-ui/
 web/
 platform/

@@ -25,8 +25,8 @@ const WHO_ITEMS = [
 const HOW_STEPS = [
   {
     step: "01",
-    title: "Create an organization (BYOK)",
-    body: "Free platform access — bring your own OpenAI, Google, or Bedrock keys. We never run inference or touch your model spend. Keys are encrypted per org.",
+    title: "Sign up (BYOK)",
+    body: "Free platform access — bring your own OpenAI, Google, or Anthropic keys. We never run inference or touch your model spend. Keys are encrypted per organization.",
   },
   {
     step: "02",
@@ -138,10 +138,10 @@ export function LandingPage() {
             ))}
           </ol>
           <p className="mt-6 text-center text-xs text-muted-foreground">
-            <Link href="/settings" className="text-primary underline-offset-2 hover:underline">
-              Settings
+            <Link href="/sign-up" className="text-primary underline-offset-2 hover:underline">
+              Sign up
             </Link>{" "}
-            → create org →{" "}
+            → add keys →{" "}
             <Link href="/new" className="text-primary underline-offset-2 hover:underline">
               New eval
             </Link>
@@ -206,12 +206,12 @@ export function LandingPage() {
             Ready to prove your pipeline?
           </h2>
           <p className="mt-3 text-sm text-muted-foreground">
-            Create an organization, add your model keys, upload your eval set, and export evidence
+            Create an account, add your model keys, upload your eval set, and export evidence
             buyers can audit.
           </p>
           <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:justify-center">
-            <Link href="/settings" className="btn-primary">
-              Create organization
+            <Link href="/sign-up" className="btn-primary">
+              Sign up free
             </Link>
             <Link href="/new" className="btn-outline">
               New eval
